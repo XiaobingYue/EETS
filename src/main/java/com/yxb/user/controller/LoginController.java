@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yxb.common.entity.AjaxResult;
 import com.yxb.user.entity.User;
 import com.yxb.user.service.UserService;
-import com.yxb.user.service.impl.UserServiceImpl;
 
 @Controller
 @RequestMapping("/loginController")
