@@ -15,30 +15,7 @@
 	<body>
 		<!--header start-->
 		<div class="header_wrap">
-			<div class="header">
-				<span class="wel_word fl">欢迎访问河南工业大学工程教育教学系统网站！</span>
-				<span class="corner fr">
-					<ul>
-						<li><a href="upload.html">上传</a>|</li>
-						<li><a href="${APP_PATH}/loginController/toRegister.do">注册</a>|</li>
-						<c:if test="${empty userInfo}">
-						<li class="login_li"><a href="javascript:void(0);" class="tc">登录</a></li>
-						</c:if>
-						<c:if test="${not empty userInfo}">
-						<li class="user_li nLi">
-							<a href="javascript:void(0);">欢迎你，${userInfo.username}</a>
-							<div class="user_handle">
-								<a href="personal.html">个人中心</a>
-								<a href="ownTopic.html">我的话题</a>
-								<a href="loginController/logout.do">退出</a>
-							</div>
-						</li>
-						</c:if>
-					</ul>
-					<div class="clear"></div>
-				</span>
-				<div class="clear"></div>
-			</div>
+			<%@include file="/WEB-INF/jsp/common/header.jsp" %>
 			<div id="gray"></div>				
 			<div class="popup" id="popup">				
 				<div class="top_nav" id='top_nav'>

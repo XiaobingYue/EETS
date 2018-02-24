@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yxb.user.dao.UserDao">
-	<sql id="Base_Column_List">
-		username, password,email
-	</sql>
 	<select id="loginUser" resultType="user">
-		select
-		<include refid="Base_Column_List" />
-		from user
-		where username = #{username} and password = #{password}
+		select id , username , password , email
+			from user
+			where username = #{username} and password = #{password}
 	</select>
 
 	<insert id="registUser">
@@ -17,4 +13,21 @@
 		) values (
 			#{username} , #{password} , #{email})
 	</insert>
+	
+	<select id="getPermissionsByUserId" resultType="permission">
+	 select
+            *
+        from permission
+        where id in (
+            select
+                permissionid
+            from role_permission
+            where roleid in (
+                select 
+                    roleid
+                from user_role
+                where userid = #{id }
+            )
+        )
+	</select>
 </mapper>

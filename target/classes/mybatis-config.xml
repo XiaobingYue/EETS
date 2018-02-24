@@ -3,5 +3,6 @@
 <configuration>  
     <typeAliases>  
         <typeAlias alias="user" type="com.yxb.user.entity.User"/>  
+        <typeAlias alias="permission" type="com.yxb.user.entity.Permission"/>
     </typeAliases>  
 </configuration>
