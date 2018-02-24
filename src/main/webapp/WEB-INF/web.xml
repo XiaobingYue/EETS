@@ -21,6 +21,10 @@
 <listener>
 	<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 </listener>
+<!-- 将WEB应用路径保存在APPLICATION范围中 -->
+ <listener>
+        <listener-class>com.yxb.user.listener.ServerStartUpListener</listener-class>
+    </listener>
 	
 <!-- spring mvc servlet -->
 <servlet>
