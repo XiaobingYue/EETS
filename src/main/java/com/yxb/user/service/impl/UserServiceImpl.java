@@ -15,5 +15,14 @@ public class UserServiceImpl implements UserService {
 	public User doUserLogin(User user) {
 		return dao.loginUser(user);
 	}
+
+	public boolean registUser(User user) {
+		try{
+			dao.registUser(user);
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
 }
 

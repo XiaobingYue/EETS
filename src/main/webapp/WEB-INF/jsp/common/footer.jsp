@@ -8,6 +8,6 @@
 		<p>
 			地址：河南省郑州市高新区河南工业大学 
 		</p>
-		<img src="${APP_PATH}images/er.png" class="er" height="100px" weight="100px" />
+		<img src="${APP_PATH}/images/er.png" class="er" height="100px" weight="100px" />
 	</div>
 </div>

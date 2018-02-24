@@ -7,4 +7,6 @@ import com.yxb.user.entity.User;
 @Repository
 public interface UserDao {
 	User loginUser(User user);
+
+	void registUser(User user);
 }

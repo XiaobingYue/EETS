@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yxb.user.dao.UserDao">
 	<sql id="Base_Column_List">
-		username, password
+		username, password,email
 	</sql>
 	<select id="loginUser" resultType="user">
 		select
@@ -10,4 +10,11 @@
 		from user
 		where username = #{username} and password = #{password}
 	</select>
+
+	<insert id="registUser">
+		insert into user (
+			username , password , email
+		) values (
+			#{username} , #{password} , #{email})
+	</insert>
 </mapper>

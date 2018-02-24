@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yxb.common.entity.AjaxResult;
 import com.yxb.user.entity.User;
+import com.yxb.user.service.UserService;
 import com.yxb.user.service.impl.UserServiceImpl;
 
 @Controller
 @RequestMapping("/loginController")
 public class LoginController {
 	@Autowired
-	private UserServiceImpl userService;
+	private UserService userService;
 
 	@ResponseBody
 	@RequestMapping("/login.do")
@@ -40,8 +41,17 @@ public class LoginController {
 	}
 	
 	@RequestMapping("/toRegister.do")
-	public String toRegister(HttpSession session) {
+	public String toRegister() {
 		return "user/register";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/register.do")
+	public Object register(HttpSession session , User user) {
+		AjaxResult<User> result = new AjaxResult<User>();
+		boolean b = userService.registUser(user);
+		result.setSuccess(b);
+		return result;
 	}
 
 }
