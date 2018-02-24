@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxb.dao.UserDao">
+	<resultMap id="BaseResultMap" type="com.yxb.entity.User">
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		username, password
+	</sql>
+	<select id="selectId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where username = #{username,jdbcType=VARCHAR}
+	</select>
+</mapper>
