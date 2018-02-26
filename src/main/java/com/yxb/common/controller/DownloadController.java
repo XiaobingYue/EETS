@@ -47,7 +47,6 @@ public class DownloadController {
 			// 设置响应头和下载保存的文件名
 			if (file.exists()) {
 				fin = new BufferedInputStream(new FileInputStream(file));
-
 				if (fin != null) {
 					// 文件太大时内存不能一次读出,要循环
 					byte[] b = new byte[2048];// 太大下载慢
