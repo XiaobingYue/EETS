@@ -1134,3 +1134,203 @@
 [2018-02-26 17:32:53,593|http-bio-9090-exec-3|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
 [2018-02-26 17:32:59,196|http-bio-9090-exec-3|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
 [2018-02-26 17:32:59,196|http-bio-9090-exec-3|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 20:39:51,614|localhost-startStop-1|INFO |com.yxb.dispacher.listener.ServerStartUpListener] - +++++将WEB应用路径保存在APPLICATION范围成功+++++
+[2018-02-26 20:40:06,938|http-bio-9090-exec-1|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 20:40:06,940|http-bio-9090-exec-1|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 20:40:46,468|http-bio-9090-exec-6|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 20:40:46,468|http-bio-9090-exec-6|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 20:40:59,607|http-bio-9090-exec-6|DEBUG|com.yxb.user.controller.UserController] - doLogin method >>>
+[2018-02-26 20:42:57,899|localhost-startStop-1|INFO |com.yxb.dispacher.listener.ServerStartUpListener] - +++++将WEB应用路径保存在APPLICATION范围成功+++++
+[2018-02-26 20:43:06,726|http-bio-9090-exec-1|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 20:43:06,729|http-bio-9090-exec-1|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 20:43:12,183|http-bio-9090-exec-7|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 20:43:12,183|http-bio-9090-exec-7|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 20:43:14,451|http-bio-9090-exec-7|DEBUG|com.yxb.user.controller.UserController] - doLogin method >>>
+[2018-02-26 20:44:19,954|localhost-startStop-1|INFO |com.yxb.dispacher.listener.ServerStartUpListener] - +++++将WEB应用路径保存在APPLICATION范围成功+++++
+[2018-02-26 20:44:22,278|http-bio-9090-exec-1|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 20:44:22,279|http-bio-9090-exec-1|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 20:44:31,779|http-bio-9090-exec-7|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 20:44:31,780|http-bio-9090-exec-7|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 20:44:34,209|http-bio-9090-exec-7|DEBUG|com.yxb.user.controller.UserController] - doLogin method >>>
+[2018-02-26 20:46:09,477|http-bio-9090-exec-8|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 20:46:09,478|http-bio-9090-exec-8|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 20:46:14,634|http-bio-9090-exec-8|DEBUG|com.yxb.user.controller.UserController] - doLogin method >>>
+[2018-02-26 20:52:45,796|localhost-startStop-1|INFO |com.yxb.dispacher.listener.ServerStartUpListener] - +++++将WEB应用路径保存在APPLICATION范围成功+++++
+[2018-02-26 20:54:03,047|localhost-startStop-1|INFO |com.yxb.dispacher.listener.ServerStartUpListener] - +++++将WEB应用路径保存在APPLICATION范围成功+++++
+[2018-02-26 20:56:01,070|localhost-startStop-1|INFO |com.yxb.dispacher.listener.ServerStartUpListener] - +++++将WEB应用路径保存在APPLICATION范围成功+++++
+[2018-02-26 20:56:21,346|http-bio-9090-exec-1|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 20:56:21,348|http-bio-9090-exec-1|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 20:56:28,757|http-bio-9090-exec-2|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 20:56:28,758|http-bio-9090-exec-2|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 20:56:28,799|http-bio-9090-exec-2|DEBUG|com.yxb.user.controller.UserController] - doLogin method >>>
+[2018-02-26 21:00:44,881|localhost-startStop-1|INFO |com.yxb.dispacher.listener.ServerStartUpListener] - +++++将WEB应用路径保存在APPLICATION范围成功+++++
+[2018-02-26 21:01:16,705|localhost-startStop-1|INFO |com.yxb.dispacher.listener.ServerStartUpListener] - +++++将WEB应用路径保存在APPLICATION范围成功+++++
+[2018-02-26 21:01:30,514|http-bio-9090-exec-1|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:01:30,516|http-bio-9090-exec-1|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:01:38,271|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:01:38,272|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:01:38,321|http-bio-9090-exec-4|DEBUG|com.yxb.user.controller.UserController] - doLogin method >>>
+[2018-02-26 21:01:38,418|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@289f3737]
+[2018-02-26 21:01:38,427|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select id , username , password , email from user where username = ? and password = ? 
+[2018-02-26 21:01:38,479|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: admin(String), 21232f297a57a5a743894a0e4a801fc3(String)
+[2018-02-26 21:01:38,512|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1cf34d9d]
+[2018-02-26 21:01:38,513|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select * from permission where id in ( select permissionid from role_permission where roleid in ( select roleid from user_role where userid = ? ) ) 
+[2018-02-26 21:01:38,514|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: 1(Integer)
+[2018-02-26 21:08:28,456|localhost-startStop-1|INFO |com.yxb.dispacher.listener.ServerStartUpListener] - +++++将WEB应用路径保存在APPLICATION范围成功+++++
+[2018-02-26 21:09:44,929|localhost-startStop-1|INFO |com.yxb.dispacher.listener.ServerStartUpListener] - +++++将WEB应用路径保存在APPLICATION范围成功+++++
+[2018-02-26 21:09:59,516|http-bio-9090-exec-1|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:09:59,518|http-bio-9090-exec-1|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:10:04,698|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:10:04,700|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:10:04,757|http-bio-9090-exec-10|DEBUG|com.yxb.user.controller.UserController] - doLogin method >>>
+[2018-02-26 21:10:04,846|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@183fb2c5]
+[2018-02-26 21:10:04,853|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select id , username , password , email from user where username = ? and password = ? 
+[2018-02-26 21:10:04,904|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: admin(String), 21232f297a57a5a743894a0e4a801fc3(String)
+[2018-02-26 21:10:04,942|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@5dda1fc9]
+[2018-02-26 21:10:04,943|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select * from permission where id in ( select permissionid from role_permission where roleid in ( select roleid from user_role where userid = ? ) ) 
+[2018-02-26 21:10:04,944|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: 1(Integer)
+[2018-02-26 21:11:07,451|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:11:07,451|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:11:07,452|http-bio-9090-exec-4|DEBUG|com.yxb.user.controller.UserController] - doLogin method >>>
+[2018-02-26 21:11:07,454|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7e4cbf91]
+[2018-02-26 21:11:07,455|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select id , username , password , email from user where username = ? and password = ? 
+[2018-02-26 21:11:07,456|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: admin(String), 21232f297a57a5a743894a0e4a801fc3(String)
+[2018-02-26 21:11:07,459|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@6b5370]
+[2018-02-26 21:11:07,459|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select * from permission where id in ( select permissionid from role_permission where roleid in ( select roleid from user_role where userid = ? ) ) 
+[2018-02-26 21:11:07,461|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: 1(Integer)
+[2018-02-26 21:11:07,469|http-bio-9090-exec-4|DEBUG|com.yxb.user.controller.UserController] - doLogin method <<<
+[2018-02-26 21:11:07,579|http-bio-9090-exec-1|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:11:07,580|http-bio-9090-exec-1|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:11:14,885|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:11:14,885|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:11:20,352|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:11:20,353|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:12:03,903|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:12:03,903|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:12:03,908|http-bio-9090-exec-10|DEBUG|com.yxb.user.controller.UserController] - logout method >>>
+[2018-02-26 21:12:03,909|http-bio-9090-exec-10|DEBUG|com.yxb.user.controller.UserController] - logout method <<<
+[2018-02-26 21:12:03,922|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:12:03,922|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:12:08,573|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:12:08,573|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:12:08,575|http-bio-9090-exec-10|DEBUG|com.yxb.user.controller.UserController] - doLogin method >>>
+[2018-02-26 21:12:08,578|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@125d42b6]
+[2018-02-26 21:12:08,578|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select id , username , password , email from user where username = ? and password = ? 
+[2018-02-26 21:12:08,580|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: admin(String), 21232f297a57a5a743894a0e4a801fc3(String)
+[2018-02-26 21:12:08,583|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@4c1c68d3]
+[2018-02-26 21:12:08,585|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select * from permission where id in ( select permissionid from role_permission where roleid in ( select roleid from user_role where userid = ? ) ) 
+[2018-02-26 21:12:08,585|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: 1(Integer)
+[2018-02-26 21:12:08,595|http-bio-9090-exec-10|DEBUG|com.yxb.user.controller.UserController] - doLogin method <<<
+[2018-02-26 21:12:08,612|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:12:08,615|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:12:48,285|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:12:48,285|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:12:48,286|http-bio-9090-exec-10|DEBUG|com.yxb.user.controller.UserController] - logout method >>>
+[2018-02-26 21:12:48,286|http-bio-9090-exec-10|DEBUG|com.yxb.user.controller.UserController] - logout method <<<
+[2018-02-26 21:12:48,303|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:12:48,303|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:12:50,982|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:12:50,982|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:12:50,985|http-bio-9090-exec-10|DEBUG|com.yxb.user.controller.UserController] - doLogin method >>>
+[2018-02-26 21:12:50,985|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@38054953]
+[2018-02-26 21:12:50,985|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select id , username , password , email from user where username = ? and password = ? 
+[2018-02-26 21:12:50,987|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: admin(String), 21232f297a57a5a743894a0e4a801fc3(String)
+[2018-02-26 21:12:50,991|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@37588b42]
+[2018-02-26 21:12:50,991|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select * from permission where id in ( select permissionid from role_permission where roleid in ( select roleid from user_role where userid = ? ) ) 
+[2018-02-26 21:12:50,993|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: 1(Integer)
+[2018-02-26 21:12:50,996|http-bio-9090-exec-10|DEBUG|com.yxb.user.controller.UserController] - doLogin method <<<
+[2018-02-26 21:12:51,011|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:12:51,011|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:12:54,044|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:12:54,044|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:13:36,612|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:13:36,612|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:13:36,614|http-bio-9090-exec-10|DEBUG|com.yxb.user.controller.UserController] - logout method >>>
+[2018-02-26 21:13:36,615|http-bio-9090-exec-10|DEBUG|com.yxb.user.controller.UserController] - logout method <<<
+[2018-02-26 21:13:36,639|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:13:36,639|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:13:41,528|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:13:41,528|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:13:41,528|http-bio-9090-exec-10|DEBUG|com.yxb.user.controller.UserController] - doLogin method >>>
+[2018-02-26 21:13:41,531|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@3da213d6]
+[2018-02-26 21:13:41,531|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select id , username , password , email from user where username = ? and password = ? 
+[2018-02-26 21:13:41,533|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: admin(String), 21232f297a57a5a743894a0e4a801fc3(String)
+[2018-02-26 21:13:41,537|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@25c7626f]
+[2018-02-26 21:13:41,537|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select * from permission where id in ( select permissionid from role_permission where roleid in ( select roleid from user_role where userid = ? ) ) 
+[2018-02-26 21:13:41,539|http-bio-9090-exec-10|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: 1(Integer)
+[2018-02-26 21:13:41,549|http-bio-9090-exec-10|DEBUG|com.yxb.user.controller.UserController] - doLogin method <<<
+[2018-02-26 21:13:41,569|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:13:41,572|http-bio-9090-exec-10|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:15:13,093|localhost-startStop-1|INFO |com.yxb.dispacher.listener.ServerStartUpListener] - +++++将WEB应用路径保存在APPLICATION范围成功+++++
+[2018-02-26 21:15:29,025|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:15:29,061|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - not login redirect to login page...
+[2018-02-26 21:15:29,769|http-bio-9090-exec-7|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:15:29,771|http-bio-9090-exec-7|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:15:32,757|http-bio-9090-exec-2|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:15:32,760|http-bio-9090-exec-2|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:15:32,814|http-bio-9090-exec-2|DEBUG|com.yxb.user.controller.UserController] - doLogin method >>>
+[2018-02-26 21:15:32,904|http-bio-9090-exec-2|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@270f689]
+[2018-02-26 21:15:32,911|http-bio-9090-exec-2|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select id , username , password , email from user where username = ? and password = ? 
+[2018-02-26 21:15:32,971|http-bio-9090-exec-2|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: admin(String), 21232f297a57a5a743894a0e4a801fc3(String)
+[2018-02-26 21:15:33,004|http-bio-9090-exec-2|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@32aa968c]
+[2018-02-26 21:15:33,004|http-bio-9090-exec-2|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select * from permission where id in ( select permissionid from role_permission where roleid in ( select roleid from user_role where userid = ? ) ) 
+[2018-02-26 21:15:33,006|http-bio-9090-exec-2|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: 1(Integer)
+[2018-02-26 21:15:33,011|http-bio-9090-exec-2|DEBUG|com.yxb.user.controller.UserController] - doLogin method <<<
+[2018-02-26 21:15:33,119|http-bio-9090-exec-2|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:15:33,121|http-bio-9090-exec-2|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:16:00,096|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:16:00,097|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:16:27,591|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:16:27,592|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:16:27,594|http-bio-9090-exec-4|DEBUG|com.yxb.user.controller.UserController] - logout method >>>
+[2018-02-26 21:16:27,595|http-bio-9090-exec-4|DEBUG|com.yxb.user.controller.UserController] - logout method <<<
+[2018-02-26 21:16:27,610|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:16:27,610|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:16:30,069|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:16:30,069|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:16:30,072|http-bio-9090-exec-4|DEBUG|com.yxb.user.controller.UserController] - doLogin method >>>
+[2018-02-26 21:16:30,074|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@a1b7608]
+[2018-02-26 21:16:30,074|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select id , username , password , email from user where username = ? and password = ? 
+[2018-02-26 21:16:30,077|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: admin(String), 21232f297a57a5a743894a0e4a801fc3(String)
+[2018-02-26 21:16:30,085|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@56ad1ba9]
+[2018-02-26 21:16:30,087|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select * from permission where id in ( select permissionid from role_permission where roleid in ( select roleid from user_role where userid = ? ) ) 
+[2018-02-26 21:16:30,090|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: 1(Integer)
+[2018-02-26 21:16:30,097|http-bio-9090-exec-4|DEBUG|com.yxb.user.controller.UserController] - doLogin method <<<
+[2018-02-26 21:16:30,120|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:16:30,120|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:16:33,067|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:16:33,067|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:16:51,383|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:16:51,384|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:16:51,386|http-bio-9090-exec-4|DEBUG|com.yxb.user.controller.UserController] - logout method >>>
+[2018-02-26 21:16:51,386|http-bio-9090-exec-4|DEBUG|com.yxb.user.controller.UserController] - logout method <<<
+[2018-02-26 21:16:51,408|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:16:51,409|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:16:53,911|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:16:53,911|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:16:53,913|http-bio-9090-exec-4|DEBUG|com.yxb.user.controller.UserController] - doLogin method >>>
+[2018-02-26 21:16:53,913|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@277e5dbf]
+[2018-02-26 21:16:53,916|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select id , username , password , email from user where username = ? and password = ? 
+[2018-02-26 21:16:53,916|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: admin(String), 21232f297a57a5a743894a0e4a801fc3(String)
+[2018-02-26 21:16:53,921|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@3b35ae8f]
+[2018-02-26 21:16:53,923|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==>  Preparing: select * from permission where id in ( select permissionid from role_permission where roleid in ( select roleid from user_role where userid = ? ) ) 
+[2018-02-26 21:16:53,923|http-bio-9090-exec-4|DEBUG|org.apache.ibatis.logging.slf4j.Slf4jImpl] - ==> Parameters: 1(Integer)
+[2018-02-26 21:16:53,935|http-bio-9090-exec-4|DEBUG|com.yxb.user.controller.UserController] - doLogin method <<<
+[2018-02-26 21:16:53,949|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:16:53,951|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:16:57,317|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:16:57,318|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:16:58,701|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:16:58,702|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:17:07,213|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:17:07,214|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:17:14,709|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:17:14,709|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:17:16,634|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:17:16,635|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:17:17,439|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:17:17,439|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
+[2018-02-26 21:17:21,246|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:17:21,247|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - white List...
+[2018-02-26 21:17:30,118|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - preHandler >>>
+[2018-02-26 21:17:30,119|http-bio-9090-exec-4|DEBUG|com.yxb.dispacher.interceptor.LoginInterceptor] - access preHandler <<<
