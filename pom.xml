@@ -115,12 +115,22 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.1</version>
 				<configuration>
-					<url>http://localhost:9090/manager</url>
+					<url>http://localhost:9090</url>
 					<server>Tomcat7</server>
 					<port>9090</port>
 					<path>/</path>
 				</configuration>
 			</plugin>
+			
+			<plugin>  
+            <groupId>org.apache.maven.plugins</groupId>  
+            <artifactId>maven-compiler-plugin</artifactId>  
+            <version>2.3.2</version>  
+            <configuration>  
+                <source>1.7</source>  
+                <target>1.7</target>  
+            </configuration>  
+        </plugin>  
 		</plugins>
 	</build>
 </project>
