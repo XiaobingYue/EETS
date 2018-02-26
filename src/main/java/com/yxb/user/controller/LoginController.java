@@ -1,49 +1,49 @@
 package com.yxb.user.controller;
 
+import com.yxb.common.entity.AjaxResult;
+import com.yxb.common.util.MD5Util;
+import com.yxb.user.entity.Permission;
+import com.yxb.user.entity.User;
+import com.yxb.user.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.yxb.common.entity.AjaxResult;
-import com.yxb.common.util.MD5Util;
-import com.yxb.dispacher.listener.ServerStartUpListener;
-import com.yxb.user.entity.Permission;
-import com.yxb.user.entity.User;
-import com.yxb.user.service.UserService;
-
 @Controller
 @RequestMapping("/loginController")
 public class LoginController {
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
 
 	private static final Logger log = LoggerFactory
 			.getLogger(LoginController.class);
-	
-	@ResponseBody
+
+    @Autowired
+    public LoginController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @ResponseBody
 	@RequestMapping("/login.do")
-	public Object dologin(HttpSession session, User user, Model model) {
-		log.debug("dologin method >>>");
-		AjaxResult<User> result = new AjaxResult<User>();
+	public Object doLogin(HttpSession session, User user) {
+		log.debug("doLogin method >>>");
+		AjaxResult<User> result = new AjaxResult<>();
 		user.setPassword(MD5Util.digest(user.getPassword()));
 		User queryUser = userService.doUserLogin(user);
 		if(queryUser == null){
 			result.setSuccess(false);
 		}else{
 			List<Permission> list = userService.getPermissionsByUserId(queryUser.getId());
-			List<Permission> root = new ArrayList<Permission>();
-			Map<String,Permission> permissionMap = new HashMap<String, Permission>();
+			List<Permission> root = new ArrayList<>();
+			Map<String,Permission> permissionMap = new HashMap<>();
 			for (Permission permission : list) {
 				permissionMap.put(permission.getId(), permission);
 			}
@@ -51,9 +51,8 @@ public class LoginController {
 				if("0".equals(permission.getParentid())){
 					root.add(permission);
 				}else{
-					Permission child = permission;
 					Permission parent = permissionMap.get(permission.getParentid());
-					parent.getChildren().add(child);
+					parent.getChildren().add(permission);
 				}
 			}
 			session.setAttribute("rootPermission", root);
@@ -61,7 +60,7 @@ public class LoginController {
 			result.setData(queryUser);
 			session.setAttribute("userInfo", queryUser);
 		}
-		log.debug("dologin method <<<");
+		log.debug("doLogin method <<<");
 		return result;
 	}
 
@@ -80,9 +79,9 @@ public class LoginController {
 	
 	@ResponseBody
 	@RequestMapping("/register.do")
-	public Object register(HttpSession session , User user) {
+	public Object register(User user) {
 		log.debug("register method >>>");
-		AjaxResult<User> result = new AjaxResult<User>();
+		AjaxResult<User> result = new AjaxResult<>();
 		user.setPassword(MD5Util.digest(user.getPassword()));
 		boolean b = userService.registUser(user);
 		result.setSuccess(b);

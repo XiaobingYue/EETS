@@ -433,7 +433,7 @@
 	    				/* if ( $("#usertype").val() == "member" ) {
 	    					window.location.href = "${APP_PATH}/member.htm";
 	    				} else { */
-	    					window.location.href = "${APP_PATH}/toindex.do";
+	    					window.location.href = "${APP_PATH}/toIndex.do";
 	    				//}
 	    			} else {
 	    				//alert("用户账户或密码输入不正确，登陆失败");

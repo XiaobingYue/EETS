@@ -21,7 +21,7 @@
 		<div class="inside_wrap">
 			<div class="inside_con">
 				<div class="adr">
-					<a href="${APP_PATH}/toindex.do">首页</a>&nbsp;>&nbsp;批量导入
+					<a href="${APP_PATH}/toIndex.do">首页</a>&nbsp;>&nbsp;批量导入
 				</div>
 				<div class="register_box">
 					<div class="tc_login">

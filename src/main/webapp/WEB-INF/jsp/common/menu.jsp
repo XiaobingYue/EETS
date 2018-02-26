@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <div class="nav_menu">
-	<a href="${APP_PATH}/toindex.do" class="logo fl"><img src="${APP_PATH}/images/logo.png" /></a>
+	<a href="${APP_PATH}/toIndex.do" class="logo fl"><img src="${APP_PATH}/images/logo.png" /></a>
 	<div class="nav_list fr">
 		<ul id="nav" class="nav clearfix">
 			<li class="nLi"></li>
