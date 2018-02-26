@@ -6,7 +6,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta name="keywords" content="基础教育语文研究中心" />
 		<meta name="description" content="陕西师范大学基础教育语文研究中心" />
-		<title>基础教育语文研究中心</title>
+		<title>工程教育教学系统</title>
 		<link rel="stylesheet" type="text/css" href="${APP_PATH}/css/style.css" />
 		<link rel="stylesheet" type="text/css" href="${APP_PATH}/css/popup.css"/>
 	</head>
