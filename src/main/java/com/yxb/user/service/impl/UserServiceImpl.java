@@ -31,5 +31,10 @@ public class UserServiceImpl implements UserService {
 	public List<Permission> getPermissionsByUserId(Integer id) {
 		return dao.getPermissionsByUserId(id);
 	}
+
+    @Override
+    public List<User> queryUserList() {
+        return dao.queryUserList();
+    }
 }
 

@@ -93,7 +93,7 @@
         // "{'username':'zhangsan', 'sex':'男'}"
 
         // JS : 全局变量，局部变量(var)
-        var url = "loginController/login.do";
+        var url = "userController/login.do";
         var jsonData = {
             "username" : loginacct.val(),
             "password"  : userpswd.val()

@@ -89,7 +89,7 @@
 					<div class="about">
 						<div class="b_title">
 							<h3>中心概况</h3>
-							<a href="about.html" class="more">更多+</a>
+							<a href="user/userList.jsp" class="more">更多+</a>
 						</div>
 						<div class="b_wrap">
 							<div class="a_img fl">

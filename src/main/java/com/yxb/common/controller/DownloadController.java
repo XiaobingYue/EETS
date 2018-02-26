@@ -32,7 +32,7 @@ public class DownloadController {
 
 		String path = request.getSession().getServletContext().getRealPath(dir);
 		String filepath = path + File.separator + filename;
-		File file = null;
+		File file;
 		OutputStream os = null;
 		BufferedInputStream fin = null;
 		try {
@@ -50,7 +50,7 @@ public class DownloadController {
 				if (fin != null) {
 					// 文件太大时内存不能一次读出,要循环
 					byte[] b = new byte[2048];// 太大下载慢
-					int i = 0;
+					int i;
 					while ((i = fin.read(b)) > 0) {
 						os.write(b, 0, i);
 					}

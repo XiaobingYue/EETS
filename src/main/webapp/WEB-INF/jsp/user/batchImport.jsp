@@ -23,28 +23,42 @@
 				<div class="adr">
 					<a href="${APP_PATH}/toIndex.do">首页</a>&nbsp;>&nbsp;批量导入
 				</div>
-				<div class="register_box">
-					<div class="tc_login">
-						<div class="login_register fl">
-						<a href="${APP_PATH}/downloadController/download.do?filename=tmp_imp_user.xls">模板下载</a>
-							<form method="POST" name="form_register" target="_top">
-								<div align="center">
-									<span class="error">注：请确保您导入的excel文件中，满足以下内容和顺序： 用户名、email地址（共2列） </span>
-									<span class="error">若导入记录超过一万条，建议分批导入。</span>
-									<i class="icon-mobile-phone"></i>
-									<input type="file" name="batchfile" id="batchfile" required="required" placeholder="请选择要导入的文件" autocomplete="off" class="input_yh">
-								</div>
-								<div align="center">
-									<input type="button" class="button" title="Sign In" onclick="doregister()" value="导入">
-								</div>
-							</form>
-						</div>
-						<div class="l_img fl">
-							<img src="${APP_PATH}/images/sj.jpg"/>
-						</div>
-						<div class="clear"></div>
-					</div>
-				</div>
+                <div class="inside_box">
+                    <div class="sidemenu fl">
+                        <div class="s_title">用户管理</div>
+                        <c:forEach items="${rootPermission}" var="permission">
+                            <c:if test="${permission.name == '用户管理' && not empty permission.children}">
+                                <c:forEach items="${permission.children}" var="permission">
+                                    <ul>
+                                        <c:if test="${permission.name == '批量导入'}">
+                                            <li class="on"><a href="${APP_PATH}/${permission.url}">${permission.name}</a></li>
+                                        </c:if>
+                                        <c:if test="${permission.name != '批量导入'}">
+                                            <li class="off"><a href="${APP_PATH}/${permission.url}">${permission.name}</a></li>
+                                        </c:if>
+                                    </ul>
+                                </c:forEach>
+                            </c:if>
+                        </c:forEach>
+                    </div>
+                    <div class="ic_wrap fr" align="center">
+                        <div class="tc_login">
+                        <div class="login_register fl">
+                            <form method="POST" name="form_register" target="_top">
+                                <div align="center">
+                                    <span class="error">请务必填写所有选项(填写的用户名已有时提示)</span>
+                                    <i class="icon-mobile-phone"></i>
+                                    <input type="file" name="email" id="email" required="required" placeholder="请输入邮箱(方便找回密码)" autocomplete="off" >
+                                </div>
+                                <div align="center">
+                                    <input type="button" class="button" title="Sign In" onclick="doregister()" value="导入">
+                                </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
 			</div>
 		</div>
 		<!--footer start-->

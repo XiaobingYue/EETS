@@ -14,4 +14,6 @@ public interface UserDao {
 	void registUser(User user);
 
 	List<Permission> getPermissionsByUserId(Integer id);
+
+    List<User> queryUserList();
 }

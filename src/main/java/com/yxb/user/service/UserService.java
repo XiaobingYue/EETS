@@ -12,4 +12,6 @@ public interface UserService {
     boolean registUser(User user);
 
 	List<Permission> getPermissionsByUserId(Integer id);
+
+    List<User> queryUserList();
 }  

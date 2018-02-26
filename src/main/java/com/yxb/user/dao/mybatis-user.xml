@@ -30,4 +30,10 @@
             )
         )
 	</select>
+
+    <select id="queryUserList" resultType="user">
+        select  *
+          from  user
+          where 1=1
+    </select>
 </mapper>

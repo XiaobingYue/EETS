@@ -6,7 +6,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta name="keywords" content="基础教育语文研究中心" />
 		<meta name="description" content="陕西师范大学基础教育语文研究中心" />
-		<title>基础教育语文研究中心</title>
+		<title>工程教育教学系统</title>
 		<link rel="stylesheet" type="text/css" href="${APP_PATH}/css/style.css" />
 		<link rel="stylesheet" type="text/css" href="${APP_PATH}/css/popup.css"/>
 	</head>
@@ -21,31 +21,47 @@
 		<div class="inside_wrap">
 			<div class="inside_con">
 				<div class="adr">
-					<a href="${APP_PATH}/toIndex.do">首页</a>&nbsp;>&nbsp;用户注册
+					<a href="${APP_PATH}/toIndex.do">首页</a>&nbsp;>&nbsp;批量导入
 				</div>
-				<div class="register_box">
-					<div class="tc_login">
-						<div class="login_register fl">
-							<form method="POST" name="form_register" target="_top">
-								<div align="center">
-									<span class="error">请务必填写所有选项(填写的用户名已有时提示)</span>
-									<i class="icon-mobile-phone"></i>
-									<input type="text" name="username" id="username" required="required" placeholder="请输入用户名(字母或数字组成)" autocomplete="off" class="input_yh">
-									<input type="password" name="password" id="password" required="required" placeholder="请输入密码(字母或数字组成)" autocomplete="off" class="input_mm">
-									<input type="password" name="password1" id="password1" required="required" placeholder="请确认密码" autocomplete="off" class="input_mm">
-									<input type="email" name="email" id="email" required="required" placeholder="请输入邮箱(方便找回密码)" autocomplete="off" class="input_el">
-								</div>
-								<div align="center">
-									<input type="button" class="button" title="Sign In" onclick="doregister()" value="注册">
-								</div>
-							</form>
-						</div>
-						<div class="l_img fl">
-							<img src="${APP_PATH}/images/sj.jpg"/>
-						</div>
-						<div class="clear"></div>
-					</div>
-				</div>
+                <div class="inside_box">
+                    <div class="sidemenu fl">
+                        <div class="s_title">用户管理</div>
+                        <c:forEach items="${rootPermission}" var="permission">
+                            <c:if test="${permission.name == '用户管理' && not empty permission.children}">
+                                <c:forEach items="${permission.children}" var="permission">
+                                    <ul>
+                                        <c:if test="${permission.name == '单个注册'}">
+                                        <li class="on"><a href="${APP_PATH}/${permission.url}">${permission.name}</a></li>
+                                        </c:if>
+                                        <c:if test="${permission.name != '单个注册'}">
+                                            <li class="off"><a href="${APP_PATH}/${permission.url}">${permission.name}</a></li>
+                                        </c:if>
+                                    </ul>
+                                </c:forEach>
+                            </c:if>
+                        </c:forEach>
+                    </div>
+                    <div class="ic_wrap fr" align="center">
+                        <div class="tc_login">
+                        <div class="login_register fl">
+                            <form method="POST" name="form_register" target="_top">
+                                <div align="center">
+                                    <span class="error">请务必填写所有选项(填写的用户名已有时提示)</span>
+                                    <i class="icon-mobile-phone"></i>
+                                    <input type="text" name="username" id="username" required="required" placeholder="请输入用户名(字母或数字组成)" autocomplete="off" class="input_yh">
+                                    <input type="password" name="password" id="password" required="required" placeholder="请输入密码(字母或数字组成)" autocomplete="off" class="input_mm">
+                                    <input type="password" name="password1" id="password1" required="required" placeholder="请确认密码" autocomplete="off" class="input_mm">
+                                    <input type="email" name="email" id="email" required="required" placeholder="请输入邮箱(方便找回密码)" autocomplete="off" class="input_el">
+                                </div>
+                                <div align="center">
+                                    <input type="button" class="button" title="Sign In" onclick="doregister()" value="注册">
+                                </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
 			</div>
 		</div>
 		<!--footer start-->

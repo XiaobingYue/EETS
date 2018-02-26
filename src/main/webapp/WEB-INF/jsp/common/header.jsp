@@ -5,14 +5,11 @@
 	<span class="wel_word fl">欢迎访问河南工业大学工程教育教学系统网站！</span> <span
 		class="corner fr">
 		<ul>
-			<c:if test="${empty userInfo}">
-				<li class="login_li"><a href="javascript:void(0);" class="tc">登录</a></li>
-			</c:if>
 			<c:if test="${not empty userInfo}">
 				<li class="user_li nLi"><a href="javascript:void(0);">欢迎你，${userInfo.username}</a>
 					<div class="user_handle">
 						<a href="personal.html">个人中心</a> <a href="ownTopic.html">我的话题</a>
-						<a href="${APP_PATH}/loginController/logout.do">退出</a>
+						<a href="${APP_PATH}/userController/logout.do">退出</a>
 					</div></li>
 			</c:if>
 		</ul>
