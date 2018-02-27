@@ -21,7 +21,7 @@
 		<div class="inside_wrap">
 			<div class="inside_con">
 				<div class="adr">
-					<a href="${APP_PATH}/toIndex.do">首页</a>&nbsp;>&nbsp;批量导入
+					<a href="${APP_PATH}/toIndex.do">首页</a>&nbsp;>&nbsp;单个注册
 				</div>
                 <div class="inside_box">
                     <div class="sidemenu fl">
@@ -111,7 +111,7 @@
 	    		});
 				return;
 			}
-			var url = "loginController/register.do";
+			var url = "userController/register.do";
 	    	var jsonData = {
 	   			"username"  : username.val(),
 	   			"password"  : password.val(),
@@ -141,7 +141,7 @@
 	    				/* if ( $("#usertype").val() == "member" ) {
 	    					window.location.href = "${APP_PATH}/member.htm";
 	    				} else { */
-	    					window.location.href = "${APP_PATH}/toindex.do";
+	    					window.location.href = "${APP_PATH}/toLogin.do";
 	    				//}
 	    			} else {
 	    				//alert("用户账户或密码输入不正确，登陆失败");

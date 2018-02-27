@@ -27,7 +27,7 @@
     <div class="container">
       <h1>${errorMsg}</h1>
       <form id="loginForm" action="${APP_PATH}/dologin.htm" method="post" class="form-signin" role="form">
-        <h2 class="form-signin-heading"><i class="glyphicon glyphicon-picture"></i> 用户登录</h2>
+        <h2 class="form-signin-heading"><i class="glyphicon glyphicon-user"></i> 用户登录</h2>
 		  <div class="form-group has-success has-feedback">
 			<input type="text" class="form-control" id="username" name="username" value="lisi" placeholder="请输入登录账号" autofocus>
 			<span class="glyphicon glyphicon-user form-control-feedback"></span>

@@ -79,10 +79,14 @@
 		<script src="${APP_PATH}/js/jquery-1.11.0.min.js" type="text/javascript"></script>
 		<script src="${APP_PATH}/js/jquery.SuperSlide.2.1.js" type="text/javascript"></script>
 		<script src="${APP_PATH}/js/common.js"></script>
-        <script type="javascript">
-            $(function () {
+        <script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
+        <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
+        <script src="${APP_PATH}/script/layer/layer.js"></script>
+        <script src="${APP_PATH}/jquery/jquery.pagination.js"></script>
+        <script type="text/javascript">
+            window.onload = function(){
                 pageQuery(0);
-            });
+            }
             var loadingIndex = -1;
             var cond = false;
             function pageQuery( pageIndex ) {
@@ -91,7 +95,6 @@
                     pageno : pageIndex+1,
                     pagesize : 5
                 };
-
                 //jsonData["username"]
 
                 if ( cond ) {
