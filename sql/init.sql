@@ -27,35 +27,54 @@ CREATE TABLE `permission` (
   `note` varchar(255) DEFAULT NULL,
   `parentid` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
+  `icon` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `permission` */
 
-insert  into `permission`(`id`,`name`,`url`,`note`,`parentid`,`status`) values 
-('1','用户管理',NULL,NULL,NULL,'1'),
-('2','批量导入',NULL,NULL,'1','1'),
-('3','角色管理',NULL,NULL,NULL,'1'),
-('4','培养方案管理',NULL,NULL,NULL,'1'),
-('5','教学大纲管理',NULL,NULL,NULL,'1'),
-('6','教学任务和课表',NULL,NULL,NULL,'1'),
-('7','教材管理',NULL,NULL,NULL,'1'),
-('8','教师教学',NULL,NULL,NULL,'1');
+insert  into `permission`(`id`,`name`,`url`,`note`,`parentid`,`status`,`icon`) values 
+('1','用户管理','userController/toUserList.do',NULL,'0','1',NULL),
+('10','用户列表','userController/toUserList.do',NULL,'1','1',NULL),
+('2','批量导入','userController/toBatchImport.do',NULL,'1','1',NULL),
+('3','角色管理','roleController/toRoleList.do',NULL,'0','1',NULL),
+('4','培养方案管理',NULL,NULL,'0','1',NULL),
+('5','教学大纲管理',NULL,NULL,'0','1',NULL),
+('6','教学任务和课表',NULL,NULL,'0','1',NULL),
+('7','教材管理',NULL,NULL,'0','1',NULL),
+('8','教师教学',NULL,NULL,'0','1',NULL),
+('9','单个注册','userController/toRegister.do',NULL,'1','1',NULL);
 
-/*Table structure for table `permission_user` */
+/*Table structure for table `role` */
 
-DROP TABLE IF EXISTS `permission_user`;
+DROP TABLE IF EXISTS `role`;
 
-CREATE TABLE `permission_user` (
+CREATE TABLE `role` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `userid` int(10) DEFAULT NULL,
+  `rolename` varchar(255) DEFAULT NULL,
+  `note` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `role` */
+
+insert  into `role`(`id`,`rolename`,`note`) values 
+(1,'超级管理员','超级管理员');
+
+/*Table structure for table `role_permission` */
+
+DROP TABLE IF EXISTS `role_permission`;
+
+CREATE TABLE `role_permission` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `roleid` int(10) DEFAULT NULL,
   `permissionid` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
-/*Data for the table `permission_user` */
+/*Data for the table `role_permission` */
 
-insert  into `permission_user`(`id`,`userid`,`permissionid`) values 
+insert  into `role_permission`(`id`,`roleid`,`permissionid`) values 
 (1,1,1),
 (2,1,2),
 (3,1,3),
@@ -63,7 +82,9 @@ insert  into `permission_user`(`id`,`userid`,`permissionid`) values
 (5,1,5),
 (6,1,6),
 (7,1,7),
-(8,1,8);
+(8,1,8),
+(9,1,9),
+(10,1,10);
 
 /*Table structure for table `user` */
 
@@ -75,13 +96,31 @@ CREATE TABLE `user` (
   `password` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `user` */
 
 insert  into `user`(`id`,`username`,`password`,`email`) values 
-(1,'admin','yuexiaobing','yuexiaobing_haut@163.com'),
-(2,'2','2','2');
+(1,'admin','21232f297a57a5a743894a0e4a801fc3','yuexiaobing_haut@163.com'),
+(2,'2','2','2'),
+(3,'333','310dcbbf4cce62f762a2aaa148d556bd','333@qq.com'),
+(4,'4','a87ff679a2f3e71d9181a67b7542122c','4');
+
+/*Table structure for table `user_role` */
+
+DROP TABLE IF EXISTS `user_role`;
+
+CREATE TABLE `user_role` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `userid` int(10) DEFAULT NULL,
+  `roleid` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+/*Data for the table `user_role` */
+
+insert  into `user_role`(`id`,`userid`,`roleid`) values 
+(9,1,1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

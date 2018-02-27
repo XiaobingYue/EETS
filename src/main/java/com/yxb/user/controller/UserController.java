@@ -105,6 +105,7 @@ public class UserController {
     public Object queryUserList(String queryText , Integer pageNo , Integer pageSize){
         AjaxResult<User> result = new AjaxResult<>();
         List<User> userList = userService.queryUserList();
+        result.setSuccess(true);
         result.setData(userList);
         return  result;
     }
