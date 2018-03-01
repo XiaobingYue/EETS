@@ -10,10 +10,39 @@
 		<meta name="description" content="河南工业大学工程教育教学系统" />
 		<title>工程教育教学系统</title>
 		<link rel="stylesheet" href="${APP_PATH}/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="${APP_PATH}/css/popup.css"/>
         <link rel="stylesheet" href="${APP_PATH}/bootstrap/css/bootstrap.min.css">
-        <%--<link rel="stylesheet" href="${APP_PATH}/css/font-awesome.min.css">
-        <link rel="stylesheet" href="${APP_PATH}/css/main.css">--%>
-        <link rel="stylesheet" href="${APP_PATH}/css/pagination.css">
+       <%-- <link rel="stylesheet" href="${APP_PATH}/css/font-awesome.min.css">
+        <link rel="stylesheet" href="${APP_PATH}/css/main.css">
+        <link rel="stylesheet" href="${APP_PATH}/css/pagination.css">--%>
+        <style type="text/css">
+            #table-5 thead th {
+                background-color: rgb(85, 186, 32);
+                color: #fff;
+                border-bottom-width: 0;
+            }
+
+            /* Column Style */
+            #table-5 td {
+                color: #000;
+                text-align: center;
+            }
+            /* Heading and Column Style */
+            #table-5 tr, #table-5 th {
+                border-width: 1px;
+                border-style: solid;
+                border-color: rgb(156, 186, 95);
+            }
+
+            /* Padding and font style */
+            #table-5 td, #table-5 th {
+                padding: 5px 10px;
+                font-size: 12px;
+                font-family: Verdana;
+                font-weight: bold;
+            }
+
+        </style>
 	</head>
 	<body>
 		<!--header start-->
@@ -48,14 +77,14 @@
 					</div>
 					<div class="ic_wrap fr">
                         <div class="table-responsive">
-                            <table class="table  table-bordered">
+                            <table id="table-5">
                                 <thead>
-                                <tr >
-                                    <th width="30">#</th>
-                                    <th width="30"><input type="checkbox" onclick="selUserBox(this)"></th>
-                                    <th>用户名</th>
-                                    <th>类型</th>
-                                    <th>邮箱地址</th>
+                                <tr>
+                                    <th width="60">#</th>
+                                    <th width="60"><input type="checkbox" onclick="selUserBox(this)"></th>
+                                    <th width="100">用户名</th>
+                                    <th width="60">类型</th>
+                                    <th width="150">邮箱地址</th>
                                     <th width="100">操作</th>
                                 </tr>
                                 </thead>
@@ -79,7 +108,6 @@
 		<script src="${APP_PATH}/js/jquery-1.11.0.min.js" type="text/javascript"></script>
 		<script src="${APP_PATH}/js/jquery.SuperSlide.2.1.js" type="text/javascript"></script>
 		<script src="${APP_PATH}/js/common.js"></script>
-        <script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
         <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
         <script src="${APP_PATH}/script/layer/layer.js"></script>
         <script src="${APP_PATH}/jquery/jquery.pagination.js"></script>

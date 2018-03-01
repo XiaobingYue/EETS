@@ -1,4 +1,4 @@
-package com.yxb.dispacher.interceptor;
+package com.yxb.dispatcher.interceptor;
 
 import com.yxb.user.entity.User;
 import org.slf4j.Logger;
