@@ -2,9 +2,18 @@ package com.yxb.user.entity;
 
 public class User {
 	private Integer id;
+	private String userAcct;
 	private String username;
 	private String password;
 	private String email;
+
+	public String getUserAcct(){
+	    return userAcct;
+    }
+
+    public void setUserAcct(String userAcct){
+	    this.userAcct = userAcct;
+    }
 
 	public Integer getId() {
 		return id;

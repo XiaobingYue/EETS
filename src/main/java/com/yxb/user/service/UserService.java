@@ -1,8 +1,9 @@
 package com.yxb.user.service;
 
 import java.util.List;
+import java.util.Map;
 
-import com.yxb.user.entity.Permission;
+import com.yxb.permission.entity.Permission;
 import com.yxb.user.entity.User;
 
 public interface UserService {  
@@ -13,5 +14,15 @@ public interface UserService {
 
 	List<Permission> getPermissionsByUserId(Integer id);
 
-    List<User> queryUserList();
+    List<User> queryUserList(Map<String , Object> paramMap);
+
+    int deleteUser(User user);
+
+	User findUserByUserAcct(String userAcct);
+
+    int queryPageSize(Map<String, Object> paramMap);
+
+    void modifyUser(User user);
+
+    User queryById(Integer id);
 }  

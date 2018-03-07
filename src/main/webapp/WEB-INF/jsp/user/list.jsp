@@ -28,12 +28,12 @@
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
-          <div><a class="navbar-brand" style="font-size:32px;" href="#">工程教育教学系统 - 用户维护</a></div>
+          <div><a class="navbar-brand" style="font-size:32px;" href="#">工程教育教学系统</a></div>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li style="padding-top:8px;">
-       <%--     <%@include file="/WEB-INF/jsp/common/header.jsp"%>--%>
+            <%@include file="/WEB-INF/jsp/common/userinfo.jsp"%>
 			</li>
             <li style="margin-left:10px;padding-top:8px;">
 				<button type="button" class="btn btn-default btn-danger">
@@ -52,7 +52,7 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
 			<div class="tree">
-			    <jsp:include page="/WEB-INF/jsp/common/menu1.jsp"></jsp:include>
+			    <jsp:include page="/WEB-INF/jsp/common/menu.jsp"></jsp:include>
 			</div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -71,7 +71,7 @@
   <button type="button" id="queryBtn" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询</button>
 </form>
 <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;" onclick="deleteUsers()"><i class=" glyphicon glyphicon-remove"></i> 删除</button>
-<button type="button" class="btn btn-primary" style="float:right;margin-left:10px;" onclick="window.location.href='${APP_PATH}/manager/user/add.htm'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
+<button type="button" class="btn btn-primary" style="float:right;margin-left:10px;" onclick="window.location.href='${APP_PATH}/userController/toAddUser.do'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
 <button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='${APP_PATH}/manager/user/multiadd.htm'"><i class="glyphicon glyphicon-plus"></i> 批量新增</button>
 <br>
  <hr style="clear:both;">
@@ -108,7 +108,7 @@
 	<script src="${APP_PATH}/script/layer/layer.js"></script>
 	<script src="${APP_PATH}/jquery/jquery.pagination.js"></script>
         <script type="text/javascript">
-         /*   $(function () {
+            $(function () {
 			    $(".list-group-item").click(function(){
 				    if ( $(this).find("ul") ) {
 						$(this).toggleClass("tree-closed");
@@ -139,7 +139,7 @@
 			    		pageQuery(0);
 			    	}
 			    });
-            });*/
+            });
             $("tbody .btn-success").click(function(){
                 window.location.href = "assignRole.html";
             });
@@ -169,7 +169,7 @@
             	
             	$.ajax({
             		type : "POST",
-            		url  : "${APP_PATH}/manager/user/pageQuery.do",
+            		url  : "${APP_PATH}/userController/queryUserList.do",
             		data : jsonData,
             		beforeSend : function() {
             			loadingIndex = layer.load(2, {time: 10*1000});
@@ -178,7 +178,7 @@
             			layer.close(loadingIndex);
             			if ( result.success ) {
             				var pageObj = result.page;
-            				var userList = pageObj.datas;
+            				var userList = result.data;
             				
             				// 循环
             				// $("img").each
@@ -189,13 +189,13 @@
             	                userContent = userContent + '<tr>';
 	          	                userContent = userContent + '  <td>'+(i+1)+'</td>';
 	          					userContent = userContent + '  <td><input type="checkbox" value="'+user.id+'"></td>';
-	          	                userContent = userContent + '  <td>'+user.loginacct+'</td>';
+	          	                userContent = userContent + '  <td>'+user.username+'</td>';
 	          	                userContent = userContent + '  <td>'+user.username+'</td>';
 	          	                userContent = userContent + '  <td>'+(user.email||"")+'</td>';
 	          	                userContent = userContent + '  <td>';
 	          					userContent = userContent + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/manager/user/assign.htm?id='+user.id+'\'" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
 	          					userContent = userContent + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/manager/user/edit.htm?pageno='+(pageIndex+1)+'&id='+user.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-	          					userContent = userContent + '	  <button type="button" onclick="deleteUser('+user.id+', \''+user.loginacct+'\')"  class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+	          					userContent = userContent + '	  <button type="button" onclick="deleteUser('+user.id+', \''+user.username+'\')"  class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
 	          					userContent = userContent + '  </td>';
 	          	                userContent = userContent + '</tr>';
             				});
@@ -239,12 +239,12 @@
             	});
             }
             
-            function deleteUser(id, loginacct) {
-    			layer.confirm("删除用户信息:"+loginacct+"，是否继续?",  {icon: 3, title:'提示'}, function(cindex){
+            function deleteUser(id, username) {
+    			layer.confirm("删除用户信息:"+username+"，是否继续?",  {icon: 3, title:'提示'}, function(cindex){
     			    // 主键删除用户信息
     			    $.ajax({
     			    	type : "POST",
-    			    	url  : "${APP_PATH}/manager/user/delete.do",
+    			    	url  : "${APP_PATH}/userController/deleteUser.do",
     			    	data : {
     			    		id : id
     			    	},

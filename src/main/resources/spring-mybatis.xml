@@ -4,14 +4,17 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
-       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 	<!-- 引入属性文件 -->
 	<context:property-placeholder location="classpath:jdbc.properties" />
 	<!-- 自动扫描(自动注入) -->
-	<context:component-scan base-package="com.yxb.user.service" />
+	<context:component-scan base-package="com.yxb.*" >
+ 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" /> 
+	</context:component-scan>
+	
 	<!-- 配置数据源 -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
@@ -36,20 +39,33 @@
 		<property name="dataSource" ref="dataSource" />
 		<!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
 		<property name="configLocation" value="classpath:mybatis-config.xml" />
-		<property name="mapperLocations" value="classpath:com/yxb/user/dao/mybatis-*.xml" />
+		<property name="mapperLocations">
+			<list>
+				<value>classpath*:mybatis/mapper-*.xml</value>
+			</list>
+		</property>
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage"  value="com.yxb.user.dao" />
+		<property name="basePackage"  value="com.yxb.**.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 	</bean>
-	<!-- 配置事务管理器 -->
+	<!-- 事务管理器 -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-	  <property name="dataSource" ref="dataSource" />
+		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
-	<!-- 配置事物的注解方式注入 -->
-	<tx:annotation-driven transaction-manager="transactionManager"/>  
+
+	<!-- AOP功能增强器 -->
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+			<tx:method name="query*" read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* com.yxb..*Service.*(..))"/>
+	</aop:config>
 
 	<bean id="sqlSession"     class="org.mybatis.spring.SqlSessionTemplate">   
           <constructor-arg index="0" ref="sqlSessionFactory" />   

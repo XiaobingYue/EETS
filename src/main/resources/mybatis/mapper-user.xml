@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxb.user.dao.UserDao">
+	<select id="loginUser" resultType="user">
+		select *
+			from user
+			where userAcct = #{userAcct} and password = #{password}
+	</select>
+
+	<insert id="registerUser">
+		insert into user (
+			userAcct , username , email , password
+		) values (
+			#{userAcct} , #{username} , #{email} , #{password})
+	</insert>
+	
+	<select id="getPermissionsByUserId" resultType="permission">
+	 select
+            *
+        from permission
+        where id in (
+            select
+                permissionid
+            from role_permission
+            where roleid in (
+                select 
+                    roleid
+                from user_role
+                where userid = #{id }
+            )
+        )
+	</select>
+
+    <select id="queryUserList" resultType="user">
+        select  *
+          from  user
+          <where>
+                <if test="queryText != null">
+                    and userAcct like concat('%', #{queryText}, '%')
+                </if>
+          </where>
+            limit #{start} , #{size}
+    </select>
+
+    <select id="queryPageSize" resultType="int">
+        select   count(*)
+        from user
+        <where>
+            <if test="queryText != null">
+                and userAcct like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+    </select>
+    
+    <delete id="deleteUser">
+    	delete
+    		from user
+    		where id = #{id}
+    </delete>
+
+    <select id="queryById" resultType="user">
+        select *
+            from user
+            where id = #{id}
+    </select>
+
+    <update id="modifyUser">
+        update user
+        set userAcct = #{userAcct} , username = #{username} , email = #{email}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    
+    <select id="findUserByUserAcct" resultType="user">
+    	select *
+    		from user
+    			where userAcct = #{userAcct}
+    </select>
+</mapper>

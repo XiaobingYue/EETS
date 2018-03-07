@@ -11,11 +11,12 @@
 		<title>工程教育教学系统</title>
 		<link rel="stylesheet" href="${APP_PATH}/css/style.css" />
         <link rel="stylesheet" type="text/css" href="${APP_PATH}/css/popup.css"/>
-        <link rel="stylesheet" href="${APP_PATH}/bootstrap/css/bootstrap.min.css">
-       <%-- <link rel="stylesheet" href="${APP_PATH}/css/font-awesome.min.css">
+       <%-- <link rel="stylesheet" href="${APP_PATH}/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="${APP_PATH}/css/font-awesome.min.css">
         <link rel="stylesheet" href="${APP_PATH}/css/main.css">
         <link rel="stylesheet" href="${APP_PATH}/css/pagination.css">--%>
         <style type="text/css">
+
             #table-5 thead th {
                 background-color: rgb(85, 186, 32);
                 color: #fff;
@@ -85,7 +86,7 @@
                                     <th width="100">用户名</th>
                                     <th width="60">类型</th>
                                     <th width="150">邮箱地址</th>
-                                    <th width="100">操作</th>
+                                    <th width="100">操作 </th>
                                 </tr>
                                 </thead>
                                 <tbody id="userTableBody"></tbody>
@@ -115,6 +116,32 @@
             window.onload = function(){
                 pageQuery(0);
             }
+            function deleteUser(id, loginacct) {
+                layer.confirm("删除用户信息:"+loginacct+"，是否继续?",  {icon: 3, title:'提示'}, function(cindex){
+                    // 主键删除用户信息
+                    $.ajax({
+                        type : "POST",
+                        url  : "${APP_PATH}/manager/user/delete.do",
+                        data : {
+                            id : id
+                        },
+                        success : function(result) {
+                            if ( result.success ) {
+                                layer.msg("用户数据删除成功", {time:1500, icon:6}, function(){
+                                    pageQuery(0);
+                                });
+                            } else {
+                                layer.msg("用户数据删除失败", {time:1500, icon:5, shift:6});
+                            }
+                        }
+                    });
+
+                    layer.close(cindex);
+                }, function(cindex){
+                    layer.close(cindex);
+                });
+            }
+
             var loadingIndex = -1;
             var cond = false;
             function pageQuery( pageIndex ) {
@@ -156,9 +183,9 @@
                                 userContent = userContent + '  <td>'+user.username+'</td>';
                                 userContent = userContent + '  <td>'+(user.email||"")+'</td>';
                                 userContent = userContent + '  <td>';
-                                userContent = userContent + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/manager/user/assign.htm?id='+user.id+'\'" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
-                                userContent = userContent + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/manager/user/edit.htm?pageno='+(pageIndex+1)+'&id='+user.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                                userContent = userContent + '	  <button type="button" onclick="deleteUser('+user.id+', \''+user.loginacct+'\')"  class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                                userContent = userContent + '      <a href=\'${APP_PATH}/userController/toAssign.do?id='+user.id+'\'>赋权</a>';
+                                userContent = userContent + '      <a href=\'${APP_PATH}/manager/user/edit.htm?pageno='+(pageIndex+1)+'&id='+user.id+'\'>修改</a>';
+                                userContent = userContent + '	  <a href="javascript:void(0)" onclick="deleteUser('+user.id+',\''+user.username+'\')">删除</a>';
                                 userContent = userContent + '  </td>';
                                 userContent = userContent + '</tr>';
                             });

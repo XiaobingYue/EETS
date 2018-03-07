@@ -6,13 +6,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class DispatcherController {
 
+    /**
+     *
+     * @return 返回登录页面
+     */
 	@RequestMapping("/toLogin.do")
 	public String toLogin() {
 		return "login";
 	}
 
-	@RequestMapping("/toIndex.do")
+    /**
+     *
+     * @return 返回主页面
+     */
+	@RequestMapping("/toMain.do")
 	public  String toIndex(){
-        return  "index";
+        return  "manager/main";
     }
 }

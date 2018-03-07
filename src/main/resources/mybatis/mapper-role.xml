@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxb.role.dao.RoleDao">
+	<select id="queryRoleList" resultType="role">
+	 select
+            *
+        from role
+        <where>
+            <if test="queryText != null">
+                and rolename like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+            limit  #{start} , #{size}
+	</select>
+
+    <select id="queryPageSize" resultType="int">
+        select   count(*)
+        from role
+        <where>
+            <if test="queryText != null">
+                and rolename like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

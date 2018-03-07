@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>  
-<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">  
-<configuration>  
-    <typeAliases>  
-        <typeAlias alias="user" type="com.yxb.user.entity.User"/>  
-        <typeAlias alias="permission" type="com.yxb.user.entity.Permission"/>
-    </typeAliases>  
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<typeAliases>
+    <typeAlias alias="user" type="com.yxb.user.entity.User"/>
+    <typeAlias alias="permission" type="com.yxb.permission.entity.Permission"/>
+    <typeAlias alias="role" type="com.yxb.role.entity.Role"/>
+</typeAliases>
 </configuration>

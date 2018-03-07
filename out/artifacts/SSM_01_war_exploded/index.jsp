@@ -1,0 +1,1 @@
+<jsp:forward page="${APP_PATH}/toLogin.do"></jsp:forward>

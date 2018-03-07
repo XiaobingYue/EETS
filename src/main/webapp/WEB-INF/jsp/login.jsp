@@ -27,9 +27,9 @@
     <div class="container">
       <h1>${errorMsg}</h1>
       <form id="loginForm" action="${APP_PATH}/dologin.htm" method="post" class="form-signin" role="form">
-        <h2 class="form-signin-heading"><i class="glyphicon glyphicon-user"></i> 用户登录</h2>
+        <h2 class="form-signin-heading"><i class="glyphicon glyphicon-log-in"></i> 用户登录</h2>
 		  <div class="form-group has-success has-feedback">
-			<input type="text" class="form-control" id="username" name="username" value="lisi" placeholder="请输入登录账号" autofocus>
+			<input type="text" class="form-control" id="userAcct" name="userAcct" value="lisi" placeholder="请输入登录账号" autofocus>
 			<span class="glyphicon glyphicon-user form-control-feedback"></span>
 		  </div>
 		  <div class="form-group has-success has-feedback">
@@ -62,82 +62,58 @@
     <script src="${APP_PATH}/script/layer/layer.js"></script>
     <script>
     function dologin() {
-        var loginacct = $("#username");
-        if ( loginacct.val() == "" ) {
-            //alert("登陆账号不能为空，请输入");
-            layer.msg("登陆账号不能为空，请输入", {time:2000, icon:5, shift:6}, function(){
-                // 设定页面焦点
-                loginacct.focus();
-            });
-            return;
-        }
-        var userpswd = $("#password");
-        if ( userpswd.val() == "" ) {
-            //alert("登陆密码不能为空，请输入");
-            layer.msg("登陆密码不能为空，请输入", {time:1000, icon:5, shift:6}, function(){
-                userpswd.focus();
-            });
-            return;
-        }
-        // 使用AJAX线程提交数据
-        //$.post, $.get, $.ajax
-        //function Student() {}
-        // JS运行给对象添加的属性
-        //var student = new Student();
-        //student.name = "zhangsan";
-
-        // {} ==> 声明对象
-        // JavaScriptObjectNotation对象
-        // [{ 属性名称:属性值, 属性名称1:属性值1 }]
-        // JSON字符串
-        // "{'username':'zhangsan', 'sex':'男'}"
-
-        // JS : 全局变量，局部变量(var)
-        var url = "userController/login.do";
-        var jsonData = {
-            "username" : loginacct.val(),
-            "password"  : userpswd.val()
-        };
-        /* if ( $("#usertype").val() == "member" ) {
-            url = "doMemberLogin.do";
-            jsonData.memberpswd = userpswd.val();
-        } */
-
-        var loadingIndex = -1;
-        $.ajax({
-            url : "${APP_PATH}/"+url,
-            type : "POST",
-            //dataType : "json",
-            data : jsonData,
-            beforeSend : function() {
-                loadingIndex = layer.msg('处理中', {icon: 16});
-                //loadingIndex = layer.load(2, {time: 10*1000});
-            },
-            success : function(result) {
-                layer.close(loadingIndex);
-                //console.log(result);
-                // 200
-                // 从后台获取返回的结果
-                if (result.success) {
-                    window.location.href = "${APP_PATH}/toIndex.do";
-                    //}
-                } else {
-                    //alert("用户账户或密码输入不正确，登陆失败");
-                    layer.msg("用户账户或密码输入不正确，登陆失败", {time:2000, icon:5, shift:6}, function(){
-                        // 设定页面焦点
-                        loginacct.focus();
-                    });
-                }
-            },
-            error : function() {
-                // 404， 500
-                //alert("用户登陆失败");
-                layer.msg("用户登陆失败", {time:2000, icon:5, shift:6}, function(){
-                    // 设定页面焦点
-                    loginacct.focus();
-                });
-            }
-        });
+    	var userAcct = $("#userAcct");
+    	 if ( userAcct.val() == "" ) {
+    		//alert("登陆账号不能为空，请输入");
+    		layer.msg("登陆账号不能为空，请输入", {time:2000, icon:5, shift:6}, function(){
+        		// 设定页面焦点
+                userAcct.focus();
+    		});
+    		return;
+    	} 
+    	var password = $("#password");
+    	 if ( password.val() == "" ) {
+    		//alert("登陆密码不能为空，请输入");
+    		layer.msg("登陆密码不能为空，请输入", {time:1000, icon:5, shift:6}, function(){
+                password.focus();
+    		});
+    		return;
+    	} 
+    	var url = "userController/login.do";
+    	var jsonData = {
+   			"userAcct" : userAcct.val(),
+   			"password"  : password.val()
+    	};
+    	var loadingIndex = -1;
+    	$.ajax({
+    		url : "${APP_PATH}/"+url,
+    		type : "POST",
+    		//dataType : "json",
+    		data : jsonData,
+    		beforeSend : function() {
+    			loadingIndex = layer.msg('处理中', {icon: 16});
+    			//loadingIndex = layer.load(2, {time: 10*1000});
+    		},
+    		success : function(result) {
+    			layer.close(loadingIndex);
+    			//console.log(result);
+    			// 200
+    			// 从后台获取返回的结果
+    			if (result.success) {
+    					window.location.href = "${APP_PATH}/toMain.do";
+    			} else {
+    				layer.msg(result.data, {time:1000, icon:5, shift:6}, function(){
+    					userAcct.focus();
+    	    		});
+    			}
+    		},
+    		error : function() {
+    			// 404， 500
+    			layer.msg("用户登陆失败！", {time:1000, icon:5, shift:6}, function(){
+					userAcct.focus();
+	    		});
+    		}
+    	});
     }
     </script>
   </body>
