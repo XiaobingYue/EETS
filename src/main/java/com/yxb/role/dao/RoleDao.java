@@ -13,4 +13,6 @@ public interface RoleDao {
 	List<Role> queryRoleList(Map<String , Object> paramMap);
 
     int queryPageSize(Map<String, Object> paramMap);
+
+    List<Role> queryAllRole();
 }

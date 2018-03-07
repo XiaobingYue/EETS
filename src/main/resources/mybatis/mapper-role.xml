@@ -22,4 +22,10 @@
             </if>
         </where>
     </select>
+
+    <select id="queryAllRole" resultType="role">
+        select
+        *
+        from role
+    </select>
 </mapper>

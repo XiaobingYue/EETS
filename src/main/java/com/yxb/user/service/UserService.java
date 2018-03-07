@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.yxb.permission.entity.Permission;
+import com.yxb.role.entity.Role;
 import com.yxb.user.entity.User;
 
 public interface UserService {  
@@ -25,4 +26,10 @@ public interface UserService {
     void modifyUser(User user);
 
     User queryById(Integer id);
-}  
+
+    List<Integer> queryRoleIdByUserId(Integer id);
+
+    void assign( Map<String,Object> paramMap);
+
+    void unAssign(Map<String, Object> paramMap);
+}

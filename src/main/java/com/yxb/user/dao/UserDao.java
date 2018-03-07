@@ -3,6 +3,7 @@ package com.yxb.user.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.yxb.role.entity.Role;
 import org.springframework.stereotype.Repository;
 
 import com.yxb.permission.entity.Permission;
@@ -28,4 +29,10 @@ public interface UserDao {
     void modifyUser(User user);
 
     User queryById(Integer id);
+
+    List<Integer> queryRoleIdByUserId(Integer id);
+
+    void assign( Map<String,Object> paramMap);
+
+    void unAssign(Map<String, Object> paramMap);
 }

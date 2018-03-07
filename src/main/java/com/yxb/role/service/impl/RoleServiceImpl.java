@@ -26,5 +26,10 @@ public class RoleServiceImpl implements RoleService {
         return dao.queryPageSize(paramMap);
     }
 
+    @Override
+    public List<Role> queryAllRole() {
+        return dao.queryAllRole();
+    }
+
 
 }

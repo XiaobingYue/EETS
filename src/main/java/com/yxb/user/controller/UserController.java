@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import com.yxb.common.entity.Page;
+import com.yxb.role.entity.Role;
+import com.yxb.role.service.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +31,15 @@ import com.yxb.user.service.UserService;
 public class UserController {
 
 	private final UserService userService;
+    private final RoleService roleService;
 
 	private static final Logger log = LoggerFactory
 			.getLogger(UserController.class);
 
 	@Autowired
-	public UserController(UserService userService) {
+	public UserController(UserService userService , RoleService roleService) {
 		this.userService = userService;
+		this.roleService = roleService;
 	}
 
 	@ResponseBody
@@ -170,10 +174,65 @@ public class UserController {
 		return result;
 	}
 
+    /**
+     *@Description 前往赋权页面
+     *
+     * @param id 人员id
+     * @param model 用于向前台传送数据
+     * @return 赋权页面
+     */
 	@RequestMapping("/toAssign.do")
-	public String toAssign() {
-		return "manager/user/assign";
+	public String toAssign(Integer id , Model model) {
+        User user = userService.queryById(id);
+        List<Role> roleList = roleService.queryAllRole();
+        List<Integer> roleIds = userService.queryRoleIdByUserId(id);
+        List<Role> unAssignRoleList = new ArrayList<>();
+        List<Role> assignedRoleList = new ArrayList<>();
+        for (Role role :roleList ) {
+            if(!roleIds.contains(role.getId()))
+                unAssignRoleList.add(role);
+            else
+                assignedRoleList.add(role);
+        }
+        model.addAttribute("assignedRoleList" , assignedRoleList);
+        model.addAttribute("unAssignRoleList" , unAssignRoleList);
+        model.addAttribute("user" , user);
+        return "manager/user/assign";
 	}
+
+	@ResponseBody
+	@RequestMapping("/assign.do")
+	public Object assign(Datas datas , Integer userId){
+        AjaxResult result = new AjaxResult();
+        try {
+            Map<String,Object> paramMap = new HashMap<>();
+            paramMap.put("userId" , userId);
+            paramMap.put("roleIds" , datas.getIds());
+            userService.assign(paramMap);
+            result.setSuccess(true);
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            result.setSuccess(false);
+        }
+        return  result;
+    }
+
+    @ResponseBody
+    @RequestMapping("/unAssign.do")
+    public Object unAssign(Datas datas , Integer userId){
+        AjaxResult result = new AjaxResult();
+        try {
+            Map<String,Object> paramMap = new HashMap<>();
+            paramMap.put("userId" , userId);
+            paramMap.put("roleIds" , datas.getIds());
+            userService.unAssign(paramMap);
+            result.setSuccess(true);
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            result.setSuccess(false);
+        }
+        return result;
+    }
 
 	@RequestMapping("/toAddUser.do")
 	public String toAddUser() {

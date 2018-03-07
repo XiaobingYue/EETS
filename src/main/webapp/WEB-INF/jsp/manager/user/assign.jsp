@@ -27,84 +27,26 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
 			<div class="tree">
-				<ul style="padding-left:0px;" class="list-group">
-					<li class="list-group-item tree-closed" >
-						<a href="main.html"><i class="glyphicon glyphicon-dashboard"></i> 控制面板</a> 
-					</li>
-					<li class="list-group-item">
-						<span><i class="glyphicon glyphicon glyphicon-tasks"></i> 权限管理 <span class="badge" style="float:right">3</span></span> 
-						<ul style="margin-top:10px;">
-							<li style="height:30px;">
-								<a href="user.html" style="color:red;"><i class="glyphicon glyphicon-user"></i> 用户维护</a> 
-							</li>
-							<li style="height:30px;">
-								<a href="role.html"><i class="glyphicon glyphicon-certificate"></i> 角色维护</a> 
-							</li>
-							<li style="height:30px;">
-								<a href="permission.html"><i class="glyphicon glyphicon-lock"></i> 许可维护</a> 
-							</li>
-						</ul>
-					</li>
-					<li class="list-group-item tree-closed">
-						<span><i class="glyphicon glyphicon-ok"></i> 业务审核 <span class="badge" style="float:right">3</span></span> 
-						<ul style="margin-top:10px;display:none;">
-							<li style="height:30px;">
-								<a href="auth_cert.html"><i class="glyphicon glyphicon-check"></i> 实名认证审核</a> 
-							</li>
-							<li style="height:30px;">
-								<a href="auth_adv.html"><i class="glyphicon glyphicon-check"></i> 广告审核</a> 
-							</li>
-							<li style="height:30px;">
-								<a href="auth_project.html"><i class="glyphicon glyphicon-check"></i> 项目审核</a> 
-							</li>
-						</ul>
-					</li>
-					<li class="list-group-item tree-closed">
-						<span><i class="glyphicon glyphicon-th-large"></i> 业务管理 <span class="badge" style="float:right">7</span></span> 
-						<ul style="margin-top:10px;display:none;">
-							<li style="height:30px;">
-								<a href="cert.html"><i class="glyphicon glyphicon-picture"></i> 资质维护</a> 
-							</li>
-							<li style="height:30px;">
-								<a href="type.html"><i class="glyphicon glyphicon-equalizer"></i> 分类管理</a> 
-							</li>
-							<li style="height:30px;">
-								<a href="process.html"><i class="glyphicon glyphicon-random"></i> 流程管理</a> 
-							</li>
-							<li style="height:30px;">
-								<a href="advertisement.html"><i class="glyphicon glyphicon-hdd"></i> 广告管理</a> 
-							</li>
-							<li style="height:30px;">
-								<a href="message.html"><i class="glyphicon glyphicon-comment"></i> 消息模板</a> 
-							</li>
-							<li style="height:30px;">
-								<a href="project_type.html"><i class="glyphicon glyphicon-list"></i> 项目分类</a> 
-							</li>
-							<li style="height:30px;">
-								<a href="tag.html"><i class="glyphicon glyphicon-tags"></i> 项目标签</a> 
-							</li>
-						</ul>
-					</li>
-					<li class="list-group-item tree-closed" >
-						<a href="param.html"><i class="glyphicon glyphicon-list-alt"></i> 参数管理</a> 
-					</li>
-				</ul>
+                <jsp:include page="/WEB-INF/jsp/common/menu.jsp"></jsp:include>
 			</div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<ol class="breadcrumb">
-				  <li><a href="#">首页</a></li>
-				  <li><a href="#">数据列表</a></li>
+				  <li><a href="${APP_PATH}/toMain.do">首页</a></li>
+				  <li><a href="${APP_PATH}/userController/toUserList.do">数据列表</a></li>
 				  <li class="active">分配角色</li>
 				</ol>
-			<div class="panel panel-default">
+            <ol class="breadcrumb">
+                为&nbsp&nbsp<label>${user.username}</label>&nbsp&nbsp分配角色
+            </ol>
+            <div class="panel panel-default">
 			  <div class="panel-body">
 				<form role="form" class="form-inline">
 				  <div class="form-group">
 					<label for="exampleInputPassword1">未分配角色列表</label><br>
 					<select id="leftList" class="form-control" multiple size="10" style="width:300px;overflow-y:auto;">
-					    <c:forEach items="${unassignList}" var="role">
-					        <option value="${role.id}">${role.name}</option>
+					    <c:forEach items="${unAssignRoleList}" var="role">
+					        <option value="${role.id}">${role.rolename}</option>
 					    </c:forEach>
 <!--                         <option value="pm">PM</option>
                         <option value="sa">SA</option>
@@ -123,8 +65,8 @@
 				  <div class="form-group" style="margin-left:40px;">
 					<label for="exampleInputPassword1">已分配角色列表</label><br>
 					<select id="rightList" class="form-control" multiple size="10" style="width:300px;overflow-y:auto;">
-					    <c:forEach items="${assignList}" var="role">
-					        <option value="${role.id}">${role.name}</option>
+					    <c:forEach items="${assignedRoleList}" var="role">
+					        <option value="${role.id}">${role.rolename}</option>
 					    </c:forEach>
                     </select>
 				  </div>
@@ -186,15 +128,14 @@
             		layer.msg("请选择需要分配的角色数据", {time:1000, icon:5, shift:6});
             		return;
             	} else {
-            		
-            		var jsonData = {userid:"${user.id}"};
+            		var jsonData = {userId:"${user.id}"};
             		$.each(selItems, function(i, n){
             			jsonData["ids["+i+"]"] = n.value;
             		});
             		
             		$.ajax({
             			type : "POST",
-            			url  : "${APP_PATH}/manager/user/assignRole.do",
+            			url  : "${APP_PATH}/userController/assign.do",
             			data : jsonData,
             			success : function( result ) {
             				if ( result.success ) {
@@ -217,14 +158,14 @@
             		layer.msg("请选择需要取消分配的角色数据", {time:1000, icon:5, shift:6});
             		return;
             	} else {
-            		var jsonData = {userid:"${user.id}"};
+            		var jsonData = {userId:"${user.id}"};
             		$.each(selItems, function(i, n){
             			jsonData["ids["+i+"]"] = n.value;
             		});
             		
             		$.ajax({
             			type : "POST",
-            			url  : "${APP_PATH}/manager/user/unassignRole.do",
+            			url  : "${APP_PATH}/userController/unAssign.do",
             			data : jsonData,
             			success : function( result ) {
             				if ( result.success ) {

@@ -10,4 +10,6 @@ public interface RoleService {
 	List<Role> queryRoleList(Map<String , Object> paramMap);
 
     int queryPageSize(Map<String, Object> paramMap);
+
+    List<Role> queryAllRole();
 }

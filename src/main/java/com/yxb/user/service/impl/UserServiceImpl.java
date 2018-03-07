@@ -3,6 +3,7 @@ package com.yxb.user.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.yxb.role.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public User queryById(Integer id) {
         return dao.queryById(id);
+    }
+
+    @Override
+    public List<Integer> queryRoleIdByUserId(Integer id) {
+        return dao.queryRoleIdByUserId(id);
+    }
+
+    @Override
+    public void assign( Map<String,Object> paramMap) {
+        dao.assign(paramMap);
+    }
+
+    @Override
+    public void unAssign(Map<String, Object> paramMap) {
+        dao.unAssign(paramMap);
     }
 }
 

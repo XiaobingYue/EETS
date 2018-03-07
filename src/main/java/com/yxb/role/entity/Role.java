@@ -5,11 +5,11 @@ public class Role {
 	private String rolename;
 	private String note;
 
-	public Integer getIdInteger() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setIdInteger(Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

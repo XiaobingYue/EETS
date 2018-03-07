@@ -71,10 +71,32 @@
             id = #{id}
         </where>
     </update>
-    
+
     <select id="findUserByUserAcct" resultType="user">
     	select *
     		from user
     			where userAcct = #{userAcct}
     </select>
+
+    <select id="queryRoleIdByUserId" resultType="integer">
+        select roleid
+            from user_role
+            where userid = #{id}
+    </select>
+
+    <insert id="assign">
+        insert into user_role
+            (userid,roleid)     values
+            <foreach collection="roleIds"  item="roleId" separator=",">
+                (#{userId}, #{roleId})
+            </foreach>
+    </insert>
+
+    <delete id="unAssign">
+        delete from user_role
+            where
+        <foreach collection="roleIds" item="roleId" separator=",">
+            userid = #{userId} and roleid = #{roleId}
+        </foreach>
+    </delete>
 </mapper>
