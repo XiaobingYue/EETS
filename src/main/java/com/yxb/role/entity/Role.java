@@ -1,8 +1,11 @@
 package com.yxb.role.entity;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 public class Role {
 	private Integer id;
-	private String rolename;
+	@NotBlank(message = "角色名称不能为空")
+	private String roleName;
 	private String note;
 
 	public Integer getId() {
@@ -13,12 +16,12 @@ public class Role {
 		this.id = id;
 	}
 
-	public String getRolename() {
-		return rolename;
+	public String getRoleName() {
+		return roleName;
 	}
 
-	public void setRolename(String rolename) {
-		this.rolename = rolename;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 
 	public String getNote() {

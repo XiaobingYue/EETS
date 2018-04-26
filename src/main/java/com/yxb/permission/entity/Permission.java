@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Permission {
 
-    private String id;
+    private Integer id;
     private String name;
     private String url;
     private boolean open = true;
@@ -14,15 +14,15 @@ public class Permission {
     private List<Permission> children = new ArrayList<Permission>();
     private List<Permission> childNodes = new ArrayList<Permission>();
     private String note;
-    private String parentid;
+    private Integer parentId;
     private String status;
     private String icon;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -50,12 +50,12 @@ public class Permission {
         this.note = note;
     }
 
-    public String getParentid() {
-        return parentid;
+    public Integer getParentId() {
+        return parentId;
     }
 
-    public void setParentid(String parentid) {
-        this.parentid = parentid;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 
     public String getStatus() {

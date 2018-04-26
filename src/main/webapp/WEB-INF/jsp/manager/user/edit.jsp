@@ -106,7 +106,7 @@
 				  </div>
 				  <div class="form-group">
 					<label for="exampleInputPassword1">用户名称</label>
-					<input type="text" class="form-control" id="username" value="${user.username}" placeholder="请输入用户名称">
+					<input type="text" class="form-control" id="username" value="${user.name}" placeholder="请输入用户名称">
 				  </div>
 				  <div class="form-group">
 					<label for="exampleInputEmail1">邮箱地址</label>
@@ -225,7 +225,7 @@
             			url  : "${APP_PATH}/userController/modifyUser.do",
             			data : {
             				"userAcct" : userAcct.val(),
-            				"username" : $("#username").val(),
+            				"name" : $("#username").val(),
             				"email" : $("#email").val(),
             				"id" : "${user.id}"
             			},
@@ -236,7 +236,7 @@
             				layer.close(loadingIndex);
             				if ( result.success ) {
             		    		layer.msg("用户信息修改成功", {time:1000, icon:6}, function(){
-            		        		window.location.href = "${APP_PATH}/userController/toUserList.do?pageno=${param.pageno}";
+            		        		window.location.href = "${APP_PATH}/userController/toUserList.do?pageNo=${param.pageNo}";
             		    		});
             				} else {
             		    		layer.msg(result.data, {time:1000, icon:5, shift:6});

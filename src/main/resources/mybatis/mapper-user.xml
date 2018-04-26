@@ -1,42 +1,58 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yxb.user.dao.UserDao">
-	<select id="loginUser" resultType="user">
+    <resultMap id="userResultMap" type="permission">
+        <id column="id" property="id"></id>
+        <result column="parent_id" property="parentId"></result>
+        <result column="name" property="name"></result>
+        <result column="url" property="url"></result>
+        <result column="note" property="note"></result>
+        <result column="status" property="status"></result>
+        <result column="icon" property="icon"></result>
+    </resultMap>
+    <resultMap id="userMap" type="user">
+        <id column="id" property="id"></id>
+        <result column="user_acct" property="userAcct"></result>
+        <result column="name" property="name"></result>
+        <result column="password" property="password"></result>
+        <result column="email" property="email"></result>
+    </resultMap>
+	<select id="loginUser" resultMap="userMap">
 		select *
-			from user
-			where userAcct = #{userAcct} and password = #{password}
+			from t_user
+			where USER_ACCT = #{userAcct} and PASSWORD = #{password}
 	</select>
 
 	<insert id="registerUser">
-		insert into user (
-			userAcct , username , email , password
+		insert into t_user (
+			USER_ACCT , NAME , EMAIL , PASSWORD
 		) values (
-			#{userAcct} , #{username} , #{email} , #{password})
+			#{userAcct} , #{name} , #{email} , #{password})
 	</insert>
 	
-	<select id="getPermissionsByUserId" resultType="permission">
+	<select id="getPermissionsByUserId" resultMap="userResultMap">
 	 select
             *
-        from permission
+        from t_permission
         where id in (
             select
-                permissionid
-            from role_permission
-            where roleid in (
+                PERMISSION_ID
+            from t_role_permission
+            where ROLE_ID in (
                 select 
-                    roleid
-                from user_role
-                where userid = #{id }
+                    ROLE_ID
+                from t_user_role
+                where USER_ID = #{id}
             )
         )
 	</select>
 
-    <select id="queryUserList" resultType="user">
+    <select id="queryUserList" resultMap="userMap">
         select  *
-          from  user
+          from  t_user
           <where>
                 <if test="queryText != null">
-                    and userAcct like concat('%', #{queryText}, '%')
+                    and USER_ACCT like concat('%', #{queryText}, '%')
                 </if>
           </where>
             limit #{start} , #{size}
@@ -44,59 +60,64 @@
 
     <select id="queryPageSize" resultType="int">
         select   count(*)
-        from user
+        from t_user
         <where>
             <if test="queryText != null">
-                and userAcct like concat('%', #{queryText}, '%')
+                and USER_ACCT like concat('%', #{queryText}, '%')
             </if>
         </where>
     </select>
-    
+
+    <delete id="deleteRoleByUserId">
+        DELETE FROM t_user_role
+        WHERE USER_ID = #{id}
+    </delete>
+
     <delete id="deleteUser">
     	delete
-    		from user
+    		from t_user
     		where id = #{id}
     </delete>
 
-    <select id="queryById" resultType="user">
+    <select id="queryById" resultMap="userMap">
         select *
-            from user
+            from t_user
             where id = #{id}
     </select>
 
     <update id="modifyUser">
-        update user
-        set userAcct = #{userAcct} , username = #{username} , email = #{email}
+        update t_user
+        set USER_ACCT = #{userAcct} , NAME = #{name} , EMAIL = #{email}
         <where>
             id = #{id}
         </where>
     </update>
 
-    <select id="findUserByUserAcct" resultType="user">
+    <select id="findUserByUserAcct" resultMap="userMap">
     	select *
-    		from user
-    			where userAcct = #{userAcct}
+    		from t_user
+    			where USER_ACCT = #{userAcct}
     </select>
 
     <select id="queryRoleIdByUserId" resultType="integer">
-        select roleid
-            from user_role
-            where userid = #{id}
+        select ROLE_ID
+            from t_user_role
+            where USER_ID = #{id}
     </select>
 
     <insert id="assign">
-        insert into user_role
-            (userid,roleid)     values
+        insert into t_user_role
+            (USER_ID,ROLE_ID)     values
             <foreach collection="roleIds"  item="roleId" separator=",">
                 (#{userId}, #{roleId})
             </foreach>
     </insert>
 
     <delete id="unAssign">
-        delete from user_role
+        delete from t_user_role
             where
         <foreach collection="roleIds" item="roleId" separator=",">
-            userid = #{userId} and roleid = #{roleId}
+            USER_ID = #{userId} and ROLE_ID = #{roleId}
         </foreach>
     </delete>
 </mapper>

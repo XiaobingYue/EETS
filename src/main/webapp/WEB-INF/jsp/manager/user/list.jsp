@@ -98,11 +98,11 @@
 					}
 				});
 
-			    <c:if test="${empty param.pageno}">
+			    <c:if test="${empty param.pageNo}">
 			    pageQuery(1);
 			    </c:if>
-			    <c:if test="${not empty param.pageno}">
-			    pageQuery(${param.pageno});
+			    <c:if test="${not empty param.pageNo}">
+			    pageQuery(${param.pageNo});
 			    </c:if>
 			    
 			    
@@ -125,9 +125,9 @@
                 window.location.href = "edit.html";
             });
             
-            function changePageno( pageno ) {
-            	//window.location.href = "${APP_PATH}/manager/user/list.htm?pageno=" + pageno;
-            	pageQuery(pageno);
+            function changepageNo( pageNo ) {
+            	//window.location.href = "${APP_PATH}/manager/user/list.htm?pageNo=" + pageNo;
+            	pageQuery(pageNo);
             }
             var loadingIndex = -1;
             var cond = false;
@@ -156,7 +156,7 @@
             			layer.close(loadingIndex);
             			if ( result.success ) {
             				var pageObj = result.page;
-            				var userList = pageObj.datas;
+            				var userList = pageObj.data;
             				
             				// 循环
             				// $("img").each
@@ -168,12 +168,12 @@
 	          	                userContent = userContent + '  <td>'+(i+1)+'</td>';
 	          					userContent = userContent + '  <td><input type="checkbox" value="'+user.id+'"></td>';
 	          	                userContent = userContent + '  <td>'+user.userAcct+'</td>';
-	          	                userContent = userContent + '  <td>'+user.username+'</td>';
+	          	                userContent = userContent + '  <td>'+user.name+'</td>';
 	          	                userContent = userContent + '  <td>'+(user.email||"")+'</td>';
 	          	                userContent = userContent + '  <td>';
 	          					userContent = userContent + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/userController/toAssign.do?id='+user.id+'\'" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
-	          					userContent = userContent + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/userController/toModifyPage.do?pageno='+pageIndex+'&id='+user.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                                userContent = userContent + '	  <button type="button" onclick="deleteUser('+user.id+', \''+user.username+'\')"  class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+	          					userContent = userContent + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/userController/toModifyUserPage.do?pageNo='+pageIndex+'&id='+user.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                                userContent = userContent + '	  <button type="button" onclick="deleteUser('+user.id+', \''+user.name+'\')"  class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
 	          					userContent = userContent + '  </td>';
 	          	                userContent = userContent + '</tr>';
             				});
@@ -182,7 +182,7 @@
             				//$("#userTableBody").append(userContent);
             				$("#userTableBody").html(userContent);
             				
-            				$("#Pagination").pagination(pageObj.totalsize, {
+            				$("#Pagination").pagination(pageObj.totalSize, {
             					num_edge_entries: 1, //边缘页数
             					num_display_entries: 4, //主体页数
             					callback: pageQuery,
@@ -196,14 +196,14 @@
             				// 相同类型的引号不能嵌套使用
             				// "''", '""'
             				var pageContent = "";
-            				if ( pageObj.pageno != 1 ) {
-            					pageContent = pageContent + '<li><a style="cursor: pointer" onclick="changePageno('+(pageObj.pageno-1)+')">上一页</a></li>';
+            				if ( pageObj.pageNo != 1 ) {
+            					pageContent = pageContent + '<li><a style="cursor: pointer" onclick="changepageNo('+(pageObj.pageNo-1)+')">上一页</a></li>';
             				}
-            				for ( var i = 1; i <= pageObj.totalno; i++ ) {
-            					pageContent = pageContent + '<li '+(pageObj.pageno==i?'class="active"':'')+'><a style="cursor:pointer;" onclick="changePageno('+i+')">'+i+'</a></li>';
+            				for ( var i = 1; i <= pageObj.totalNo; i++ ) {
+            					pageContent = pageContent + '<li '+(pageObj.pageNo==i?'class="active"':'')+'><a style="cursor:pointer;" onclick="changepageNo('+i+')">'+i+'</a></li>';
             				}
-            				if ( pageObj.pageno != pageObj.totalno ) {
-            					pageContent = pageContent + '<li><a style="cursor: pointer" onclick="changePageno('+(pageObj.pageno+1)+')">下一页</a></li>';
+            				if ( pageObj.pageNo != pageObj.totalNo ) {
+            					pageContent = pageContent + '<li><a style="cursor: pointer" onclick="changepageNo('+(pageObj.pageNo+1)+')">下一页</a></li>';
             				}
             				//$(".pagination").empty();
             				//$(".pagination").append(pageContent);
@@ -215,8 +215,8 @@
             	});
             }
 
-            function deleteUser(id, loginacct) {
-                layer.confirm("删除用户信息:"+loginacct+"，是否继续?",  {icon: 3, title:'提示'}, function(cindex){
+            function deleteUser(id, name) {
+                layer.confirm("删除用户信息:"+name+"，是否继续?",  {icon: 3, title:'提示'}, function(cindex){
                     // 主键删除用户信息
                     $.ajax({
                         type : "POST",

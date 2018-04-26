@@ -6,7 +6,7 @@
 		class="corner fr">
 		<ul>
 			<c:if test="${not empty userInfo}">
-				<li class="user_li nLi"><a href="javascript:void(0);">欢迎你，${userInfo.username}</a>
+				<li class="user_li nLi"><a href="javascript:void(0);">欢迎你，${userInfo.name}</a>
 					<div class="user_handle">
 						<a href="personal.html">个人中心</a> <a href="ownTopic.html">我的话题</a>
 						<a href="${APP_PATH}/userController/logout.do">退出</a>

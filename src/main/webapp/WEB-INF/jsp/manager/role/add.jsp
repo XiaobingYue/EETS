@@ -22,29 +22,7 @@
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-            <div><a class="navbar-brand" style="font-size:32px;" href="user.html">众筹平台 - 角色维护</a></div>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li style="padding-top:8px;">
 				<%@include file="/WEB-INF/jsp/common/userinfo.jsp" %>
-			</li>
-            <li style="margin-left:10px;padding-top:8px;">
-				<button type="button" class="btn btn-default btn-danger">
-				  <span class="glyphicon glyphicon-question-sign"></span> 帮助
-				</button>
-			</li>
-          </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
-        </div>
-      </div>
-    </nav>
-
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
@@ -55,7 +33,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<ol class="breadcrumb">
 				  <li><a href="${APP_PATH}/manager/main.htm">首页</a></li>
-				  <li><a href="${APP_PATH}/manager/role/list.htm">数据列表</a></li>
+				  <li><a href="${APP_PATH}/roleController/toRoleList.do">数据列表</a></li>
 				  <li class="active">新增</li>
 				</ol>
 			<div class="panel panel-default">
@@ -121,10 +99,10 @@
             	var loadingIndex = -1;
             	// 提交表单
             	$.ajax({
-            		url : "${APP_PATH}/manager/role/insert.do",
+            		url : "${APP_PATH}/roleController/addRole.do",
             		type : "POST",
             		data : {
-            			"name"  : $("#rolename").val()
+            			"roleName"  : $("#rolename").val()
             		},
             		beforeSend : function() {
             			loadingIndex = layer.msg('数据保存中', {icon: 16});
@@ -133,7 +111,7 @@
             			layer.close(loadingIndex);
             			if ( result.success ) {
             				layer.msg("角色信息保存成功", {time:1000, icon:6}, function(){
-            					window.location.href = "${APP_PATH}/manager/role/list.htm";
+            					window.location.href = "${APP_PATH}/roleController/toRoleList.do";
             				});
             			} else {
             				layer.msg("角色信息保存失败", {time:1000, icon:5, shift:6});

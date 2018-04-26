@@ -3,7 +3,7 @@ package com.yxb.user.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.yxb.role.entity.Role;
+import com.yxb.user.Bean.UserBean;
 import org.springframework.stereotype.Repository;
 
 import com.yxb.permission.entity.Permission;
@@ -12,7 +12,7 @@ import com.yxb.user.entity.User;
 @Repository
 public interface UserDao {
 
-	User loginUser(User user);
+	User loginUser(UserBean user);
 
 	void registerUser(User user);
 
@@ -20,7 +20,7 @@ public interface UserDao {
 
     List<User> queryUserList(Map<String , Object> paramMap);
 
-    int deleteUser(User user);
+    int deleteUser(UserBean user);
 
 	User findUserByUserAcct(String userAcct);
 
@@ -35,4 +35,6 @@ public interface UserDao {
     void assign( Map<String,Object> paramMap);
 
     void unAssign(Map<String, Object> paramMap);
+
+    void deleteRoleByUserId(UserBean user);
 }

@@ -66,10 +66,10 @@
       <input id="queryText" class="form-control has-success" type="text" placeholder="请输入查询条件">
     </div>
   </div>
-  <button type="button" class="btn btn-warning" onclick="queryUser()"><i class="glyphicon glyphicon-search"></i> 查询</button>
+  <button type="button" class="btn btn-warning" onclick="queryRole()"><i class="glyphicon glyphicon-search"></i> 查询</button>
 </form>
-<button type="button" class="btn btn-danger" style="float:right;margin-left:10px;" onclick="deleteUsers()"><i class=" glyphicon glyphicon-remove"></i> 删除</button>
-<button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='${APP_PATH}/manager/role/add.htm'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
+<button type="button" class="btn btn-danger" style="float:right;margin-left:10px;" onclick="deleteRoles()"><i class=" glyphicon glyphicon-remove"></i> 删除</button>
+<button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='${APP_PATH}/roleController/toAddRole.do'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
 <br>
  <hr style="clear:both;">
           <div class="table-responsive">
@@ -128,24 +128,24 @@
 						}
 					}
 				});
-			    <c:if test="${empty param.pageno}">
+			    <c:if test="${empty param.pageNo}">
 			    pageQuery(1);
 			    </c:if>
-			    <c:if test="${not empty param.pageno}">
-			    pageQuery(${param.pageno});
+			    <c:if test="${not empty param.pageNo}">
+			    pageQuery(${param.pageNo});
 			    </c:if>
             });
             
-            function changePageno( pageno ) {
-            	pageQuery(pageno);
+            function changepageNo( pageNo ) {
+            	pageQuery(pageNo);
             }
             
-            function pageQuery(pageno) {
+            function pageQuery(pageNo) {
             	var loadingIndex = -1;
             	// 使用AJAX异步分页查询角色数据
             	
             	var obj = {
-           			"pageNo" : pageno,
+           			"pageNo" : pageNo,
            			"pageSize" : 5
             	};
             	if ( cond ) {
@@ -165,47 +165,47 @@
             			layer.close(loadingIndex);
             			if ( result.success ) {
             				var pageObj = result.page;
-            				var roleList = pageObj.datas;
+            				var roleList = pageObj.data;
             				
             				var content = "";
             				$.each(roleList, function(i, role){
              				   content = content +  '<tr>';
           	                   content = content +  '  <td>'+(i+1)+'</td>';
           					   content = content +  '  <td><input type="checkbox" value="'+role.id+'"></td>';
-          	                   content = content +  '  <td>'+role.rolename+'</td>';
+          	                   content = content +  '  <td>'+role.roleName+'</td>';
           	                   content = content +  '  <td>';
-          					   content = content +  '      <button type="button" onclick="window.location.href=\'${APP_PATH}/manager/role/assign.htm?id='+role.id+'\'"class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
-          					   content = content +  '      <button type="button" onclick="window.location.href=\'${APP_PATH}/manager/role/edit.htm?pageno='+pageObj.pageno+'&id='+role.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-          					   content = content +  '	   <button type="button" onclick="deleteUser('+role.id+', \''+role.rolename+'\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+          					   content = content +  '      <button type="button" onclick="window.location.href=\'${APP_PATH}/roleController/assign.do?id='+role.id+'\'"class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
+          					   content = content +  '      <button type="button" onclick="window.location.href=\'${APP_PATH}/roleController/toModifyRolePage.do?pageNo='+pageObj.pageNo+'&id='+role.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+          					   content = content +  '	   <button type="button" onclick="deleteRole('+role.id+', \''+role.roleName+'\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
           					   content = content +  '  </td>';
           	                   content = content +  '</tr>';
             				});
             				$("tbody").html(content);
 
-                            $("#Pagination").pagination(pageObj.totalsize, {
+                            $("#Pagination").pagination(pageObj.totalSize, {
                                 num_edge_entries: 1, //边缘页数
                                 num_display_entries: 4, //主体页数
                                 callback: pageQuery,
                                 items_per_page:5, //每页显示1项
                                 prev_text:"上一页",
                                 next_text:"下一页",
-                                current_page:pageno
+                                current_page:pageNo
                             });
 
             				var pageContent = "";
             				
-            				if ( pageObj.pageno != 1 ) {
-            					pageContent = pageContent + '<li><a href="#" onclick="changePageno('+(pageObj.pageno-1)+')">上一页</a></li>';
+            				if ( pageObj.pageNo != 1 ) {
+            					pageContent = pageContent + '<li><a href="#" onclick="changepageNo('+(pageObj.pageNo-1)+')">上一页</a></li>';
             				}
-            				for ( var i = 1; i <= pageObj.totalno; i++ ) {
-            					if ( i == pageObj.pageno ) {
-            						pageContent = pageContent + '<li class="active"><a href="#" onclick="changePageno('+i+')">'+i+'</a></li>';	
+            				for ( var i = 1; i <= pageObj.totalNo; i++ ) {
+            					if ( i == pageObj.pageNo ) {
+            						pageContent = pageContent + '<li class="active"><a href="#" onclick="changepageNo('+i+')">'+i+'</a></li>';	
             					} else {
-            						pageContent = pageContent + '<li><a href="#" onclick="changePageno('+i+')">'+i+'</a></li>';
+            						pageContent = pageContent + '<li><a href="#" onclick="changepageNo('+i+')">'+i+'</a></li>';
             					}
             				}
-            				if ( pageObj.pageno != pageObj.totalno ) {
-            					pageContent = pageContent + '<li><a href="#" onclick="changePageno('+(pageObj.pageno+1)+')">下一页</a></li>';
+            				if ( pageObj.pageNo != pageObj.totalNo ) {
+            					pageContent = pageContent + '<li><a href="#" onclick="changepageNo('+(pageObj.pageNo+1)+')">下一页</a></li>';
             				}
             				
             				$(".pagination").html(pageContent);
@@ -217,7 +217,7 @@
             	});
             }
             var cond = false;
-            function queryUser() {
+            function queryRole() {
             	var queryText = $("#queryText");
             	if ( queryText.val() == "" ) {
             		layer.msg("查询条件不能为空，请输入", {time:1000, icon:5, shift:6}, function(){
@@ -229,11 +229,11 @@
             	pageQuery(1);
             }
             
-            function deleteUser(id, name) {
+            function deleteRole(id, name) {
     			layer.confirm("删除角色: "+name+", 是否继续？",  {icon: 3, title:'提示'}, function(cindex){
     				// 删除数据
     				$.ajax({
-    					url : "${APP_PATH}/manager/role/delete.do",
+    					url : "${APP_PATH}/roleController/deleteRole.do",
     					type : "POST",
     					data  : {
     						id : id
@@ -244,7 +244,7 @@
                 					pageQuery(1);
                 				});
     						} else {
-    							layer.msg("角色信息删除失败", {time:1000, icon:5, shift:6});
+    							layer.msg(result.data, {time:1000, icon:5, shift:6});
     						}
     					}
     				});
@@ -267,7 +267,7 @@
             	});
             }
             
-            function deleteUsers() {
+            function deleteRoles() {
             	var checkBox = $("tbody :checked");
             	if ( checkBox.length == 0 ) {
             		layer.msg("请选择需要删除的角色数据", {time:1000, icon:5, shift:6});

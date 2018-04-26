@@ -37,7 +37,7 @@
 				  <li class="active">分配角色</li>
 				</ol>
             <ol class="breadcrumb">
-                为&nbsp&nbsp<label>${user.username}</label>&nbsp&nbsp分配角色
+                为&nbsp&nbsp<label>${user.name}</label>&nbsp&nbsp分配角色
             </ol>
             <div class="panel panel-default">
 			  <div class="panel-body">
@@ -46,7 +46,7 @@
 					<label for="exampleInputPassword1">未分配角色列表</label><br>
 					<select id="leftList" class="form-control" multiple size="10" style="width:300px;overflow-y:auto;">
 					    <c:forEach items="${unAssignRoleList}" var="role">
-					        <option value="${role.id}">${role.rolename}</option>
+					        <option value="${role.id}">${role.roleName}</option>
 					    </c:forEach>
 <!--                         <option value="pm">PM</option>
                         <option value="sa">SA</option>
@@ -66,7 +66,7 @@
 					<label for="exampleInputPassword1">已分配角色列表</label><br>
 					<select id="rightList" class="form-control" multiple size="10" style="width:300px;overflow-y:auto;">
 					    <c:forEach items="${assignedRoleList}" var="role">
-					        <option value="${role.id}">${role.rolename}</option>
+					        <option value="${role.id}">${role.roleName}</option>
 					    </c:forEach>
                     </select>
 				  </div>

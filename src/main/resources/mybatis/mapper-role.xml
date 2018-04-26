@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yxb.role.dao.RoleDao">
-	<select id="queryRoleList" resultType="role">
+    <resultMap id="roleMap" type="role">
+        <id column="id" property="id"></id>
+        <result column="role_name" property="roleName"></result>
+        <result column="note" property="note"></result>
+    </resultMap>
+	<select id="queryRoleList" resultMap="roleMap">
 	 select
             *
-        from role
+        from t_role
         <where>
             <if test="queryText != null">
-                and rolename like concat('%', #{queryText}, '%')
+                and ROLE_NAME like concat('%', #{queryText}, '%')
             </if>
         </where>
             limit  #{start} , #{size}
@@ -15,17 +20,66 @@
 
     <select id="queryPageSize" resultType="int">
         select   count(*)
-        from role
+        from t_role
         <where>
             <if test="queryText != null">
-                and rolename like concat('%', #{queryText}, '%')
+                and ROLE_NAME like concat('%', #{queryText}, '%')
             </if>
         </where>
     </select>
 
-    <select id="queryAllRole" resultType="role">
+    <select id="queryAllRole" resultMap="roleMap">
         select
         *
-        from role
+        from t_role
+    </select>
+
+    <select id="queryRoleById" resultMap="roleMap">
+        SELECT *
+        FROM t_role
+        WHERE ID = #{id}
+    </select>
+
+    <update id="updateRoleById">
+        UPDATE t_role
+        SET ROLE_NAME = #{roleName}
+        <if test="note != null">
+            ,NOTE = #{note}
+        </if>
+        WHERE ID = #{id}
+    </update>
+
+    <insert id="insertRole">
+        insert into t_role (ROLE_NAME
+        <if test="note != null">
+            ,NOTE
+        </if>
+        ) values (#{roleName}
+        <if test="note != null">
+            ,#{note}
+        </if>
+        );
+    </insert>
+
+    <delete id="deletePermissionByRoleId">
+        DELETE FROM t_role_permission
+        WHERE ROLE_ID = #{id}
+    </delete>
+
+    <delete id="deleteRoleById">
+        DELETE FROM t_role
+        WHERE ID = #{id}
+    </delete>
+
+    <insert id="addRolePermission">
+        INSERt INTO t_role_permission (ROLE_ID,PERMISSION_ID)
+        VALUES
+        <foreach collection="permissionIds" item="permissionId" separator=",">
+        (#{roleId}, #{permissionId})
+    </foreach>
+    </insert>
+
+    <select id="queryUserIdsByRoleId" resultType="int">
+        SELECT USER_ID FROM t_user_role WHERE ROLE_ID = #{roleId}
     </select>
 </mapper>

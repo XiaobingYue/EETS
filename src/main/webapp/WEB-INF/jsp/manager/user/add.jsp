@@ -46,7 +46,7 @@
 				  </div>
 				  <div class="form-group">
 					<label for="exampleInputPassword1">用户名称</label>
-					<input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名称">
+					<input type="text" class="form-control" id="username" name="name" placeholder="请输入用户名称">
 				  </div>
 				  <div class="form-group">
 					<label for="exampleInputEmail1">邮箱地址</label>
