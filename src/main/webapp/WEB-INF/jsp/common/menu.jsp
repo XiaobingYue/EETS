@@ -2,6 +2,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <ul style="padding-left:0px;" class="list-group">
+	<li class="list-group-item tree-closed" >
+		<a href="${APP_PATH}/toMain.do"><i class="glyphicon glyphicon-dashboard"></i> 主页</a>
+	</li>
     <c:forEach items="${rootPermission}" var="permission">
         <c:if test="${empty permission.children}">
 			<li class="list-group-item tree-closed" >

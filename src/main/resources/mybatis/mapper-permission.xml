@@ -20,4 +20,34 @@
       FROM t_role_permission
       WHERE ROLE_ID = #{roleId}
     </select>
+
+    <insert id="addPermission">
+        INSERT INTO t_permission (NAME,URL,PARENT_ID) VALUES (#{name} , #{url} , #{parentId})
+    </insert>
+
+    <select id="queryChildPermissionByParentId" resultMap="permissionMap">
+        select * FROM t_permission
+        WHERE PARENT_ID = #{id}
+    </select>
+
+    <delete id="deleteRolePermissionByPermissionId">
+        delete FROM t_role_permission
+        WHERE PERMISSION_ID = #{id}
+    </delete>
+
+    <delete id="deletePermissionById">
+        DELETE FROM t_permission
+        WHERE ID = #{id} OR PARENT_ID = #{id}
+    </delete>
+
+    <select id="queryById" resultMap="permissionMap">
+        SELECT * FROM t_permission
+        WHERE ID = #{id}
+    </select>
+
+    <update id="updatePermission">
+        UPDATE t_permission
+        SET NAME = #{name} , URL = #{url}
+        WHERE ID = #{id}
+    </update>
 </mapper>

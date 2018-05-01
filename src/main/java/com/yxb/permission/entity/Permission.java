@@ -1,12 +1,16 @@
 package com.yxb.permission.entity;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Permission {
 
     private Integer id;
+    @NotBlank(message = "权限名称不能为空")
     private String name;
+    @NotBlank(message = "权限url不能为空")
     private String url;
     private boolean open = true;
     private boolean checked = false;

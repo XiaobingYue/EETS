@@ -11,4 +11,12 @@ public interface PermissionService {
     List<Permission> queryAll();
 
     List<Integer> queryPermissionIdsByRoleId(Integer roleId);
+
+    void addPermission(Permission permission);
+
+    void deletePermissionById(Integer id);
+
+    Permission queryById(Integer id);
+
+    void updatePermission(Permission permission);
 }

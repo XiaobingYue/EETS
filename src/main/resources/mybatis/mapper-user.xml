@@ -16,6 +16,11 @@
         <result column="name" property="name"></result>
         <result column="password" property="password"></result>
         <result column="email" property="email"></result>
+        <result column="sex" property="sex"></result>
+        <result column="phone" property="phone"></result>
+        <result column="timestamp" property="timestamp"></result>
+        <result column="sort" property="sort"></result>
+        <result column="if_enable" property="ifEnable"></result>
     </resultMap>
 	<select id="loginUser" resultMap="userMap">
 		select *
@@ -25,9 +30,9 @@
 
 	<insert id="registerUser">
 		insert into t_user (
-			USER_ACCT , NAME , EMAIL , PASSWORD
+			USER_ACCT , NAME , EMAIL , PASSWORD , SORT , SEX , TIMESTAMP , IF_ENABLE , PHONE
 		) values (
-			#{userAcct} , #{name} , #{email} , #{password})
+			#{userAcct} , #{name} , #{email} , #{password} , #{sort} , #{sex} , #{timestamp} , #{ifEnable} , #{phone})
 	</insert>
 	
 	<select id="getPermissionsByUserId" resultMap="userResultMap">
@@ -51,17 +56,19 @@
         select  *
           from  t_user
           <where>
-                <if test="queryText != null">
+              IF_ENABLE = #{ifEnable}
+              <if test="queryText != null">
                     and USER_ACCT like concat('%', #{queryText}, '%')
                 </if>
           </where>
-            limit #{start} , #{size}
+           ORDER BY SORT limit #{start} , #{size}
     </select>
 
     <select id="queryPageSize" resultType="int">
         select   count(*)
         from t_user
         <where>
+            IF_ENABLE = #{ifEnable}
             <if test="queryText != null">
                 and USER_ACCT like concat('%', #{queryText}, '%')
             </if>
@@ -73,11 +80,10 @@
         WHERE USER_ID = #{id}
     </delete>
 
-    <delete id="deleteUser">
-    	delete
-    		from t_user
+    <update id="deleteUser">
+    	update t_user SET IF_ENABLE = #{ifEnable} , "TIMESTAMP" = #{timestamp}
     		where id = #{id}
-    </delete>
+    </update>
 
     <select id="queryById" resultMap="userMap">
         select *
@@ -87,7 +93,7 @@
 
     <update id="modifyUser">
         update t_user
-        set USER_ACCT = #{userAcct} , NAME = #{name} , EMAIL = #{email}
+        set USER_ACCT = #{userAcct} , NAME = #{name} , EMAIL = #{email} , SEX = #{sex} , PHONE = #{phone} , SORT = #{sort} , TIMESTAMP = #{timestamp}
         <where>
             id = #{id}
         </where>

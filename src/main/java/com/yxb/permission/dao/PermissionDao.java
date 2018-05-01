@@ -13,4 +13,16 @@ public interface PermissionDao {
     List<Permission> queryAll();
 
     List<Integer> queryPermissionIdsByRoleId(Integer roleId);
+
+    void addPermission(Permission permission);
+
+    void deleteRolePermissionByPermissionId(Integer id);
+
+    void deletePermissionById(Integer id);
+
+    List<Permission> queryChildPermissionByParentId(Integer id);
+
+    Permission queryById(Integer id);
+
+    void updatePermission(Permission permission);
 }

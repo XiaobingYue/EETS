@@ -1,15 +1,14 @@
 package com.yxb.user.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpSession;
 
+import com.yxb.common.constant.Const;
 import com.yxb.common.entity.Page;
 import com.yxb.role.entity.Role;
 import com.yxb.role.service.RoleService;
+import com.yxb.user.Bean.ImportUserBean;
 import com.yxb.user.Bean.UserBean;
 import com.yxb.user.validateGroup.AddGroup;
 import com.yxb.user.validateGroup.LoginGroup;
@@ -23,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yxb.common.entity.AjaxResult;
@@ -32,6 +32,7 @@ import com.yxb.common.util.StringUtil;
 import com.yxb.permission.entity.Permission;
 import com.yxb.user.entity.User;
 import com.yxb.user.service.UserService;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/userController")
@@ -122,6 +123,7 @@ public class UserController {
             paramMap.put("start", (pageNo - 1) * pageSize);
             paramMap.put("size", pageSize);
             if (StringUtil.isNotEmpty(queryText)) paramMap.put("queryText", queryText);
+            paramMap.put("ifEnable" , Const.USER_ENABLE_1);
             Page<User> userPage = userService.queryUserList(paramMap,pageNo,pageSize);
             result.setPage(userPage);
             result.setSuccess(true);
@@ -329,7 +331,34 @@ public class UserController {
 
     }
 
-    private boolean checkUserParam(User user) {
-        return !StringUtil.isEmpty(user.getUserAcct()) && !StringUtil.isEmpty(user.getName()) && !StringUtil.isEmpty(user.getEmail());
+    /**
+     *批量导入用户信息
+     *
+     * @param file 导入的文件
+     * @return AjaxResult
+     */
+    @RequestMapping("/importUser.do")
+    @ResponseBody
+    public Object importUser(@RequestParam MultipartFile file, Model model) {
+        AjaxResult result = new AjaxResult();
+        try {
+            if(file != null) {
+                Set<ImportUserBean> wellList = new HashSet<>();// 正常导入项
+                List<ImportUserBean> exitList = new ArrayList<>();// 所有存在项
+                // Error中保存异常信息
+                List<ImportUserBean> infoNotExitList = new ArrayList<>();// 必填项不存在
+                List<ImportUserBean> errorList = new ArrayList<>();// 导入错误项
+                userService.importUser(file,wellList,exitList,infoNotExitList,errorList);
+                result.setSuccess(true);
+            } else {
+                result.setSuccess(false);
+                result.setData("文件不存在");
+            }
+        } catch (Exception e) {
+            log.error("批量导入人员信息出现异常",e);
+            result.setSuccess(false);
+            result.setData(e.getMessage());
+        }
+        return result;
     }
 }

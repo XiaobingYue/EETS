@@ -15,14 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yxb.role.service.RoleService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 @Service
 public class RoleServiceImpl implements RoleService {
 
-	@Autowired
-	private RoleDao dao;
-	@Autowired
+    @Autowired
+    private RoleDao dao;
+    @Autowired
     private UserDao userDao;
 
     /**
@@ -33,20 +34,20 @@ public class RoleServiceImpl implements RoleService {
      * @param pageSize 每页数量
      * @return Page<Role>
      */
-	@Override
-	public Page<Role> queryRoleList(Map<String , Object> paramMap,Integer pageNo,Integer pageSize) {
+    @Override
+    public Page<Role> queryRoleList(Map<String, Object> paramMap, Integer pageNo, Integer pageSize) {
         List<Role> roleList = dao.queryRoleList(paramMap);
         Page<Role> rolePage = new Page<>();
-        if(!CollectionUtils.isEmpty(roleList)) {
+        if (!CollectionUtils.isEmpty(roleList)) {
             int totalSize = this.queryPageSize(paramMap);
             rolePage.setData(roleList);
             rolePage.setPageNo(pageNo);
             rolePage.setPageSize(pageSize);
-            rolePage.setTotalNo(totalSize , pageSize);
+            rolePage.setTotalNo(totalSize, pageSize);
             rolePage.setTotalSize(totalSize);
         }
-		return rolePage;
-	}
+        return rolePage;
+    }
 
     @Override
     public int queryPageSize(Map<String, Object> paramMap) {
@@ -67,10 +68,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public RoleBean queryRoleById(Integer id) {
         Role role = dao.queryRoleById(id);
-        if(role == null) return null;
+        if (role == null) return null;
         else {
-           RoleBean roleBean = new RoleBean();
-            BeanUtils.copyProperties(role,roleBean);
+            RoleBean roleBean = new RoleBean();
+            BeanUtils.copyProperties(role, roleBean);
             return roleBean;
         }
     }
@@ -104,17 +105,17 @@ public class RoleServiceImpl implements RoleService {
     public List<String> deleteRole(RoleBean roleBean) {
         // 先判断该角色是否已经赋予某人
         List<Integer> userIds = dao.queryUserIdsByRoleId(roleBean.getId());
-        if(CollectionUtils.isEmpty(userIds)) {
+        if (CollectionUtils.isEmpty(userIds)) {
             // 为空说明该角色为赋予任何人，直接删除
             dao.deletePermissionByRoleId(roleBean.getId());
             dao.deleteRoleById(roleBean);
             return null;
         } else {
-            // 查出所赋予角色的人员
+            // 查出所赋予角色的人员，返回人员姓名
             List<String> userNames = new ArrayList<>();
-            for(Integer userId : userIds) {
+            for (Integer userId : userIds) {
                 User user = userDao.queryById(userId);
-                if(user != null) {
+                if (user != null) {
                     userNames.add(user.getName());
                 }
             }
@@ -123,6 +124,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public void assignPermission(Map<String, Object> paramMap) {
         dao.deletePermissionByRoleId((Integer) paramMap.get("roleId"));
         dao.addRolePermission(paramMap);

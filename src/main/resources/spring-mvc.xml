@@ -43,7 +43,8 @@
 		<property name="prefix" value="/WEB-INF/jsp/" />
 		<property name="suffix" value=".jsp" /><!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑 -->
 	</bean>
-    <mvc:interceptors>
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	<mvc:interceptors>
             <bean class="com.yxb.dispatcher.interceptor.LoginInterceptor"></bean>
     </mvc:interceptors>
 
