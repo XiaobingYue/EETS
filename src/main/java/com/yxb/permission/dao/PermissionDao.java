@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Repository
 public interface PermissionDao {
-    List<Permission> queryAll();
+    List<Permission> queryAll(String status);
 
     List<Integer> queryPermissionIdsByRoleId(Integer roleId);
 
@@ -18,11 +18,11 @@ public interface PermissionDao {
 
     void deleteRolePermissionByPermissionId(Integer id);
 
-    void deletePermissionById(Integer id);
+    void deletePermissionById(Permission permission);
 
-    List<Permission> queryChildPermissionByParentId(Integer id);
+    List<Permission> queryChildPermissionByParentId(Permission permission);
 
-    Permission queryById(Integer id);
+    Permission queryById(Permission permission);
 
     void updatePermission(Permission permission);
 }

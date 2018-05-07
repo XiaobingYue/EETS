@@ -15,7 +15,9 @@
                 and ROLE_NAME like concat('%', #{queryText}, '%')
             </if>
         </where>
+        <if test="start != null">
             limit  #{start} , #{size}
+        </if>
 	</select>
 
     <select id="queryPageSize" resultType="int">

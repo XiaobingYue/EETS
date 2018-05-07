@@ -9,10 +9,13 @@
         <result column="parent_id" property="parentId"></result>
         <result column="status" property="status"></result>
         <result column="icon" property="icon"></result>
+        <result column="sort" property="sort"></result>
+        <result column="timestamp" property="timestamp"></result>
     </resultMap>
 	<select id="queryAll" resultMap="permissionMap">
-	 select ID,NAME,NOTE,PARENT_ID,STATUS,ICON
+	 select ID,NAME,NOTE,PARENT_ID,ICON,SORT
         from t_permission
+        WHERE STATUS = #{status} ORDER BY SORT
 	</select>
 
     <select id="queryPermissionIdsByRoleId" resultType="int">
@@ -22,12 +25,12 @@
     </select>
 
     <insert id="addPermission">
-        INSERT INTO t_permission (NAME,URL,PARENT_ID) VALUES (#{name} , #{url} , #{parentId})
+        INSERT INTO t_permission (NAME,URL,PARENT_ID,SORT,STATUS,TIMESTAMP) VALUES (#{name} , #{url} , #{parentId},#{sort},#{status},#{timestamp})
     </insert>
 
     <select id="queryChildPermissionByParentId" resultMap="permissionMap">
         select * FROM t_permission
-        WHERE PARENT_ID = #{id}
+        WHERE PARENT_ID = #{id} AND STATUS = #{status}
     </select>
 
     <delete id="deleteRolePermissionByPermissionId">
@@ -35,19 +38,20 @@
         WHERE PERMISSION_ID = #{id}
     </delete>
 
-    <delete id="deletePermissionById">
-        DELETE FROM t_permission
+    <update id="deletePermissionById">
+        UPDATE t_permission
+        SET STATUS = #{status}
         WHERE ID = #{id} OR PARENT_ID = #{id}
-    </delete>
+    </update>
 
     <select id="queryById" resultMap="permissionMap">
         SELECT * FROM t_permission
-        WHERE ID = #{id}
+        WHERE ID = #{id} AND STATUS = #{status}
     </select>
 
     <update id="updatePermission">
         UPDATE t_permission
-        SET NAME = #{name} , URL = #{url}
+        SET NAME = #{name} , URL = #{url} , SORT = #{sort} , TIMESTAMP = #{timestamp}
         WHERE ID = #{id}
     </update>
 </mapper>

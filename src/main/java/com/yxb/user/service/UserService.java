@@ -28,7 +28,7 @@ public interface UserService {
 
     int queryPageSize(Map<String, Object> paramMap);
 
-    void modifyUser(User user);
+    void modifyUser(UserBean user);
 
     UserBean queryById(Integer id);
 

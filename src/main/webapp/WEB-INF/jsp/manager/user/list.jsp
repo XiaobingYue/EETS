@@ -70,7 +70,7 @@
                     <br>
                     <hr style="clear:both;">
                     <div class="table-responsive">
-                        <table class="table  table-bordered">
+                        <table class="table table-hover">
                             <thead>
                             <tr>
                                 <th width="30">#</th>
@@ -179,7 +179,12 @@
                 if (result.success) {
                     var pageObj = result.page;
                     var userList = pageObj.data;
-
+                    if (userList == null) {
+                        var empty = "";
+                        $("#userTableBody").html(empty);
+                        $(".pagination").html(empty);
+                        return;
+                    }
                     // 循环
                     // $("img").each
                     // 工具方法

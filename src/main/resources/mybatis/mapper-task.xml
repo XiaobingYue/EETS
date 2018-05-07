@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxb.teachTask.dao.TeachTaskDao">
+    <resultMap id="taskMap" type="teachTask">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="professional" property="professional"></result>
+        <result column="classes" property="classes"></result>
+        <result column="term" property="term"></result>
+        <result column="content" property="content"></result>
+        <result column="status" property="status"></result>
+        <result column="course" property="course"></result>
+        <result column="timestamp" property="timestamp"></result>
+    </resultMap>
+
+    <select id="queryAll" resultMap="taskMap">
+        SELECT * FROM t_teach_task WHERE STATUS != #{status}
+         <if test="queryText != null">
+             AND NAME LIKE concat('%', #{queryText}, '%')
+         </if>
+         ORDER BY TIMESTAMP DESC limit #{start} , #{size}
+    </select>
+
+    <select id="queryCount" resultType="int">
+        SELECT count(*) FROM t_teach_task WHERE STATUS != #{status}
+        <if test="queryText != null">
+            AND NAME LIKE concat('%', #{queryText}, '%')
+        </if>
+    </select>
+
+    <select id="queryById" resultMap="taskMap">
+        SELECT * FROM t_teach_task WHERE ID = #{id}
+    </select>
+
+    <update id="updateTeachTask">
+        UPDATE t_teach_task SET NAME = #{name} , PROFESSIONAL = #{professional} , CLASSES = #{classes} , TERM = #{term} , CONTENT = #{content} , STATUS = #{status} , TIMESTAMP = #{timestamp} , COURSE = #{course} WHERE ID = #{id}
+    </update>
+
+    <insert id="addTeachTask">
+        INSERT INTO t_teach_task (NAME, PROFESSIONAL, CLASSES, TERM, CONTENT, STATUS, TIMESTAMP, COURSE) VALUES (#{name} , #{professional} , #{classes} , #{term} , #{content} , #{status} , #{timestamp} , #{course})
+    </insert>
+</mapper>

@@ -13,7 +13,6 @@
     <link rel="stylesheet"
           href="${APP_PATH}/bootstrap/css/fileinput.css">
     <link rel="stylesheet" href="${APP_PATH}/css/font-awesome.min.css">
-
     <link rel="stylesheet" href="${APP_PATH}/css/font-awesome.min.css">
     <link rel="stylesheet" href="${APP_PATH}/css/main.css">
     <link rel="stylesheet" href="${APP_PATH}/css/doc.min.css">
@@ -63,14 +62,14 @@
                             <tbody>
                             </tbody>
                             <tfoot>
-                            <button type="button" id="insertBtn"
+                           <%-- <button type="button" id="insertBtn"
                                     style="margin-bottom: 10px;" class="btn btn-success">
                                 <i class="glyphicon glyphicon-plus"></i> 开始导入
                             </button>
                             <button type="button" id="saveBtn"
                                     style="margin-left:10px;margin-bottom:10px;" class="btn btn-danger">
                                 <i class="glyphicon glyphicon-download-alt"></i> 下载模板
-                            </button>
+                            </button>--%>
                             </tfoot>
                         </table>
                     </form>

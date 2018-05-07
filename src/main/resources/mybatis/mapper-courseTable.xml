@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxb.courseTable.dao.CourseTableDao">
+    <resultMap id="courseTableMap" type="courseTable">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="course_name" property="courseName"></result>
+        <result column="course_id" property="courseId"></result>
+        <result column="week" property="week"></result>
+        <result column="section" property="section"></result>
+        <result column="user_id" property="userId"></result>
+        <result column="timestamp" property="timestamp"></result>
+    </resultMap>
+
+    <select id="queryByUserIdAndSection" resultMap="courseTableMap">
+        SELECT * FROM t_course_table WHERE USER_ID = #{userId} AND SECTION = #{section}
+    </select>
+
+    <update id="updateCourseTable">
+        UPDATE t_course_table SET COURSE_NAME = #{courseName},COURSE_ID = #{courseId} , TIMESTAMP = #{timestamp} WHERE WEEK = #{week} AND SECTION = #{section} AND USER_ID = #{userId}
+    </update>
+    <select id="queryByUserId" resultType="int">
+        SELECT count(*) FROM t_course_table where USER_ID = #{userId}
+    </select>
+
+    <insert id="insertCourseTable">
+        INSERT INTO t_course_table (WEEK,SECTION,USER_ID,TIMESTAMP) VALUES (#{week} , #{section} , #{userId} , #{timestamp})
+    </insert>
+</mapper>

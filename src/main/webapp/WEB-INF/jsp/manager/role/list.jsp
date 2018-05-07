@@ -166,6 +166,13 @@
             			if ( result.success ) {
             				var pageObj = result.page;
             				var roleList = pageObj.data;
+
+                            if (roleList == null) {
+                                var empty = "";
+                                $("tbody").html(empty);
+                                $(".pagination").html(empty);
+                                return;
+                            }
             				
             				var content = "";
             				$.each(roleList, function(i, role){

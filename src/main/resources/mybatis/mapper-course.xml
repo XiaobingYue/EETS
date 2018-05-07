@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxb.course.dao.CourseDao">
+    <resultMap id="courseMap" type="course">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="professional_ids" property="professionalIds"></result>
+        <result column="course_code" property="courseCode"></result>
+        <result column="teacher_ids" property="teacherIds"></result>
+        <result column="text_book_id" property="textBookId"></result>
+        <result column="state" property="state"></result>
+        <result column="timestamp" property="timestamp"></result>
+    </resultMap>
+
+    <select id="queryAllCourse" resultMap="courseMap">
+        SELECT * FROM t_course WHERE STATE = #{state}
+        <if test="queryText != null">
+            and NAME like concat('%', #{queryText}, '%')
+        </if>
+         ORDER BY TIMESTAMP DESC
+        <if test="start != null">
+            limit #{start} , #{size}
+        </if>
+    </select>
+
+    <select id="queryCount" resultType="int">
+        select COUNT(*) FROM t_course WHERE STATE = #{state}
+        <if test="queryText != null">
+            and NAME like concat('%', #{queryText}, '%')
+        </if>
+    </select>
+
+    <update id="editCourse">
+        UPDATE t_course SET COURSE_CODE = #{courseCode} , NAME = #{name} , TIMESTAMP = #{timestamp}
+        <if test="state != null">
+            , STATE = #{state}
+        </if>
+         WHERE ID = #{id}
+    </update>
+
+    <insert id="addCourse">
+        INSERT INTO t_course (COURSE_CODE,NAME,TIMESTAMP,STATE) VALUES (#{courseCode},#{name} , #{timestamp} , #{state})
+    </insert>
+
+    <select id="queryById" resultMap="courseMap">
+        SELECT * FROM t_course WHERE ID = #{id}
+    </select>
+</mapper>

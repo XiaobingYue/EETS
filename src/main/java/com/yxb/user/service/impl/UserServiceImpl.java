@@ -9,6 +9,7 @@ import com.yxb.common.util.ExcelUtil;
 import com.yxb.common.util.MD5Util;
 import com.yxb.user.Bean.ImportUserBean;
 import com.yxb.user.Bean.UserBean;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.BeanUtils;
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
 
     public void registerUser(UserBean user) {
         user.setTimestamp(System.currentTimeMillis());
-        user.setIfEnable(Const.USER_ENABLE_1);
+        user.setIfEnable(Const.ENABLE_1);
         dao.registerUser(user);
     }
 
@@ -68,7 +69,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int deleteUser(UserBean user) {
         user.setTimestamp(System.currentTimeMillis());
-        user.setIfEnable(Const.USER_ENABLE_0);
+        user.setIfEnable(Const.UNENABLE_0);
         dao.deleteRoleByUserId(user);
         return dao.deleteUser(user);
     }
@@ -88,8 +89,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void modifyUser(User user) {
+    public void modifyUser(UserBean user) {
         user.setTimestamp(System.currentTimeMillis());
+        if( !CollectionUtils.isEmpty(user.getRoleIds()) ) {
+            dao.unAssignByUserId(user.getId());
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("userId", user.getId());
+            paramMap.put("roleIds", user.getRoleIds());
+            this.assign(paramMap);
+        }
         dao.modifyUser(user);
     }
 

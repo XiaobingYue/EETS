@@ -52,6 +52,19 @@ public class User {
      */
     private String ifEnable = "1";
 
+    /**
+     * 所属班级
+     */
+    private Integer classesId;
+
+    public Integer getClassesId() {
+        return classesId;
+    }
+
+    public void setClassesId(Integer classesId) {
+        this.classesId = classesId;
+    }
+
     public String getSex() {
         return sex;
     }

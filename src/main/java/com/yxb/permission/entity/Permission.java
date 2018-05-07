@@ -19,8 +19,35 @@ public class Permission {
     private List<Permission> childNodes = new ArrayList<Permission>();
     private String note;
     private Integer parentId;
-    private String status;
+    /**
+     * 默认有效
+     */
+    private String status = "1";
     private String icon;
+    /**
+     * 默认排序999
+     */
+    private String sort = "999";
+    /**
+     * 时间戳
+     */
+    private Long timestamp;
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public Integer getId() {
         return id;

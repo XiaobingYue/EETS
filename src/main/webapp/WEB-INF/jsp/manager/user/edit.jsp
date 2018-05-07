@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="${APP_PATH}/css/font-awesome.min.css">
     <link rel="stylesheet" href="${APP_PATH}/css/main.css">
     <link rel="stylesheet" href="${APP_PATH}/css/doc.min.css">
+    <link rel="stylesheet" href="${APP_PATH}/bootstrap/css/bootstrap-select.css">
     <style>
         .tree li {
             list-style-type: none;
@@ -68,6 +69,21 @@
                             </select>
                         </div>
                         <div class="form-group">
+                        <label>角色</label>
+                        <c:set var="roleId" value="" scope="request"/>
+                        <select class="selectpicker show-tick form-control " id="roleIds" name="roleIds" multiple data-live-search="false">
+                            <c:forEach items="${roleList}" var="role" varStatus="vs">
+                                <option id="${role.roleName}" value="${role.id}"
+                                        <c:if test="${role.id==roleId}">selected</c:if> > ${role.roleName}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                        <div class="form-group">
+                            <label>班级</label>
+                            <input type="text" class="form-control" id="classes" name="classes" value="${user.phone}"
+                                   placeholder="请输入所属班级">
+                        </div>
+                        <div class="form-group">
                             <label>手机号</label>
                             <input type="text" class="form-control" id="phone" name="phone" value="${user.phone}"
                                    placeholder="请输入用户手机号">
@@ -120,6 +136,8 @@
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrapValidator.js"></script>
 <script src="${APP_PATH}/script/layer/layer.js"></script>
+<script src="${APP_PATH}/bootstrap/js/bootstrap-select.js"></script>
+<script src="${APP_PATH}/bootstrap/js/defaults-zh_CN.js"></script>
 <script type="text/javascript">
     $(function () {
         $(".list-group-item").click(function () {
@@ -132,8 +150,9 @@
                 }
             }
         });
-
-
+    var roleIds = ${user.roleIds};
+    console.info(roleIds);
+    $('#roleIds').selectpicker('val', roleIds);
     });
 
     var flag = true;
@@ -215,20 +234,27 @@
                 phone.focus();
             });
         } else {
+            var selItems = $("#roleIds :selected");
+            console.info(selItems);
             // 提交表单
             var loadingIndex = -1;
+            var jsonData =  {
+                "userAcct": userAcct.val(),
+                "name": $("#username").val(),
+                "email": $("#email").val(),
+                "sex": $("#sex").val(),
+                "phone": $("#phone").val(),
+                "sort": $("#sort").val(),
+                "id": ${user.id},
+                "classes":$("#classes").val()
+            };
+            $.each(selItems, function(i, n){
+                jsonData["roleIds["+i+"]"] = n.value;
+            });
             $.ajax({
                 type: "POST",
                 url: "${APP_PATH}/userController/modifyUser.do",
-                data: {
-                    "userAcct": userAcct.val(),
-                    "name": $("#username").val(),
-                    "email": $("#email").val(),
-                    "sex": $("#sex").val(),
-                    "phone": $("#phone").val(),
-                    "sort": $("#sort").val(),
-                    "id": "${user.id}"
-                },
+                data:jsonData,
                 beforeSend: function () {
                     loadingIndex = layer.load(2, {time: 10 * 1000});
                 },

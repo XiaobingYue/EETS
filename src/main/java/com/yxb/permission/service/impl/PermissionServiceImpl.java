@@ -1,5 +1,6 @@
 package com.yxb.permission.service.impl;
 
+import com.yxb.common.constant.Const;
 import com.yxb.permission.dao.PermissionDao;
 import com.yxb.permission.entity.Permission;
 import com.yxb.permission.service.PermissionService;
@@ -20,7 +21,8 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public List<Permission> queryAll() {
-        return permissionDao.queryAll();
+        String status = Const.ENABLE_1;
+        return permissionDao.queryAll(status);
     }
 
     @Override
@@ -30,6 +32,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public void addPermission(Permission permission) {
+        permission.setTimestamp(System.currentTimeMillis());
         permissionDao.addPermission(permission);
     }
 
@@ -37,7 +40,10 @@ public class PermissionServiceImpl implements PermissionService {
     public void deletePermissionById(Integer id) {
         // 如果是父权限，则级联删除其下面的子级权限
         // 先查出父级权限下的子权限
-        List<Permission> childList = permissionDao.queryChildPermissionByParentId(id);
+        Permission p = new Permission();
+        p.setId(id);
+        p.setStatus(Const.ENABLE_1);
+        List<Permission> childList = permissionDao.queryChildPermissionByParentId(p);
         if(!CollectionUtils.isEmpty(childList)) {
             // 删除角色权限关系表中的数据
             for (Permission permission : childList) {
@@ -46,17 +52,22 @@ public class PermissionServiceImpl implements PermissionService {
         }
         // 删除角色权限关系表中的数据
         permissionDao.deleteRolePermissionByPermissionId(id);
-        // 再删除该权限及下面的子权限
-        permissionDao.deletePermissionById(id);
+        // 再删除该权限及下面的子权限(改为逻辑删除)
+        p.setStatus(Const.UNENABLE_0);
+        permissionDao.deletePermissionById(p);
     }
 
     @Override
     public Permission queryById(Integer id) {
-        return permissionDao.queryById(id);
+        Permission p = new Permission();
+        p.setId(id);
+        p.setStatus(Const.ENABLE_1);
+        return permissionDao.queryById(p);
     }
 
     @Override
     public void updatePermission(Permission permission) {
+        permission.setTimestamp(System.currentTimeMillis());
         permissionDao.updatePermission(permission);
     }
 }

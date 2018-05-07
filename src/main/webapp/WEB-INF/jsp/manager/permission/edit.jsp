@@ -52,8 +52,8 @@
                             <input type="text" class="form-control" id="url" value="${permission.url}"
                                    placeholder="请输入链接地址">
                         </div>
-                        <button id="updateBtn" type="button" class="btn btn-success"><i
-                                class="glyphicon glyphicon-pencil"></i> 修改
+                        <button id="updateBtn" type="button" class="btn btn-success"><span
+                                class="glyphicon glyphicon-pencil"></span> 修改
                         </button>
                         <button type="button" class="btn btn-danger"><i class="glyphicon glyphicon-refresh"></i> 重置
                         </button>

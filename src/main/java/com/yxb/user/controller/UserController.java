@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -123,7 +124,7 @@ public class UserController {
             paramMap.put("start", (pageNo - 1) * pageSize);
             paramMap.put("size", pageSize);
             if (StringUtil.isNotEmpty(queryText)) paramMap.put("queryText", queryText);
-            paramMap.put("ifEnable" , Const.USER_ENABLE_1);
+            paramMap.put("ifEnable" , Const.ENABLE_1);
             Page<User> userPage = userService.queryUserList(paramMap,pageNo,pageSize);
             result.setPage(userPage);
             result.setSuccess(true);
@@ -275,6 +276,10 @@ public class UserController {
     @RequestMapping("/toModifyUserPage.do")
     public String toModifyUserPage(Integer id, Model model) {
         UserBean user = userService.queryById(id);
+        List<Integer> roleIds = userService.queryRoleIdByUserId(id);
+        user.setRoleIds(roleIds);
+        List<Role> roleList = roleService.queryAllRole();
+        model.addAttribute("roleList",roleList);
         model.addAttribute("user", user);
         return "manager/user/edit";
     }
@@ -290,8 +295,15 @@ public class UserController {
         AjaxResult result = new AjaxResult();
         try {
             if (!bindingResult.hasErrors()) {
-                userService.modifyUser(user);
-                result.setSuccess(true);
+                if (!CollectionUtils.isEmpty(user.getRoleIds())
+                        && user.getRoleIds().contains(5)
+                        && user.getClassesId() == null) {
+                    result.setSuccess(false);
+                    result.setData("角色为学生必须选择其班级");
+                } else {
+                    userService.modifyUser(user);
+                    result.setSuccess(true);
+                }
             } else {
                 result.setSuccess(false);
                 result.setData(bindingResult.getFieldErrors().get(0).getDefaultMessage());

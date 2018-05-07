@@ -37,4 +37,6 @@ public interface UserDao {
     void unAssign(Map<String, Object> paramMap);
 
     void deleteRoleByUserId(UserBean user);
+
+    void unAssignByUserId(Integer userId);
 }

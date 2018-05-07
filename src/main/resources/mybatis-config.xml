@@ -5,5 +5,9 @@
     <typeAlias alias="user" type="com.yxb.user.entity.User"/>
     <typeAlias alias="permission" type="com.yxb.permission.entity.Permission"/>
     <typeAlias alias="role" type="com.yxb.role.entity.Role"/>
+    <typeAlias alias="syllabus" type="com.yxb.syllabus.entity.Syllabus"/>
+    <typeAlias alias="teachTask" type="com.yxb.teachTask.entity.Task"/>
+    <typeAlias alias="course" type="com.yxb.course.entity.Course"/>
+    <typeAlias alias="courseTable" type="com.yxb.courseTable.entity.CourseTable"/>
 </typeAliases>
 </configuration>

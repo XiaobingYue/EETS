@@ -21,6 +21,7 @@
         <result column="timestamp" property="timestamp"></result>
         <result column="sort" property="sort"></result>
         <result column="if_enable" property="ifEnable"></result>
+        <result column="classes_id" property="classesId"></result>
     </resultMap>
 	<select id="loginUser" resultMap="userMap">
 		select *
@@ -49,7 +50,7 @@
                 from t_user_role
                 where USER_ID = #{id}
             )
-        )
+        ) ORDER BY SORT
 	</select>
 
     <select id="queryUserList" resultMap="userMap">
@@ -94,6 +95,9 @@
     <update id="modifyUser">
         update t_user
         set USER_ACCT = #{userAcct} , NAME = #{name} , EMAIL = #{email} , SEX = #{sex} , PHONE = #{phone} , SORT = #{sort} , TIMESTAMP = #{timestamp}
+        <if test="classesId != null">
+            ,CLASSES_ID = #{classes}
+        </if>
         <where>
             id = #{id}
         </where>
@@ -125,5 +129,11 @@
         <foreach collection="roleIds" item="roleId" separator=",">
             USER_ID = #{userId} and ROLE_ID = #{roleId}
         </foreach>
+    </delete>
+
+    <delete id="unAssignByUserId">
+        delete from t_user_role
+        where
+            USER_ID = #{userId}
     </delete>
 </mapper>

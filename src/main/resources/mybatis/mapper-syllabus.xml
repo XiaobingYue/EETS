@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxb.syllabus.dao.SyllabusDao">
+    <resultMap id="syllabusMap" type="syllabus">
+        <id column="id" property="id"></id>
+        <result column="course_code" property="courseCode"></result>
+        <result column="score" property="score"></result>
+        <result column="applicable_professional" property="applicableProfessional"></result>
+        <result column="course_property" property="courseProperty"></result>
+        <result column="course_unit" property="courseUnit"></result>
+        <result column="name" property="name"></result>
+        <result column="file_address" property="fileAddress"></result>
+        <result column="timestamp" property="timestamp"></result>
+        <result column="version" property="version"></result>
+        <result column="course_name" property="courseName"></result>
+        <result column="status" property="status"></result>
+        <result column="developer" property="developer"></result>
+        <result column="develop_time" property="developTime"></result>
+        <result column="reviewer" property="reviewer"></result>
+        <result column="review_time" property="reviewTime"></result>
+        <result column="approver" property="approver"></result>
+        <result column="approve_time" property="approveTime"></result>
+    </resultMap>
+
+    <select id="queryAll" resultMap="syllabusMap">
+        SELECT * FROM t_syllabus WHERE STATUS = #{status}
+         <if test="queryText != null">
+             AND ( NAME LIKE concat('%', #{queryText}, '%')
+             OR COURSE_CODE LIKE concat('%', #{queryText}, '%')
+             OR COURSE_NAME LIKE concat('%', #{queryText}, '%') )
+         </if>
+         ORDER BY TIMESTAMP DESC limit #{start} , #{size}
+    </select>
+
+    <select id="querySyllabusCount" resultType="int">
+        SELECT count(*) FROM t_syllabus WHERE STATUS = #{status}
+        <if test="queryText != null">
+            AND  ( NAME LIKE concat('%', #{queryText}, '%')
+            OR COURSE_CODE LIKE concat('%', #{queryText}, '%')
+            OR COURSE_NAME LIKE concat('%', #{queryText}, '%') )
+        </if>
+    </select>
+
+    <select id="queryById" resultMap="syllabusMap">
+        SELECT * FROM t_syllabus WHERE ID = #{id} AND STATUS = #{status}
+    </select>
+
+    <update id="updateSyllabus">
+        UPDATE t_syllabus SET COURSE_CODE = #{courseCode} , COURSE_NAME=#{courseName},COURSE_UNIT=#{courseUnit},COURSE_PROPERTY=#{courseProperty},SCORE=#{score},APPLICABLE_PROFESSIONAL=#{applicableProfessional},NAME=#{name},TIMESTAMP=#{timestamp},VERSION=#{version},DEVELOPER=#{developer},DEVELOP_TIME=#{developTime},REVIEWER=#{reviewer},REVIEW_TIME=#{reviewTime},APPROVER=#{approver},APPROVE_TIME=#{approveTime}
+         <if test="fileAddress != null">
+             ,FILE_ADDRESS = #{fileAddress}
+         </if>
+        <if test="status != null">
+            ,STATUS = #{status}
+        </if>
+         WHERE ID=#{id}
+    </update>
+
+    <insert id="addSyllabus">
+        INSERT INTO t_syllabus (COURSE_CODE, SCORE, APPLICABLE_PROFESSIONAL, COURSE_UNIT, COURSE_PROPERTY, NAME, FILE_ADDRESS, TIMESTAMP, VERSION, COURSE_NAME, STATUS, DEVELOPER, DEVELOP_TIME, REVIEWER, REVIEW_TIME, APPROVER, APPROVE_TIME) VALUES (#{courseCode},#{score},#{applicableProfessional},#{courseUnit},#{courseProperty},#{name},#{fileAddress},#{timestamp},#{version},#{courseName},#{status},#{developer},#{developTime},#{reviewer},#{reviewTime},#{approver},#{approveTime})
+    </insert>
+</mapper>
