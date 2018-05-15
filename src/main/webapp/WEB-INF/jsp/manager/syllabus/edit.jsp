@@ -17,10 +17,15 @@
     <link rel="stylesheet" href="${APP_PATH}/css/main.css">
     <link rel="stylesheet" href="${APP_PATH}/css/doc.min.css">
     <link rel="stylesheet" href="${APP_PATH}/bootstrap/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="${APP_PATH}/bootstrap/css/bootstrap-select.css">
     <style>
         .tree li {
             list-style-type: none;
             cursor: pointer;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
         }
     </style>
 </head>
@@ -57,8 +62,9 @@
                             <tr>
                                 <td>课程代码：
                                     <c:set var="code" value="${syllabus.courseCode}" scope="request"/>
-                                    <select class="form-control" id="courseCode" name="courseCode"
-                                            onchange="setCourseName(this.id)">
+                                    <select class="selectpicker show-tick form-control" id="courseCode"
+                                            name="courseCode"
+                                            onchange="setCourseName(this.id)" data-live-search="true">
                                         <option value="0">==请选择==</option>
                                         <c:forEach items="${courseList}" var="course" varStatus="vs">
                                             <option id="${course.name}" value="${course.courseCode}"
@@ -67,7 +73,8 @@
                                     </select>
                                 <td colspan="2">课程名称：
                                     <c:set var="courseName" value="${syllabus.courseName}" scope="request"/>
-                                    <select class="form-control" id="courseName" name="courseName"
+                                    <select class="selectpicker show-tick form-control" id="courseName"
+                                            name="courseName" data-live-search="true"
                                             onchange="setCourseCode(this.id)">
                                         <option value="0">==请选择==</option>
                                         <c:forEach items="${courseList}" var="course" varStatus="vs">
@@ -88,16 +95,28 @@
                                 <td>学分：<input type="text" id="score" class="form-control" name="score"
                                               value="${syllabus.score}"
                                               placeholder="学分"></td>
-                                <td>适用专业：<input type="text" id="applicableProfessional" class="form-control"
-                                                name="applicableProfessional"
-                                                value="${syllabus.applicableProfessional}"
-                                                placeholder="适用专业"></td>
+                                <td>适用专业： <c:set var="professionName" value="${syllabus.applicableProfessional}"
+                                                 scope="request"/>
+                                    <select class="selectpicker show-tick form-control" id="applicableProfessional"
+                                            name="applicableProfessional" data-live-search="true">
+                                        <option value="0">==请选择==</option>
+                                        <c:forEach items="${professionList}" var="profession" varStatus="vs">
+                                            <option id="${profession.id}" value="${profession.name}"
+                                                    <c:if test="${profession.name==professionName}">selected</c:if> > ${profession.name}</option>
+                                        </c:forEach>
+                                    </select></td>
                             </tr>
                             <tr>
-                                <td colspan="2">开课单位：<input type="text" id="courseUnit" class="form-control"
-                                                            name="courseUnit"
-                                                            value="${syllabus.courseUnit}"
-                                                            placeholder="开课单位"></td>
+                                <td colspan="2">开课单位：
+                                    <c:set var="instituteName" value="${syllabus.courseUnit}" scope="request"/>
+                                    <select class="selectpicker show-tick form-control" id="courseUnit"
+                                            name="courseUnit" data-live-search="true">
+                                        <option value="0">==请选择==</option>
+                                        <c:forEach items="${instituteList}" var="institute" varStatus="vs">
+                                            <option id="${institute.id}" value="${institute.name}"
+                                                    <c:if test="${institute.name==instituteName}">selected</c:if> > ${institute.name}</option>
+                                        </c:forEach>
+                                    </select></td>
                                 <td>大纲版本：<input type="text" id="version" class="form-control" name="version"
                                                 value="${syllabus.version}"
                                                 placeholder="大纲版本"></td>
@@ -184,6 +203,8 @@
 <script src="${APP_PATH}/bootstrap/js/moment-with-locales.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="${APP_PATH}/bootstrap/js/bootstrap-select.js"></script>
+<script src="${APP_PATH}/bootstrap/js/defaults-zh_CN.js"></script>
 <script type="text/javascript">
     $(function () {
         $(".list-group-item").click(function () {
@@ -213,13 +234,13 @@
     function setCourseName(id) {
         var options = $("#" + id + " option:selected");
         var courseName = options.attr("id");
-        $("#courseName").val(courseName);
+        $('#courseName').selectpicker('val',courseName);
     }
 
     function setCourseCode(id) {
         var options = $("#" + id + " option:selected");
         var courseCode = options.attr("id");
-        $("#courseCode").val(courseCode);
+        $('#courseCode').selectpicker('val',courseCode);
     }
 
     var flag = true;

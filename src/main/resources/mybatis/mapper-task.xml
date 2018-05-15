@@ -4,21 +4,24 @@
     <resultMap id="taskMap" type="teachTask">
         <id column="id" property="id"></id>
         <result column="name" property="name"></result>
-        <result column="professional" property="professional"></result>
-        <result column="classes" property="classes"></result>
+        <result column="professional_id" property="professionalId"></result>
+        <result column="pro_name" property="proName"></result>
+        <result column="classes_name" property="classesName"></result>
+        <result column="classes_id" property="classesId"></result>
         <result column="term" property="term"></result>
         <result column="content" property="content"></result>
         <result column="status" property="status"></result>
-        <result column="course" property="course"></result>
+        <result column="course_id" property="courseId"></result>
+        <result column="course_name" property="courseName"></result>
         <result column="timestamp" property="timestamp"></result>
     </resultMap>
 
     <select id="queryAll" resultMap="taskMap">
         SELECT * FROM t_teach_task WHERE STATUS != #{status}
-         <if test="queryText != null">
-             AND NAME LIKE concat('%', #{queryText}, '%')
-         </if>
-         ORDER BY TIMESTAMP DESC limit #{start} , #{size}
+        <if test="queryText != null">
+            AND NAME LIKE concat('%', #{queryText}, '%')
+        </if>
+        ORDER BY TIMESTAMP DESC limit #{start} , #{size}
     </select>
 
     <select id="queryCount" resultType="int">
@@ -33,10 +36,51 @@
     </select>
 
     <update id="updateTeachTask">
-        UPDATE t_teach_task SET NAME = #{name} , PROFESSIONAL = #{professional} , CLASSES = #{classes} , TERM = #{term} , CONTENT = #{content} , STATUS = #{status} , TIMESTAMP = #{timestamp} , COURSE = #{course} WHERE ID = #{id}
+        UPDATE t_teach_task SET NAME = #{name} , PROFESSIONAL_ID = #{professionalId} ,
+        <if test="proName != null">
+            PRO_NAME = #{proName} ,
+        </if>
+        CLASSES_ID = #{classesId} ,
+        <if test="classesName != null">
+            CLASSES_NAME = #{classesName} ,
+        </if>
+        TERM = #{term} , CONTENT = #{content} , STATUS = #{status} , TIMESTAMP = #{timestamp} , COURSE_ID = #{courseId}
+        <if test="courseName != null">
+            , COURSE_NAME = #{courseName}
+        </if>
+        WHERE ID = #{id}
     </update>
 
     <insert id="addTeachTask">
-        INSERT INTO t_teach_task (NAME, PROFESSIONAL, CLASSES, TERM, CONTENT, STATUS, TIMESTAMP, COURSE) VALUES (#{name} , #{professional} , #{classes} , #{term} , #{content} , #{status} , #{timestamp} , #{course})
+        INSERT INTO t_teach_task (NAME, PROFESSIONAL_ID, PRO_NAME, CLASSES_ID, CLASSES_NAME, TERM, CONTENT, STATUS, TIMESTAMP, COURSE_ID, COURSE_NAME) VALUES (#{name} , #{professionalId},#{proName} , #{classesId},#{classesName} , #{term} , #{content} , #{status} , #{timestamp} , #{courseId},#{courseName})
     </insert>
+
+    <insert id="addTeachersTask">
+        INSERT INTO t_task_teacher (TEACHER_ID,TASK_ID) VALUES
+        <foreach collection="teacherIds" item="teacherId" separator=",">
+            (#{teacherId}, #{taskId})
+        </foreach>
+    </insert>
+
+    <update id="releaseTask">
+        UPDATE t_teach_task SET STATUS = #{status},TIMESTAMP = #{timestamp} WHERE ID = #{id}
+    </update>
+
+    <select id="queryMyTask" resultMap="taskMap">
+        SELECT * FROM t_teach_task WHERE STATUS != #{status} AND ID IN (
+        SELECT TASK_ID FROM t_task_teacher WHERE TEACHER_ID = #{teacherId})
+        ORDER BY TIMESTAMP DESC
+        <if test="start != null">
+            limit #{start} , #{size}
+        </if>
+    </select>
+
+    <select id="queryMyCount" resultType="int">
+        SELECT count(*) FROM t_teach_task WHERE STATUS != #{status} AND ID IN (
+        SELECT TASK_ID FROM t_task_teacher WHERE TEACHER_ID = #{teacherId})
+    </select>
+
+    <delete id="deleteTeachersTask">
+        DELETE FROM t_task_teacher WHERE TASK_ID = #{id}
+    </delete>
 </mapper>

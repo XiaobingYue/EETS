@@ -1,5 +1,6 @@
 package com.yxb.teachTask.dao;
 
+import com.yxb.teachTask.bean.TeachersTask;
 import com.yxb.teachTask.entity.Task;
 import org.springframework.stereotype.Repository;
 
@@ -21,4 +22,14 @@ public interface TeachTaskDao {
     void updateTeachTask(Task task);
 
     void addTeachTask(Task task);
+
+    void addTeachersTask(TeachersTask teachersTask);
+
+    void releaseTask(Task task);
+
+    List<Task> queryMyTask(Map<String, Object> paramMap);
+
+    int queryMyCount(Map<String, Object> paramMap);
+
+    void deleteTeachersTask(Task task);
 }

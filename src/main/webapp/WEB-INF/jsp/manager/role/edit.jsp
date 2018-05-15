@@ -17,6 +17,9 @@
             list-style-type: none;
             cursor: pointer;
         }
+        ::-webkit-scrollbar{
+            display:none;
+        }
     </style>
 </head>
 
@@ -32,7 +35,7 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <ol class="breadcrumb">
-                <li><a href="${APP_PATH}/manager/main.htm">首页</a></li>
+                <li><a href="${APP_PATH}/toMain.do">首页</a></li>
                 <li><a href="${APP_PATH}/roleController/toRoleList.do">数据列表</a></li>
                 <li class="active">修改</li>
             </ol>

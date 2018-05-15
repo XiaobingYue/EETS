@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,13 +24,16 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.debug("preHandler >>>");
         String uri = request.getRequestURI();
+        log.debug(uri);
         // 判断是否需要过滤
         //System.out.println( "uri = " + uri );
         // 白名单
+        ServletContext application = request.getSession().getServletContext();
+        String appPath = (String) application.getAttribute("APP_PATH");
         Set<String> whiteListSet = new HashSet<>();
-        whiteListSet.add("/index.jsp");
-        whiteListSet.add("/userController/login.do");
-        whiteListSet.add("/toLogin.do");
+        whiteListSet.add(appPath+"/index.jsp");
+        whiteListSet.add(appPath+"/userController/login.do");
+        whiteListSet.add(appPath+"/toLogin.do");
 
         if (whiteListSet.contains(uri)) {
             log.debug("white List...");
@@ -46,7 +50,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             if (loginUser == null) {
                 //如果没有登陆，那么需要跳转回到登陆页面
                 log.debug("not login redirect to login page...");
-                response.sendRedirect("/index.jsp");
+                response.sendRedirect(appPath+"/index.jsp");
                 return false;
             }
             log.debug("access preHandler <<<");

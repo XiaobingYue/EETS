@@ -10,6 +10,7 @@
         <result column="status" property="status"></result>
         <result column="icon" property="icon"></result>
         <result column="sort" property="sort"></result>
+        <result column="type" property="type"></result>
         <result column="timestamp" property="timestamp"></result>
     </resultMap>
 	<select id="queryAll" resultMap="permissionMap">
@@ -25,7 +26,7 @@
     </select>
 
     <insert id="addPermission">
-        INSERT INTO t_permission (NAME,URL,PARENT_ID,SORT,STATUS,TIMESTAMP) VALUES (#{name} , #{url} , #{parentId},#{sort},#{status},#{timestamp})
+        INSERT INTO t_permission (NAME,URL,PARENT_ID,SORT,STATUS,TIMESTAMP,TYPE) VALUES (#{name} , #{url} , #{parentId},#{sort},#{status},#{timestamp},#{type})
     </insert>
 
     <select id="queryChildPermissionByParentId" resultMap="permissionMap">
@@ -51,7 +52,7 @@
 
     <update id="updatePermission">
         UPDATE t_permission
-        SET NAME = #{name} , URL = #{url} , SORT = #{sort} , TIMESTAMP = #{timestamp}
+        SET NAME = #{name} , URL = #{url} , SORT = #{sort} , TIMESTAMP = #{timestamp},TYPE = #{type}
         WHERE ID = #{id}
     </update>
 </mapper>

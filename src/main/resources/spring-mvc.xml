@@ -7,6 +7,9 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<context:annotation-config />
+
 	<mvc:annotation-driven>
 		<mvc:message-converters>
 			<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
@@ -31,13 +34,10 @@
     </bean>
 	    
 	<!-- 使用annotation 自动注册bean,并保证@Required,@Autowired的属性被注入 -->
-	<context:component-scan base-package="com.yxb.*">
- 			<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
- 	</context:component-scan>
- <!--	<aop:aspectj-autoproxy proxy-target-class="true">
-        <aop:include name="controllerAspect"/>
-    </aop:aspectj-autoproxy>-->
-    
+	<context:component-scan base-package="com.yxb.*" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
 	<!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/" />
@@ -46,6 +46,7 @@
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 	<mvc:interceptors>
             <bean class="com.yxb.dispatcher.interceptor.LoginInterceptor"></bean>
+		 	<bean class="com.yxb.dispatcher.interceptor.UserPermissionInterceptor"></bean>
     </mvc:interceptors>
 
 </beans>

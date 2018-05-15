@@ -1,8 +1,7 @@
 package com.yxb.courseTable.service.impl;
 
-import com.yxb.course.dao.CourseDao;
-import com.yxb.course.entity.Course;
-import com.yxb.course.service.CourseService;
+import com.yxb.multiManage.entity.Course;
+import com.yxb.multiManage.service.CourseService;
 import com.yxb.courseTable.bean.CourseTableBean;
 import com.yxb.courseTable.dao.CourseTableDao;
 import com.yxb.courseTable.entity.CourseTable;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,13 +27,24 @@ public class CourseTableServiceImpl implements CourseTableService{
     private CourseService courseService;
 
     @Override
-    public List<CourseTableBean> queryCourseTableList(Integer id) {
+    public List<CourseTableBean> queryCourseTableList(Map<String,Object> paramMap) {
         List<CourseTableBean> courseTableBeans = new ArrayList<>();
+        Integer userId = (Integer) paramMap.get("userId");
+        Integer classesId = (Integer) paramMap.get("classesId");
+        this.queryList(userId,classesId,courseTableBeans);
+        return courseTableBeans;
+    }
+
+    private void queryList(Integer userId, Integer classesId,List<CourseTableBean> courseTableBeans) {
         for (int i = 1;i<5;i++) {
             CourseTable table = new CourseTable();
-            table.setUserId(id);
+            if (userId == null && classesId != null) {
+                table.setClassesId(classesId);
+            } else {
+                table.setUserId(userId);
+            }
             table.setSection(i+"");
-            List<CourseTable> courseTables = courseTableDao.queryByUserIdAndSection(table);
+            List<CourseTable> courseTables = courseTableDao.queryByUserIdOrClassesIdAndSection(table);
             if(!CollectionUtils.isEmpty(courseTables)) {
                 CourseTableBean courseTableBean = new CourseTableBean();
                 courseTableBean.setSection(i+"");
@@ -71,15 +80,22 @@ public class CourseTableServiceImpl implements CourseTableService{
                 courseTableBeans.add(courseTableBean);
             }
         }
-        return courseTableBeans;
     }
 
     @Override
-    public void editCourseTable(CourseTableBean courseTableBean , Integer userId) {
+    public void editCourseTable(CourseTableBean courseTableBean,UserBean userBean) {
         CourseTable courseTable = new CourseTable();
         courseTable.setTimestamp(System.currentTimeMillis());
         courseTable.setSection(courseTableBean.getSection());
-        courseTable.setUserId(userId);
+        if(courseTableBean.getClassesId() != null) {
+            courseTable.setClassesId(courseTableBean.getClassesId());
+        } else {
+            if (courseTableBean.getType() == 1) {
+                courseTable.setUserId(userBean.getId());
+            } else {
+                courseTable.setClassesId(userBean.getClassesId());
+            }
+        }
         Integer courseId;
         Course course;
         switch (courseTableBean.getField()) {
@@ -151,8 +167,18 @@ public class CourseTableServiceImpl implements CourseTableService{
     }
 
     @Override
-    public String addCourseTable(UserBean userBean) {
-        Integer count = courseTableDao.queryByUserId(userBean.getId());
+    public String addCourseTable(UserBean userBean,Integer type , String name,Integer classesId) {
+        Integer count;
+        CourseTable table = new CourseTable();
+        if (type == 1){
+            table.setUserId(userBean.getId());
+            count = courseTableDao.queryByUserIdOrClassesId(table);
+        } else if(type == 0 && classesId == null) {
+            return "请选择班级";
+        } else {
+            table.setClassesId(classesId);
+            count = courseTableDao.queryByUserIdOrClassesId(table);
+        }
         if(count == 0) {
             List<CourseTable> courseTableList = new ArrayList<>();
             for (int i = 1;i<8;i++) {
@@ -160,7 +186,12 @@ public class CourseTableServiceImpl implements CourseTableService{
                     CourseTable courseTable = new CourseTable();
                     courseTable.setWeek(i+"");
                     courseTable.setSection(j+"");
-                    courseTable.setUserId(userBean.getId());
+                    courseTable.setName(name);
+                    if(type == 1) {
+                        courseTable.setUserId(userBean.getId());
+                    } else {
+                        courseTable.setClassesId(classesId);
+                    }
                     courseTable.setTimestamp(System.currentTimeMillis());
                     courseTableList.add(courseTable);
                 }
@@ -169,7 +200,7 @@ public class CourseTableServiceImpl implements CourseTableService{
                 courseTableDao.insertCourseTable(courseTable);
             }
         } else {
-            return "您已经创建过课程表了";
+            return "已经创建过课程表了";
         }
         return "";
     }

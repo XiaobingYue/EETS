@@ -9,6 +9,7 @@ import com.yxb.common.entity.Page;
 import com.yxb.permission.entity.Permission;
 import com.yxb.user.Bean.ImportUserBean;
 import com.yxb.user.Bean.UserBean;
+import com.yxb.user.entity.LoginRecord;
 import com.yxb.user.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +19,7 @@ public interface UserService {
 
     void registerUser(UserBean user);
 
-    List<Permission> getPermissionsByUserId(Integer id);
+    List<Permission> getPermissionsByUserId(Map<String , Object> paramMap);
 
     Page<User> queryUserList(Map<String, Object> paramMap, Integer pageNo, Integer pageSize);
 
@@ -54,4 +55,14 @@ public interface UserService {
      * @param errorList       错误信息列表
      */
     void importUser(MultipartFile file, Set<ImportUserBean> wellList, List<ImportUserBean> exitList, List<ImportUserBean> infoNotExitList, List<ImportUserBean> errorList) throws Exception;
+
+    List<User> queryTeacherListByRoleId();
+
+    List<Permission> queryMyPermission(Integer id);
+
+    void changePassword(UserBean userBean, String newPwd);
+
+    Map<String,Object> queryRecentLoginRecord();
+
+    void addLoginRecord();
 }

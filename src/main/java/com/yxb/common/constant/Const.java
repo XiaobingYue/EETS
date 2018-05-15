@@ -1,5 +1,12 @@
 package com.yxb.common.constant;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 /**
  * 常量类
  * Created by yxb on 2018/4/28
@@ -44,5 +51,9 @@ public class Const {
 
     public static final String TEACH_TASK_DELETED = "0";
 
+    public static final Integer TEACHER_ROLE_ID = 9;
 
+
+    public static void main (String[] args) throws ParseException {
+    }
 }

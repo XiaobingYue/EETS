@@ -1,14 +1,18 @@
 package com.yxb.user.service.impl;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.yxb.common.constant.Const;
 import com.yxb.common.entity.Page;
 import com.yxb.common.util.ExcelUtil;
 import com.yxb.common.util.MD5Util;
+import com.yxb.common.util.Utils;
 import com.yxb.user.Bean.ImportUserBean;
+import com.yxb.user.Bean.JsonDate;
 import com.yxb.user.Bean.UserBean;
+import com.yxb.user.entity.LoginRecord;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -39,10 +43,17 @@ public class UserServiceImpl implements UserService {
         user.setTimestamp(System.currentTimeMillis());
         user.setIfEnable(Const.ENABLE_1);
         dao.registerUser(user);
+        User queryUser = dao.findUserByUserAcct(user);
+        if(!CollectionUtils.isEmpty(user.getRoleIds())) {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("userId", queryUser.getId());
+            paramMap.put("roleIds", user.getRoleIds());
+            this.assign(paramMap);
+        }
     }
 
-    public List<Permission> getPermissionsByUserId(Integer id) {
-        return dao.getPermissionsByUserId(id);
+    public List<Permission> getPermissionsByUserId(Map<String , Object> paramMap) {
+        return dao.getPermissionsByUserId(paramMap);
     }
 
     @Override
@@ -76,7 +87,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserBean findUserByUserAcct(String userAcct) {
-        User user = dao.findUserByUserAcct(userAcct);
+        User user = new User();
+        user.setUserAcct(userAcct);
+        user.setIfEnable(Const.ENABLE_1);
+        user = dao.findUserByUserAcct(user);
         if (user == null) return null;
         UserBean userBean = new UserBean();
         BeanUtils.copyProperties(user, userBean);
@@ -134,7 +148,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<Permission> queryUserPermission(Integer id) {
-        List<Permission> list = this.getPermissionsByUserId(id);
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("id",id);
+        paramMap.put("type","1");
+        List<Permission> list = this.getPermissionsByUserId(paramMap);
         List<Permission> root = new ArrayList<>();
         Map<Integer, Permission> permissionMap = new HashMap<>();
         for (Permission permission : list) {
@@ -166,6 +183,63 @@ public class UserServiceImpl implements UserService {
             User user = new User();
             BeanUtils.copyProperties(userBean,user);
             dao.registerUser(user);
+        }
+    }
+
+    @Override
+    public List<User> queryTeacherListByRoleId() {
+        return dao.queryTeacherListByRoleId(Const.TEACHER_ROLE_ID);
+    }
+
+    @Override
+    public List<Permission> queryMyPermission(Integer id) {
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("id",id);
+        return dao.getPermissionsByUserId(paramMap);
+    }
+
+    @Override
+    public void changePassword(UserBean userBean, String newPwd) {
+        userBean.setPassword(MD5Util.digest(newPwd));
+        userBean.setTimestamp(System.currentTimeMillis());
+        dao.changePassword(userBean);
+    }
+
+    @Override
+    public Map<String,Object> queryRecentLoginRecord() {
+        List<String> dateList = Utils.getRecentDate("yyyy-MM-dd");
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("dateList",dateList);
+        Map<String,Object> jsonDatas = new HashMap<>();
+        List<LoginRecord> loginRecordList = dao.queryRecentLoginRecord(paramMap);
+        List<String> xContent = new ArrayList<>();
+        List<Long> date = new ArrayList<>();
+        JsonDate jsonDate = new JsonDate();
+        for (LoginRecord record : loginRecordList) {
+            xContent.add(record.getDate());
+            date.add(record.getCount());
+        }
+        jsonDate.setData(date);
+        jsonDatas.put("xContent",xContent);
+        jsonDatas.put("data",jsonDate);
+        return jsonDatas;
+    }
+
+    @Override
+    public void addLoginRecord() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        Date date = calendar.getTime();
+        String str = new SimpleDateFormat("yyyy-MM-dd").format(date);
+        LoginRecord record = dao.queryLoginRecordByDate(str);
+        if(record == null) {
+            record = new LoginRecord();
+            record.setCount(1L);
+            record.setDate(str);
+            dao.addLoginRecord(record);
+        } else {
+            record.setCount(record.getCount()+1L);
+            dao.updateLoginRecord(record);
         }
     }
 
@@ -210,5 +284,6 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
+
 }
 

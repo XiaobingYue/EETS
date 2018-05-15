@@ -19,6 +19,7 @@ public class Permission {
     private List<Permission> childNodes = new ArrayList<Permission>();
     private String note;
     private Integer parentId;
+    private String type;
     /**
      * 默认有效
      */
@@ -32,6 +33,14 @@ public class Permission {
      * 时间戳
      */
     private Long timestamp;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getSort() {
         return sort;

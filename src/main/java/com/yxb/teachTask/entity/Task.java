@@ -2,6 +2,8 @@ package com.yxb.teachTask.entity;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 教学任务实体
  *
@@ -14,11 +16,15 @@ public class Task {
     @NotBlank(message = "任务名称不能为空")
     private String name;
 
-    @NotBlank(message = "所属专业不能为空")
-    private String  professional;
+    @NotNull(message = "所属专业不能为空")
+    private Integer  professionalId;
 
-    @NotBlank(message = "所属班级不能为空")
-    private String classes;
+    private String proName;
+
+    @NotNull(message = "所属班级不能为空")
+    private Integer classesId;
+
+    private String classesName;
 
     @NotBlank(message = "学期不能为空")
     private String term;
@@ -30,8 +36,34 @@ public class Task {
 
     private Long timestamp;
 
-    @NotBlank(message = "所属课程不能为空")
-    private String course;
+    @NotNull(message = "所属课程不能为空")
+    private Integer courseId;
+
+    private String courseName;
+
+    public String getProName() {
+        return proName;
+    }
+
+    public void setProName(String proName) {
+        this.proName = proName;
+    }
+
+    public String getClassesName() {
+        return classesName;
+    }
+
+    public void setClassesName(String classesName) {
+        this.classesName = classesName;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
 
     public Integer getId() {
         return id;
@@ -47,22 +79,6 @@ public class Task {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getProfessional() {
-        return professional;
-    }
-
-    public void setProfessional(String professional) {
-        this.professional = professional;
-    }
-
-    public String getClasses() {
-        return classes;
-    }
-
-    public void setClasses(String classes) {
-        this.classes = classes;
     }
 
     public String getTerm() {
@@ -97,11 +113,27 @@ public class Task {
         this.timestamp = timestamp;
     }
 
-    public String getCourse() {
-        return course;
+    public Integer getProfessionalId() {
+        return professionalId;
     }
 
-    public void setCourse(String course) {
-        this.course = course;
+    public void setProfessionalId(Integer professionalId) {
+        this.professionalId = professionalId;
+    }
+
+    public Integer getClassesId() {
+        return classesId;
+    }
+
+    public void setClassesId(Integer classesId) {
+        this.classesId = classesId;
+    }
+
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
     }
 }

@@ -36,24 +36,6 @@
 			<input type="password" class="form-control" id="password" name="password" value="123123" placeholder="请输入登录密码" style="margin-top:10px;">
 			<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 		  </div>
-		  <div class="form-group has-success has-feedback">
-			<select id="usertype" class="form-control" >
-                <option value="member" >会员</option>
-                <option value="user" selected>管理</option>
-            </select>
-		  </div>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> 记住我
-          </label>
-          <br>
-          <label>
-            忘记密码
-          </label>
-          <label style="float:right">
-            <a href="reg.html">我要注册</a>
-          </label>
-        </div>
         <a class="btn btn-lg btn-success btn-block" onclick="dologin()" > 登录</a>
       </form>
     </div>

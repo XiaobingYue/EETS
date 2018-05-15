@@ -18,6 +18,9 @@
         list-style-type: none;
 		cursor:pointer;
 	}
+    ::-webkit-scrollbar{
+        display:none;
+    }
 	table tbody tr:nth-child(odd){background:#F4F4F4;}
 	table tbody td:nth-child(even){color:#C00;}
 	</style>

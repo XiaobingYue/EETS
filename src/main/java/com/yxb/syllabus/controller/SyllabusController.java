@@ -5,8 +5,12 @@ import com.yxb.common.entity.AjaxResult;
 import com.yxb.common.entity.Page;
 import com.yxb.common.util.StringUtil;
 import com.yxb.common.util.Utils;
-import com.yxb.course.entity.Course;
-import com.yxb.course.service.CourseService;
+import com.yxb.multiManage.entity.Course;
+import com.yxb.multiManage.entity.Institute;
+import com.yxb.multiManage.entity.Profession;
+import com.yxb.multiManage.service.CourseService;
+import com.yxb.multiManage.service.InstituteService;
+import com.yxb.multiManage.service.ProfessionService;
 import com.yxb.syllabus.entity.Syllabus;
 import com.yxb.syllabus.service.SyllabusService;
 import org.slf4j.Logger;
@@ -27,7 +31,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by yxb on 2018/5/1
@@ -39,13 +42,16 @@ public class SyllabusController {
     private static final Logger log = LoggerFactory.getLogger(SyllabusController.class);
 
     private final SyllabusService syllabusService;
-
     private final CourseService courseService;
+    private final InstituteService instituteService;
+    private final ProfessionService professionService;
 
     @Autowired
-    public SyllabusController(SyllabusService syllabusService, CourseService courseService) {
+    public SyllabusController(SyllabusService syllabusService, CourseService courseService, InstituteService instituteService, ProfessionService professionService) {
         this.syllabusService = syllabusService;
         this.courseService = courseService;
+        this.instituteService = instituteService;
+        this.professionService = professionService;
     }
 
     @RequestMapping("/toSyllabus.do")
@@ -84,8 +90,12 @@ public class SyllabusController {
     public String toEdit(Integer id, Model model) {
         Syllabus syllabus = syllabusService.queryById(id);
         List<Course> courseList = courseService.queryAllCourse();
+        List<Institute> instituteList = instituteService.queryAllInstitute();
+        List<Profession> professionList = professionService.queryAllProfession();
         model.addAttribute("syllabus", syllabus);
         model.addAttribute("courseList" , courseList);
+        model.addAttribute("instituteList" , instituteList);
+        model.addAttribute("professionList" , professionList);
         return "manager/syllabus/edit";
     }
 
@@ -185,7 +195,13 @@ public class SyllabusController {
     }
 
     @RequestMapping("/toAddSyllabusPage.do")
-    public String toAddSyllabusPage() {
+    public String toAddSyllabusPage(Model model) {
+        List<Course> courseList = courseService.queryAllCourse();
+        List<Institute> instituteList = instituteService.queryAllInstitute();
+        List<Profession> professionList = professionService.queryAllProfession();
+        model.addAttribute("courseList" , courseList);
+        model.addAttribute("instituteList" , instituteList);
+        model.addAttribute("professionList" , professionList);
         return "manager/syllabus/add";
     }
 

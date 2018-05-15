@@ -10,20 +10,40 @@
         <result column="section" property="section"></result>
         <result column="user_id" property="userId"></result>
         <result column="timestamp" property="timestamp"></result>
+        <result column="class_id" property="classesId"></result>
     </resultMap>
 
-    <select id="queryByUserIdAndSection" resultMap="courseTableMap">
-        SELECT * FROM t_course_table WHERE USER_ID = #{userId} AND SECTION = #{section}
+    <select id="queryByUserIdOrClassesIdAndSection" resultMap="courseTableMap">
+        SELECT * FROM t_course_table WHERE
+        <if test="userId != null">
+            USER_ID = #{userId}
+        </if>
+        <if test="classesId != null">
+          CLASSES_ID = #{classesId}
+        </if>
+         AND SECTION = #{section}
     </select>
 
     <update id="updateCourseTable">
-        UPDATE t_course_table SET COURSE_NAME = #{courseName},COURSE_ID = #{courseId} , TIMESTAMP = #{timestamp} WHERE WEEK = #{week} AND SECTION = #{section} AND USER_ID = #{userId}
+        UPDATE t_course_table SET COURSE_NAME = #{courseName},COURSE_ID = #{courseId} , TIMESTAMP = #{timestamp} WHERE WEEK = #{week} AND SECTION = #{section}
+        <if test="userId != null">
+        AND USER_ID = #{userId}
+        </if>
+        <if test="classesId != null">
+            AND CLASSES_ID = #{classesId}
+        </if>
     </update>
-    <select id="queryByUserId" resultType="int">
-        SELECT count(*) FROM t_course_table where USER_ID = #{userId}
+    <select id="queryByUserIdOrClassesId" resultType="int">
+        SELECT count(*) FROM t_course_table where
+        <if test="userId != null">
+           USER_ID = #{userId}
+        </if>
+        <if test="classesId != null">
+            CLASSES_ID = #{classesId}
+        </if>
     </select>
 
     <insert id="insertCourseTable">
-        INSERT INTO t_course_table (WEEK,SECTION,USER_ID,TIMESTAMP) VALUES (#{week} , #{section} , #{userId} , #{timestamp})
+        INSERT INTO t_course_table (NAME,WEEK,SECTION,USER_ID,TIMESTAMP,CLASSES_ID) VALUES (#{name},#{week} , #{section} , #{userId} , #{timestamp} , #{classesId})
     </insert>
 </mapper>

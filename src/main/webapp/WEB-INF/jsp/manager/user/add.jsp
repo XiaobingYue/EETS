@@ -13,10 +13,14 @@
     <link rel="stylesheet" href="${APP_PATH}/css/font-awesome.min.css">
     <link rel="stylesheet" href="${APP_PATH}/css/main.css">
     <link rel="stylesheet" href="${APP_PATH}/css/doc.min.css">
+    <link rel="stylesheet" href="${APP_PATH}/bootstrap/css/bootstrap-select.css">
     <style>
         .tree li {
             list-style-type: none;
             cursor: pointer;
+        }
+        ::-webkit-scrollbar{
+            display:none;
         }
     </style>
 </head>
@@ -32,7 +36,7 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <ol class="breadcrumb">
-                <li><a href="${APP_PATH}/toIndex.do">首页</a></li>
+                <li><a href="${APP_PATH}/toMain.do">首页</a></li>
                 <li><a href="${APP_PATH}/userController/toUserList.do">数据列表</a></li>
                 <li class="active">新增</li>
             </ol>
@@ -60,10 +64,26 @@
                         </div>
                         <div class="form-group">
                             <label>性别</label>
-                            <select class="form-control" id="sex">
-                                <option value="1" <c:if test="${user.sex == 1}">selected</c:if>>男</option>
-                                <option value="0" <c:if test="${user.sex == 0}">selected</c:if>>女</option>
+                            <select class="form-control" id="sex" name="sex">
+                                <option value="1">男</option>
+                                <option value="0">女</option>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label>角色</label>
+                            <select class="selectpicker show-tick form-control " id="roleIds" name="roleIds" multiple data-live-search="true">
+                                <c:forEach items="${roleList}" var="role" varStatus="vs">
+                                    <option id="${role.roleName}" value="${role.id}"> ${role.roleName}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>班级</label>
+                            <select class="form-control has-success" id="classesId" name="classesId">
+                                <option value=""></option>
+                                <c:forEach items="${classesList}" var="classes" varStatus="vs">
+                                    <option id="${classes.id}" value="${classes.id}"> ${classes.className}</option>
+                                </c:forEach></select>
                         </div>
                         <div class="form-group">
                             <label>手机号</label>
@@ -75,10 +95,6 @@
                             <input type="text" class="form-control" id="sort" name="sort"
                                    placeholder="请输入用户排序">
                         </div>
-                        <%--  <div class="form-group">
-                            <label for="exampleInputEmail1">头像</label>
-                            <input type="file" class="form-control" id="userIcon" name="userIcon" placeholder="请上传个人头像">
-                          </div>--%>
                         <button type="button" id="insertBtn" class="btn btn-success"><i
                                 class="glyphicon glyphicon-plus"></i> 新增
                         </button>
@@ -121,6 +137,8 @@
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
 <script src="${APP_PATH}/script/layer/layer.js"></script>
 <script src="${APP_PATH}/jquery/jquery.form.js"></script>
+<script src="${APP_PATH}/bootstrap/js/bootstrap-select.js"></script>
+<script src="${APP_PATH}/bootstrap/js/defaults-zh_CN.js"></script>
 <script type="text/javascript">
     $(function () {
         $(".list-group-item").click(function () {

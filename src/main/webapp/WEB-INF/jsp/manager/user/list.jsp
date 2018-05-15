@@ -26,6 +26,9 @@
         table tbody td:nth-child(even) {
             color: #C00;
         }
+        ::-webkit-scrollbar{
+            display:none;
+        }
     </style>
 </head>
 

@@ -17,6 +17,9 @@
             list-style-type: none;
             cursor: pointer;
         }
+        ::-webkit-scrollbar{
+            display:none;
+        }
     </style>
 </head>
 
@@ -43,12 +46,19 @@
                 <div class="panel-body">
                     <form role="form">
                         <div class="form-group">
-                            <label for="exampleInputPassword1">许可名称</label>
+                            <label>许可名称</label>
                             <input type="text" class="form-control" id="permissionname" placeholder="请输入许可名称">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">链接地址</label>
+                            <label>链接地址</label>
                             <input type="text" class="form-control" id="url" placeholder="请输入链接地址">
+                        </div>
+                        <div class="form-group">
+                            <label>类型</label>
+                            <select class="form-control" id="type">
+                                <option value="1">同步</option>
+                                <option value="2">异步</option>
+                            </select>
                         </div>
                         <button id="saveBtn" type="button" class="btn btn-success"><i
                                 class="glyphicon glyphicon-plus"></i> 新增
@@ -114,7 +124,8 @@
             data: {
                 "name": $("#permissionname").val(),
                 "url": $("#url").val(),
-                "parentId": "${param.id}"
+                "parentId": "${param.id}",
+                "type" : $("#type").val()
             },
             beforeSend: function () {
                 loadingIndex = layer.msg('数据保存中', {icon: 16});

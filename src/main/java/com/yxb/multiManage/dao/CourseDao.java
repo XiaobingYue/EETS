@@ -1,6 +1,6 @@
-package com.yxb.course.dao;
+package com.yxb.multiManage.dao;
 
-import com.yxb.course.entity.Course;
+import com.yxb.multiManage.entity.Course;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

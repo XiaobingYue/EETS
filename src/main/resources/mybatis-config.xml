@@ -7,7 +7,13 @@
     <typeAlias alias="role" type="com.yxb.role.entity.Role"/>
     <typeAlias alias="syllabus" type="com.yxb.syllabus.entity.Syllabus"/>
     <typeAlias alias="teachTask" type="com.yxb.teachTask.entity.Task"/>
-    <typeAlias alias="course" type="com.yxb.course.entity.Course"/>
+    <typeAlias alias="course" type="com.yxb.multiManage.entity.Course"/>
     <typeAlias alias="courseTable" type="com.yxb.courseTable.entity.CourseTable"/>
+    <typeAlias alias="classes" type="com.yxb.multiManage.entity.Classes"/>
+    <typeAlias alias="profession" type="com.yxb.multiManage.entity.Profession"/>
+    <typeAlias alias="institute" type="com.yxb.multiManage.entity.Institute"/>
+    <typeAlias alias="textBook" type="com.yxb.textBook.entity.TextBook"/>
+    <typeAlias alias="loginRecord" type="com.yxb.user.entity.LoginRecord"/>
+    <typeAlias type="com.yxb.trainingPlan.entity.Plan" alias="plan"/>
 </typeAliases>
 </configuration>

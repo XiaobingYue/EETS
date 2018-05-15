@@ -1,7 +1,7 @@
-package com.yxb.course.service;
+package com.yxb.multiManage.service;
 
 import com.yxb.common.entity.Page;
-import com.yxb.course.entity.Course;
+import com.yxb.multiManage.entity.Course;
 
 import java.util.List;
 import java.util.Map;

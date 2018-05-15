@@ -17,10 +17,15 @@
     <link rel="stylesheet" href="${APP_PATH}/css/main.css">
     <link rel="stylesheet" href="${APP_PATH}/css/doc.min.css">
     <link rel="stylesheet" href="${APP_PATH}/bootstrap/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="${APP_PATH}/bootstrap/css/bootstrap-select.css">
     <style>
         .tree li {
             list-style-type: none;
             cursor: pointer;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
         }
     </style>
 </head>
@@ -58,26 +63,49 @@
                                 <td>任务名称：<input type="text" id="name" class="form-control" name="name"
                                                 value="${teachTask.name}"
                                                 placeholder="请输入名称"></td>
-                                <td colspan="2">所属专业：<input type="text" id="professional" class="form-control"
-                                                            name="professional"
-                                                            value="${teachTask.professional}"
-                                                            placeholder="所属专业"></td>
+                                <td colspan="2">所属专业：<c:set var="professionalId"
+                                                            value="${teachTask.professionalId}"
+                                                            scope="request"/>
+                                    <select class="selectpicker show-tick form-control" id="professionalId"
+                                            name="professionalId" data-live-search="true"
+                                            onchange="setProfessionName()">
+                                        <option value="0">==请选择==</option>
+                                        <c:forEach items="${professionList}" var="profession" varStatus="vs">
+                                            <option id="${profession.id}" value="${profession.id}"
+                                                    <c:if test="${profession.id==professionalId}">selected</c:if> > ${profession.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <input type="hidden" id="proName" name="proName"></td>
                             </tr>
                             <tr>
-                                <td>所属班级：<input type="text" id="classes" class="form-control"
-                                                name="classes"
-                                                value="${teachTask.classes}"
-                                                placeholder="所属班级"></td>
+                                <td>所属班级：<c:set var="classesId" value="${teachTask.classesId}" scope="request"/>
+                                    <select class="selectpicker show-tick form-control" id="classesId" name="classesId"
+                                            onchange="setClassName()" data-live-search="true">
+                                        <option value="0">==请选择==</option>
+                                        <c:forEach items="${classesList}" var="classes" varStatus="vs">
+                                            <option id="${classes.id}" value="${classes.id}"
+                                                    <c:if test="${classes.id==classesId}">selected</c:if> > ${classes.className}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <input type="hidden" id="classesName" name="classesName"></td>
                                 <td>学期：<input type="text" id="term" class="form-control" name="term"
                                               value="${teachTask.term}"
                                               placeholder="学期"></td>
-                                <td>所属课程：<input type="text" id="course" class="form-control"
-                                                            name="course"
-                                                            value="${teachTask.course}"
-                                                            placeholder="所属课程"></td>
+                                <td>所属课程：<c:set var="courseId" value="${teachTask.courseId}" scope="request"/>
+                                    <select class="selectpicker show-tick form-control" id="courseId" name="courseId"
+                                            onchange="setCourseName(this.id)" data-live-search="true">
+                                        <option value="0">==请选择==</option>
+                                        <c:forEach items="${courseList}" var="course" varStatus="vs">
+                                            <option id="${course.id}" value="${course.id}"
+                                                    <c:if test="${course.id==courseId}">selected</c:if> > ${course.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <input type="hidden" id="courseName" name="courseName"></td>
                             </tr>
                             <tr>
-                                <td colspan="3">任务内容：<textarea id="content" class="form-control" name="content" placeholder="任务内容" cols="30" rows="10">${teachTask.content}</textarea></td>
+                                <td colspan="3">任务内容：<textarea id="content" class="form-control" name="content"
+                                                               placeholder="任务内容" cols="30"
+                                                               rows="10">${teachTask.content}</textarea></td>
                             </tr>
                             </tbody>
                         </table>
@@ -129,6 +157,8 @@
 <script src="${APP_PATH}/bootstrap/js/moment-with-locales.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="${APP_PATH}/bootstrap/js/bootstrap-select.js"></script>
+<script src="${APP_PATH}/bootstrap/js/defaults-zh_CN.js"></script>
 <script type="text/javascript">
     $(function () {
         $(".list-group-item").click(function () {
@@ -144,6 +174,20 @@
 
 
     });
+
+    function setCourseName(id) {
+        var courseName = $("#courseId option:selected").text();
+        $("#courseName").val(courseName);
+    }
+
+    function setClassName() {
+        var classesName = $("#classesId option:selected").text();
+        $("#classesName").val(classesName);
+    }
+    function setProfessionName() {
+        var professionName = $("#professionalId option:selected").text();
+        $("#proName").val(professionName);
+    }
 
     $('#developTime').datetimepicker({
         format: 'yyyy-mm-dd hh:ii'      /*此属性是显示顺序，还有显示顺序是mm-dd-yyyy*/
@@ -165,10 +209,10 @@
     $("#updateBtn").click(function () {
         //获取表单对象
         var name = $("#name");
-        var professional = $("#professional");
-        var classes = $("#classes");
+        var professional = $("#professionalId");
+        var classes = $("#classesId");
         var term = $("#term");
-        var course = $("#Course");
+        var course = $("#courseId");
         var content = $("#content");
         if (!flag) {
             return;
@@ -210,10 +254,13 @@
                 url: "${APP_PATH}/teachTaskController/editTeachTask.do",
                 data: {
                     "name": $("#name").val(),
-                    "professional": $("#professional").val(),
-                    "classes": $("#classes").val(),
+                    "professionalId": $("#professionalId").val(),
+                    "proName" : $("#proName").val(),
+                    "classesId": $("#classesId").val(),
+                    "classesName": $("#classesName").val(),
                     "term": $("#term").val(),
-                    "course": $("#Course").val(),
+                    "courseId": $("#courseId").val(),
+                    "courseName": $("#courseName").val(),
                     "content": $("#content").val(),
                     "id":${teachTask.id}
                 },

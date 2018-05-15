@@ -1,10 +1,10 @@
-package com.yxb.course.controller;
+package com.yxb.multiManage.controller;
 
 import com.yxb.common.entity.AjaxResult;
 import com.yxb.common.entity.Page;
 import com.yxb.common.util.StringUtil;
-import com.yxb.course.entity.Course;
-import com.yxb.course.service.CourseService;
+import com.yxb.multiManage.entity.Institute;
+import com.yxb.multiManage.service.InstituteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,94 +17,95 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by yxb on 2018/5/5
+ * Created by yxb on 2018/5/7
  */
 @Controller
-@RequestMapping("/courseController")
-public class CourseController {
+@RequestMapping("/instituteController")
+public class InstituteController {
 
-    private static final Logger log = LoggerFactory.getLogger(CourseController.class);
+
+    private static final Logger log = LoggerFactory.getLogger(InstituteController.class);
 
     @Autowired
-    private CourseService courseService;
+    private InstituteService instituteService;
 
     @ResponseBody
-    @RequestMapping("/queryAllCourse.do")
-    public Object queryAllCourse() {
+    @RequestMapping("/queryAllInstitute.do")
+    public Object queryAllInstitute() {
         AjaxResult result = new AjaxResult();
         try {
-            List<Course> courses = courseService.queryAllCourse();
+            List<Institute> courses = instituteService.queryAllInstitute();
             result.setData(courses);
             result.setSuccess(true);
         } catch (Exception e) {
-            log.error("获取所有课程出现异常",e);
+            log.error("获取所有学院出现异常", e);
             result.setData(e.getMessage());
         }
         return result;
     }
 
-    @RequestMapping("/toCourseList.do")
-    public String toCourseList() {
-        return "manager/course/list";
+    @RequestMapping("/toInstituteList.do")
+    public String toInstituteList() {
+        return "manager/multiManage/list_institute";
     }
 
     @ResponseBody
-    @RequestMapping("/queryCourseList.do")
-    public Object queryCourseList(String queryText, Integer pageNo, Integer pageSize) {
+    @RequestMapping("/queryInstituteList.do")
+    public Object queryInstituteList(String queryText, Integer pageNo, Integer pageSize) {
         AjaxResult result = new AjaxResult();
         try {
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("start", (pageNo - 1) * pageSize);
             paramMap.put("size", pageSize);
             if (StringUtil.isNotEmpty(queryText)) paramMap.put("queryText", queryText);
-            Page<Course> page = courseService.queryCourseList(paramMap, pageNo, pageSize);
+            Page<Institute> page = instituteService.queryInstituteList(paramMap, pageNo, pageSize);
             result.setPage(page);
             result.setSuccess(true);
         } catch (Exception e) {
-            log.error("分页查询课程出错",e);
+            log.error("分页查询学院出错", e);
             result.setData(e.getMessage());
         }
         return result;
     }
 
     @ResponseBody
-    @RequestMapping("/editCourse.do")
-    public Object editCourse(Course course) {
+    @RequestMapping("/editInstitute.do")
+    public Object editInstitute(Institute Institute) {
         AjaxResult result = new AjaxResult();
         try {
-            courseService.editCourse(course);
+            instituteService.editInstitute(Institute);
             result.setSuccess(true);
         } catch (Exception e) {
             result.setData(e.getMessage());
-            log.error("修改课程遇到异常",e);
+            log.error("修改学院遇到异常", e);
         }
         return result;
     }
 
     @ResponseBody
-    @RequestMapping("/addCourse.do")
-    public Object addCourse(Course course) {
+    @RequestMapping("/addInstitute.do")
+    public Object addInstitute(Institute Institute) {
         AjaxResult result = new AjaxResult();
         try {
-            courseService.addCourse(course);
+            instituteService.addInstitute(Institute);
             result.setSuccess(true);
         } catch (Exception e) {
             result.setData(e.getMessage());
-            log.error("新增课程遇到异常",e);
+            log.error("新增学院遇到异常", e);
         }
         return result;
     }
 
     @ResponseBody
-    @RequestMapping("/deleteCourse.do")
-    public Object deleteCourse(Integer id) {
+    @RequestMapping("/deleteInstitute.do")
+    public Object deleteInstitute(Integer id) {
         AjaxResult result = new AjaxResult();
         try {
-            courseService.deleteCourse(id);
+            instituteService.deleteInstitute(id);
             result.setSuccess(true);
         } catch (Exception e) {
             result.setData(e.getMessage());
-            log.error("删除课程遇到异常",e);
+            log.error("删除学院遇到异常", e);
         }
         return result;
     }

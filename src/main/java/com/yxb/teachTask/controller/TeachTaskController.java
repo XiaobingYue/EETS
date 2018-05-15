@@ -1,21 +1,34 @@
 package com.yxb.teachTask.controller;
 
+import com.yxb.multiManage.entity.Classes;
+import com.yxb.multiManage.entity.Profession;
+import com.yxb.multiManage.service.ClassesService;
 import com.yxb.common.entity.AjaxResult;
 import com.yxb.common.entity.Page;
 import com.yxb.common.util.StringUtil;
+import com.yxb.multiManage.entity.Course;
+import com.yxb.multiManage.service.CourseService;
+import com.yxb.multiManage.service.ProfessionService;
+import com.yxb.teachTask.bean.TeachersTask;
 import com.yxb.teachTask.entity.Task;
 import com.yxb.teachTask.service.TeachTaskService;
+import com.yxb.user.Bean.UserBean;
+import com.yxb.user.entity.User;
+import com.yxb.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,16 +39,25 @@ import java.util.Map;
 public class TeachTaskController {
 
     private final TeachTaskService teachTaskService;
-
+    private final CourseService courseService;
+    private final ClassesService classesService;
+    private final ProfessionService professionService;
+    private final UserService userService;
     private static final Logger log = LoggerFactory.getLogger(TeachTaskController.class);
 
     @Autowired
-    public TeachTaskController(TeachTaskService teachTaskService) {
+    public TeachTaskController(TeachTaskService teachTaskService, CourseService courseService, ClassesService classesService, ProfessionService professionService, UserService userService) {
         this.teachTaskService = teachTaskService;
+        this.courseService = courseService;
+        this.classesService = classesService;
+        this.professionService = professionService;
+        this.userService = userService;
     }
 
     @RequestMapping("/toTeachTaskList.do")
-    public String toTeachTaskList() {
+    public String toTeachTaskList(Model model) {
+        List<User> teacherList = userService.queryTeacherListByRoleId();
+        model.addAttribute("teacherList" , teacherList);
         return "manager/teachTask/list";
     }
 
@@ -61,7 +83,13 @@ public class TeachTaskController {
     @RequestMapping("/toEdit.do")
     public String toEdit(Integer id, Model model) {
         Task teachTask = teachTaskService.queryById(id);
+        List<Course> courseList = courseService.queryAllCourse();
+        List<Classes> classesList = classesService.queryAllClasses();
+        List<Profession> professionList = professionService.queryAllProfession();
         model.addAttribute("teachTask", teachTask);
+        model.addAttribute("courseList", courseList);
+        model.addAttribute("classesList", classesList);
+        model.addAttribute("professionList",professionList);
         return "manager/teachTask/edit";
     }
 
@@ -84,7 +112,13 @@ public class TeachTaskController {
     }
 
     @RequestMapping("/toAddTeachTask.do")
-    public String toAddSyllabusPage() {
+    public String toAddSyllabusPage(Model model) {
+        List<Course> courseList = courseService.queryAllCourse();
+        List<Classes> classesList = classesService.queryAllClasses();
+        List<Profession> professionList = professionService.queryAllProfession();
+        model.addAttribute("courseList", courseList);
+        model.addAttribute("classesList", classesList);
+        model.addAttribute("professionList",professionList);
         return "manager/teachTask/add";
     }
 
@@ -118,5 +152,60 @@ public class TeachTaskController {
             result.setData(e.getMessage());
         }
         return result;
+    }
+
+    @ResponseBody
+    @RequestMapping("/releaseTask.do")
+    public Object releaseTask(TeachersTask teachersTask) {
+        AjaxResult result = new AjaxResult();
+        try {
+            if(CollectionUtils.isEmpty(teachersTask.getTeacherIds())) {
+                result.setData("请选择老师发布任务");
+                return result;
+            }
+            teachTaskService.addTeachersTask(teachersTask);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("发布教学任务出现异常",e);
+            result.setData(e.getMessage());
+        }
+        return result;
+    }
+
+    @RequestMapping("/toMyTask.do")
+    public String toMyTask() {
+        return "manager/teachTask/myList";
+    }
+
+    @ResponseBody
+    @RequestMapping("/queryMyTask.do")
+    public Object queryMyTask(HttpServletRequest request,Integer pageNo, Integer pageSize){
+        AjaxResult<Task> result = new AjaxResult<>();
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("start", (pageNo - 1) * pageSize);
+            paramMap.put("size", pageSize);
+            UserBean userBean = (UserBean) request.getSession().getAttribute("userInfo");
+            paramMap.put("teacherId",userBean.getId());
+            Page<Task> myTask = teachTaskService.queryMyTask(paramMap,pageNo,pageSize);
+            result.setPage(myTask);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("查询我的教学任务出现异常",e);
+            result.setData(e.getMessage());
+        }
+        return result;
+    }
+    @RequestMapping("/toDetil.do")
+    public String toDetil(Integer id, Model model) {
+        Task teachTask = teachTaskService.queryById(id);
+        List<Course> courseList = courseService.queryAllCourse();
+        List<Classes> classesList = classesService.queryAllClasses();
+        List<Profession> professionList = professionService.queryAllProfession();
+        model.addAttribute("teachTask", teachTask);
+        model.addAttribute("courseList", courseList);
+        model.addAttribute("classesList", classesList);
+        model.addAttribute("professionList",professionList);
+        return "manager/teachTask/detil";
     }
 }

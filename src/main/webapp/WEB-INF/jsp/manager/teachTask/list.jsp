@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="${APP_PATH}/css/font-awesome.min.css">
     <link rel="stylesheet" href="${APP_PATH}/css/main.css">
     <link rel="stylesheet" href="${APP_PATH}/css/pagination.css">
+    <link rel="stylesheet" href="${APP_PATH}/bootstrap/css/bootstrap-select.css">
     <style>
         .tree li {
             list-style-type: none;
@@ -27,6 +28,10 @@
 
         table tbody td:nth-child(even) {
             color: #C00;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
         }
     </style>
 </head>
@@ -82,7 +87,8 @@
                     <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"
                             onclick="deleteteachTasks()"><i class=" glyphicon glyphicon-remove"></i> 删除
                     </button>
-                    <button type="button" class="btn btn-primary tooltip-test" data-toggle="tooltip" titleS="新增教学任务" style="float:right;"
+                    <button type="button" class="btn btn-primary tooltip-test" data-toggle="tooltip" titleS="新增教学任务"
+                            style="float:right;"
                             onclick="window.location.href='${APP_PATH}/teachTaskController/toAddTeachTask.do'"><i
                             class="glyphicon glyphicon-plus"></i> 新增
                     </button>
@@ -104,22 +110,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <%-- 	                <tr>
-                                                  <td>${status.count}</td>
-                                                  <td><input type="checkbox"></td>
-                                                  <td>${teachTask.loginacct}</td>
-                                                  <td>${teachTask.teachTaskname}</td>
-                                                  <td>${teachTask.email}</td>
-                                                  <td>
-                                                      <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-                                                      <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                                                      <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                                                  </td>
-                                                </tr> --%>
                             </tbody>
                             <tfoot>
                             <tr>
-                                <td colspan="12" align="center">
+                                <td colspan="9" align="center">
                                     <ul class="pagination"></ul>
                                 </td>
                             </tr>
@@ -139,27 +133,27 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">上传pdf附件</h4>
+                <h4 class="modal-title" id="myModalLabel">请选择接收任务的老师</h4>
             </div>
             <div class="modal-body">
-                <form id="userForm"
-                      action="${APP_PATH}/userController/importUser.do" enctype="multipart/form-data" method="post"
+                <form id="taskForm"
+                      action="${APP_PATH}/teachTaskController/releaseTask.do" method="post"
                       role="form">
-                    <table id="usertable" class="table table-striped table-bordered">
-                        <thead>
-                        <tr>
-                            <td><input id="file" type="file" name="file" class="file"></td>
-                        </tr>
-                        </thead>
-                    </table>
+                    <div class="form-group">
+                        <label>请选择老师</label>
+                        <select class="selectpicker show-tick form-control" id="teacherIds"
+                                name="teacherIds" data-live-search="true" multiple>
+                            <c:forEach items="${teacherList}" var="teacher" varStatus="vs">
+                                <option id="${teacher.id}" value="${teacher.id}"> ${teacher.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <input type="hidden" id="_taskId" name="taskId"/>
+                    <button id="releaseBtn" type="button" class="btn btn-success"><i
+                            class="glyphicon glyphicon-ok"></i> 发布
+                    </button>
                 </form>
             </div>
-            <!--
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-            -->
         </div>
     </div>
 </div>
@@ -169,6 +163,9 @@
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
 <script src="${APP_PATH}/script/layer/layer.js"></script>
 <script src="${APP_PATH}/jquery/jquery.pagination.js"></script>
+<script src="${APP_PATH}/jquery/jquery.form.js"></script>
+<script src="${APP_PATH}/bootstrap/js/bootstrap-select.js"></script>
+<script src="${APP_PATH}/bootstrap/js/defaults-zh_CN.js"></script>
 <script type="text/javascript">
     $(function () {
         $(".list-group-item").click(function () {
@@ -190,70 +187,26 @@
     });
 
     var _id = "";
+
     function setId(id) {
         _id = id;
     }
 
-    initUpload("file", '${APP_PATH}/teachTaskController/uploadPdf.do');
-    function initUpload(ctrlName, uploadUrl) {
-        var control = $('#' + ctrlName);
-        control.fileinput({
-            language: 'zh', //设置语言
-            uploadUrl: uploadUrl, //上传的地址
-            uploadAsync: true, //默认异步上传
-            showCaption: true,//是否显示标题
-            showUpload: true, //是否显示上传按钮
-            textEncoding:'UTF-8',
-            browseClass: "btn btn-primary", //按钮样式
-            allowedFileExtensions: ["pdf"], //接收的文件后缀
-            maxFileCount: 1,//最大上传文件数限制
-            previewFileIcon: '<i class="glyphicon glyphicon-file"></i>',
-            showPreview: true, //是否显示预览
-            previewFileIconSettings: {
-                'docx': '<i ass="fa fa-file-word-o text-primary"></i>',
-                'xlsx': '<i class="fa fa-file-excel-o text-success"></i>',
-                'xls': '<i class="fa fa-file-excel-o text-success"></i>',
-                'pptx': '<i class="fa fa-file-powerpoint-o text-danger"></i>',
-                'jpg': '<i class="fa fa-file-photo-o text-warning"></i>',
-                'pdf': '<i class="fa fa-file-archive-o text-muted"></i>',
-                'zip': '<i class="fa fa-file-archive-o text-muted"></i>',
-            },
-            uploadExtraData: function () {
-                var extraValue = _id;
-                return {"id": extraValue};
-            }
-        });
-    }
-
-    $("#file").on("fileuploaded", function (event, data, previewId, index) {
-        console.log(data);
-        if(data.response.success == true)
-        {
-            layer.msg(data.files[index].name + "上传成功!", {time: 2000, icon: 6, shift: 6}, function () {
-            });
-            window.location.href = "${APP_PATH}/teachTaskController/toteachTask.do"
-            //$(".close").click();
-        }else{
-            layer.msg(data.files[index].name + "上传失败!", {time: 2000, icon: 5, shift: 6}, function () {
-            });
-            //重置
-            $("#file").fileinput("clear");
-            $("#file").fileinput("reset");
-            $('#file').fileinput('refresh');
-            $('#file').fileinput('enable');
-        }
-    });
 
     function changepageNo(pageNo) {
         pageQuery(pageNo);
     }
 
-    function isEmpty(obj){
-        if(typeof obj == "undefined" || obj == null || obj == ""){
+    function isEmpty(obj) {
+        if (typeof obj == "undefined" || obj == null || obj == "") {
             return true;
-        }else{
+        } else {
             return false;
         }
+    }
+
+    function setTaskId(id) {
+        $("#_taskId").val(id);
     }
 
     function pageQuery(pageNo) {
@@ -296,22 +249,22 @@
                         content = content + '  <td>' + (i + 1) + '</td>';
                         content = content + '  <td><input type="checkbox" value="' + teachTask.id + '"></td>';
                         content = content + '  <td>' + teachTask.name + '</td>';
-                        content = content + '  <td>' + teachTask.professional+ '</td>';
-                        content = content + '  <td>' + teachTask.course+ '</td>';
-                        content = content + '  <td>' + teachTask.classes+ '</td>';
-                        content = content + '  <td>' + teachTask.term+ '</td>';
+                        content = content + '  <td>' + teachTask.proName + '</td>';
+                        content = content + '  <td>' + teachTask.courseName + '</td>';
+                        content = content + '  <td>' + teachTask.classesName + '</td>';
+                        content = content + '  <td>' + teachTask.term + '</td>';
                         var _status = "";
-                        if(!isEmpty(teachTask.status)) {
-                            if(teachTask.status == 1) {
+                        if (!isEmpty(teachTask.status)) {
+                            if (teachTask.status == 1) {
                                 _status = "已创建";
-                            } else if(teachTask.status == 2) {
+                            } else if (teachTask.status == 2) {
                                 _status = "已发布";
                             }
                         }
-                        content = content + '  <td>' + _status+ '</td>';
+                        content = content + '  <td>' + _status + '</td>';
                         content = content + '  <td>';
-                        if(teachTask.status == 1) {
-                            content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/teachTaskController/toEdit.do?pageNo=' + pageObj.pageNo + '&id=' + teachTask.id + '\'" class="btn btn-primary btn-xs tooltip-test" data-toggle="tooltip" titleS="发布""><i class=" glyphicon glyphicon-ok"></i></button>';
+                        if (teachTask.status == 1) {
+                            content = content + '      <button type="button" onclick="setTaskId(' + teachTask.id + ')" class="btn btn-primary btn-xs tooltip-test" data-toggle="modal" data-target="#myModal"><i class=" glyphicon glyphicon-ok"></i></button>';
                         }
                         content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/teachTaskController/toEdit.do?pageNo=' + pageObj.pageNo + '&id=' + teachTask.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
                         content = content + '	   <button type="button" onclick="deleteteachTask(' + teachTask.id + ', \'' + teachTask.name + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
@@ -368,6 +321,31 @@
         cond = true;
         pageQuery(1);
     }
+
+    $("#releaseBtn").click(function () {
+        var options = $("#teacherIds option:selected");
+        if(options.length == 0) {
+            layer.msg("请选择要发布任务的老师", {time: 1000, icon: 5, shift: 6});
+            return;
+        }
+        var loadingIndex = -1;
+        // 提交表单
+        $("#taskForm").ajaxSubmit({
+            beforeSend: function () {
+                loadingIndex = layer.msg('执行中', {icon: 16});
+            },
+            success: function (result) {
+                layer.close(loadingIndex);
+                if (result.success) {
+                    layer.msg("发布成功", {time: 1000, icon: 6}, function () {
+                        window.location.href = "${APP_PATH}/teachTaskController/toTeachTaskList.do?pageNo=${param.pageNo}";
+                    });
+                } else {
+                    layer.msg(result.data, {time: 1000, icon: 5, shift: 6});
+                }
+            }
+        });
+    });
 
     function deleteteachTask(id, name) {
         layer.confirm("删除教学任务: " + name + ", 是否继续？", {icon: 3, title: '提示'}, function (cindex) {

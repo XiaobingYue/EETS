@@ -18,6 +18,9 @@
         list-style-type: none;
 		cursor:pointer;
 	}
+	::-webkit-scrollbar{
+		display:none;
+	}
 	</style>
   </head>
 

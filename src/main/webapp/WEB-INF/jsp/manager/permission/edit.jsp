@@ -17,6 +17,9 @@
             list-style-type: none;
             cursor: pointer;
         }
+        ::-webkit-scrollbar{
+            display:none;
+        }
     </style>
 </head>
 
@@ -31,8 +34,8 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <ol class="breadcrumb">
-                <li><a href="${APP_PATH}/manager/main.htm">首页</a></li>
-                <li><a href="${APP_PATH}/manager/permission/tree.htm">数据列表</a></li>
+                <li><a href="${APP_PATH}/toMain.do">首页</a></li>
+                <li><a href="${APP_PATH}/permissionController/permissionTreeList.do">数据列表</a></li>
                 <li class="active">修改</li>
             </ol>
             <div class="panel panel-default">
@@ -43,14 +46,21 @@
                 <div class="panel-body">
                     <form role="form">
                         <div class="form-group">
-                            <label for="exampleInputPassword1">许可名称</label>
+                            <label>许可名称</label>
                             <input type="text" class="form-control" id="permissionname" value="${permission.name}"
                                    placeholder="请输入许可名称">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">链接地址</label>
+                            <label>链接地址</label>
                             <input type="text" class="form-control" id="url" value="${permission.url}"
                                    placeholder="请输入链接地址">
+                        </div>
+                        <div class="form-group">
+                            <label>类型</label>
+                            <select class="form-control" id="type">
+                                <option value="1"<c:if test="${permission.type == 1}">selected</c:if>>同步</option>
+                                <option value="2"<c:if test="${permission.type == 2}">selected</c:if>>异步</option>
+                            </select>
                         </div>
                         <button id="updateBtn" type="button" class="btn btn-success"><span
                                 class="glyphicon glyphicon-pencil"></span> 修改
@@ -116,7 +126,8 @@
             data: {
                 "name": $("#permissionname").val(),
                 "url": $("#url").val(),
-                "id": "${param.id}"
+                "id": "${param.id}",
+                "type":$("#type").val()
             },
             beforeSend: function () {
                 loadingIndex = layer.msg('数据修改中', {icon: 16});

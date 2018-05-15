@@ -14,10 +14,14 @@
     <link rel="stylesheet" href="${APP_PATH}/css/main.css">
     <link rel="stylesheet" href="${APP_PATH}/css/doc.min.css">
     <link rel="stylesheet" href="${APP_PATH}/bootstrap/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="${APP_PATH}/bootstrap/css/bootstrap-select.css">
     <style>
         .tree li {
             list-style-type: none;
             cursor: pointer;
+        }
+        ::-webkit-scrollbar{
+            display:none;
         }
     </style>
 </head>
@@ -33,7 +37,7 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <ol class="breadcrumb">
-                <li><a href="${APP_PATH}/toIndex.do">首页</a></li>
+                <li><a href="${APP_PATH}/toMain.do">首页</a></li>
                 <li><a href="${APP_PATH}/syllabusController/toSyllabus.do">数据列表</a></li>
                 <li class="active">新增</li>
             </ol>
@@ -53,24 +57,45 @@
                             </thread>
                             <tbody>
                             <tr>
-                                <td>课程代码：<input type="text" id="courseCode" class="form-control" name="courseCode"
-                                                placeholder="请输入版本"></td>
-                                <td colspan="2">课程名称：<input type="text" id="courseName" class="form-control"
-                                                            name="courseName"
-                                                            placeholder="课程名称"></td>
+                                <td>课程代码：<select class="selectpicker show-tick form-control " id="courseCode" name="courseCode" data-live-search="true"
+                                                 onchange="setCourseName(this.id)">
+                                    <option value="0">==请选择==</option>
+                                    <c:forEach items="${courseList}" var="course" varStatus="vs">
+                                        <option id="${course.name}" value="${course.courseCode}"> ${course.courseCode}</option>
+                                    </c:forEach>
+                                </select>
+                                <td colspan="2">课程名称：<select class="selectpicker show-tick form-control" id="courseName" name="courseName"
+                                                             onchange="setCourseCode(this.id)" data-live-search="true">
+                                    <option value="0">==请选择==</option>
+                                    <c:forEach items="${courseList}" var="course" varStatus="vs">
+                                        <option id="${course.courseCode}" value="${course.name}"> ${course.name}</option>
+                                    </c:forEach>
+                                </select></td>
                             </tr>
                             <tr>
-                                <td>课程性质：<input type="text" id="courseProperty" class="form-control"
-                                                name="courseProperty"
-                                                placeholder="课程性质"></td>
+                                <td>课程性质：<select class="form-control" id="courseProperty" name="courseProperty">
+                                    <option value="0">==请选择==</option>
+                                    <option value="1">必修</option>
+                                    <option value="0">选修</option>
+                                </select></td>
                                 <td>学分：<input type="text" id="score" class="form-control" name="score"
                                               placeholder="学分"></td>
-                                <td>适用专业：<input type="text" id="applicableProfessional" class="form-control"
-                                                name="applicableProfessional"
-                                                placeholder="适用专业"></td>
+                                <td>适用专业：<select class="selectpicker show-tick form-control" id="applicableProfessional"
+                                                 name="applicableProfessional" data-live-search="true">
+                                    <option value="0">==请选择==</option>
+                                    <c:forEach items="${professionList}" var="profession" varStatus="vs">
+                                        <option id="${profession.id}" value="${profession.name}"> ${profession.name}</option>
+                                    </c:forEach>
+                                </select></td>
                             </tr>
                             <tr>
-                                <td colspan="2">开课单位：<input type="text" id="courseUnit" class="form-control" name="courseUnit" placeholder="开课单位"></td>
+                                <td colspan="2">开课单位：<select class="selectpicker show-tick form-control" id="courseUnit"
+                                                             name="courseUnit" data-live-search="true">
+                                    <option value="0">==请选择==</option>
+                                    <c:forEach items="${instituteList}" var="institute" varStatus="vs">
+                                        <option id="${institute.id}" value="${institute.name}"> ${institute.name}</option>
+                                    </c:forEach>
+                                </select></td>
                                 <td>大纲版本：<input type="text" id="version" class="form-control" name="version"
                                                 placeholder="大纲版本"></td>
                             </tr>
@@ -83,11 +108,14 @@
                                                placeholder="批准人"></td>
                             </tr>
                             <tr>
-                                <td>制定时间：<br><input type="text" id="developTime" class="form-control form_datetime" name="developTime"
-                                                placeholder="制定时间"></td>
-                                <td>审核时间：<input type="text" id="reviewTime" class="form-control form_datetime" name="reviewTime"
+                                <td>制定时间：<br><input type="text" id="developTime" class="form-control form_datetime"
+                                                    name="developTime"
+                                                    placeholder="制定时间"></td>
+                                <td>审核时间：<input type="text" id="reviewTime" class="form-control form_datetime"
+                                                name="reviewTime"
                                                 placeholder="审核时间"></td>
-                                <td>批准时间：<input type="text" id="approveTime" class="form-control form_datetime" name="approveTime"
+                                <td>批准时间：<input type="text" id="approveTime" class="form-control form_datetime"
+                                                name="approveTime"
                                                 placeholder="批准时间"></td>
                             </tr>
                             </tbody>
@@ -141,6 +169,8 @@
 <script src="${APP_PATH}/bootstrap/js/moment-with-locales.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="${APP_PATH}/bootstrap/js/bootstrap-select.js"></script>
+<script src="${APP_PATH}/bootstrap/js/defaults-zh_CN.js"></script>
 <script type="text/javascript">
     $(function () {
         $(".list-group-item").click(function () {
@@ -164,6 +194,18 @@
     $('#approveTime').datetimepicker({
         format: 'yyyy-mm-dd hh:ii'      /*此属性是显示顺序，还有显示顺序是mm-dd-yyyy*/
     });
+
+    function setCourseName(id) {
+        var options = $("#" + id + " option:selected");
+        var courseName = options.attr("id");
+        $('#courseName').selectpicker('val',courseName);
+    }
+
+    function setCourseCode(id) {
+        var options = $("#" + id + " option:selected");
+        var courseCode = options.attr("id");
+        $('#courseCode').selectpicker('val',courseCode);
+    }
 
     var flag = true;
 

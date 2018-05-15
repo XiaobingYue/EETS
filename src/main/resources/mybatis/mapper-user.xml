@@ -30,10 +30,13 @@
 	</select>
 
 	<insert id="registerUser">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
 		insert into t_user (
-			USER_ACCT , NAME , EMAIL , PASSWORD , SORT , SEX , TIMESTAMP , IF_ENABLE , PHONE
+			USER_ACCT , NAME , EMAIL , PASSWORD , SORT , SEX , TIMESTAMP , IF_ENABLE , PHONE , CLASSES_ID
 		) values (
-			#{userAcct} , #{name} , #{email} , #{password} , #{sort} , #{sex} , #{timestamp} , #{ifEnable} , #{phone})
+			#{userAcct} , #{name} , #{email} , #{password} , #{sort} , #{sex} , #{timestamp} , #{ifEnable} , #{phone} , #{classesId})
 	</insert>
 	
 	<select id="getPermissionsByUserId" resultMap="userResultMap">
@@ -50,7 +53,11 @@
                 from t_user_role
                 where USER_ID = #{id}
             )
-        ) ORDER BY SORT
+        )
+        <if test="type != null">
+            AND TYPE = #{type}
+        </if>
+         ORDER BY SORT
 	</select>
 
     <select id="queryUserList" resultMap="userMap">
@@ -82,7 +89,7 @@
     </delete>
 
     <update id="deleteUser">
-    	update t_user SET IF_ENABLE = #{ifEnable} , "TIMESTAMP" = #{timestamp}
+    	update t_user SET IF_ENABLE = #{ifEnable} , TIMESTAMP = #{timestamp}
     		where id = #{id}
     </update>
 
@@ -96,7 +103,7 @@
         update t_user
         set USER_ACCT = #{userAcct} , NAME = #{name} , EMAIL = #{email} , SEX = #{sex} , PHONE = #{phone} , SORT = #{sort} , TIMESTAMP = #{timestamp}
         <if test="classesId != null">
-            ,CLASSES_ID = #{classes}
+            ,CLASSES_ID = #{classesId}
         </if>
         <where>
             id = #{id}
@@ -106,7 +113,7 @@
     <select id="findUserByUserAcct" resultMap="userMap">
     	select *
     		from t_user
-    			where USER_ACCT = #{userAcct}
+    			where USER_ACCT = #{userAcct} AND IF_ENABLE = #{ifEnable}
     </select>
 
     <select id="queryRoleIdByUserId" resultType="integer">
@@ -136,4 +143,32 @@
         where
             USER_ID = #{userId}
     </delete>
+
+    <select id="queryTeacherListByRoleId" resultMap="userMap">
+        SELECT * FROM t_user WHERE ID IN (SELECT USER_ID FROM t_user_role WHERE ROLE_ID = #{roleId})
+    </select>
+
+    <update id="changePassword">
+        UPDATE t_user SET PASSWORD = #{password},TIMESTAMP = #{timestamp} WHERE ID = #{id}
+    </update>
+
+    <select id="queryRecentLoginRecord" resultType="loginRecord">
+      SELECT * FROM t_login_record WHERE DATE IN
+        <foreach collection="dateList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ORDER BY UNIX_TIMESTAMP(DATE)
+    </select>
+
+    <select id="queryLoginRecordByDate" resultType="loginRecord">
+        SELECT * FROM t_login_record WHERE DATE = #{date}
+    </select>
+
+    <insert id="addLoginRecord">
+        insert into t_login_record (COUNT, DATE) values (#{count},#{date});
+    </insert>
+
+    <update id="updateLoginRecord">
+        UPDATE t_login_record SET COUNT = #{count} WHERE ID = #{id}
+    </update>
 </mapper>

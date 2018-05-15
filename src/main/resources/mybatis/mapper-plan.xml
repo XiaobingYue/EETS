@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxb.trainingPlan.dao.TrainingPlanDao">
+    <resultMap id="planMap" type="plan">
+        <id column="id" property="id"></id>
+        <result column="profession_id" property="professionId"></result>
+        <result column="file_name" property="fileName"></result>
+    </resultMap>
+    <select id="queryAll" resultMap="planMap">
+        SELECT * FROM t_plan WHERE STATE = #{state}
+        <if test="queryText != null">
+            AND NAME LIKE concat('%', #{queryText}, '%')
+        </if>
+        ORDER BY TIMESTAMP DESC limit #{start} , #{size}
+    </select>
+
+    <select id="queryCount" resultType="int">
+        SELECT count(*) FROM t_plan WHERE STATE = #{state}
+        <if test="queryText != null">
+            AND NAME LIKE concat('%', #{queryText}, '%')
+        </if>
+    </select>
+
+    <select id="queryById" resultMap="planMap">
+        SELECT * FROM t_plan WHERE ID = #{id}
+    </select>
+
+    <update id="updatePlan">
+        UPDATE t_plan SET NAME = #{name} , VERSION = #{version} , PROFESSION_ID = #{professionId} , GRADE = #{grade} ,
+        STATE = #{state} , TIMESTAMP = #{timestamp}
+        <if test="detail != null">
+            , DETAIL = #{detail}
+        </if>
+        <if test="fileName != null">
+                , FILE_NAME = #{fileName}
+        </if>
+        WHERE ID = #{id}
+    </update>
+
+    <insert id="addPlan">
+        INSERT INTO t_plan (NAME, VERSION, PROFESSION_ID, GRADE
+        <if test="detail != null">
+            , DETAIL
+        </if>
+        , TIMESTAMP, STATE) VALUES (#{name},#{version},#{professionId},#{grade}
+        <if test="detail != null">
+            ,#{detail}
+        </if>
+        ,#{timestamp},#{state})
+    </insert>
+</mapper>

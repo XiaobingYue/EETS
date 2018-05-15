@@ -1,4 +1,4 @@
-package com.yxb.course.entity;
+package com.yxb.multiManage.entity;
 
 /**
  * 课程实体

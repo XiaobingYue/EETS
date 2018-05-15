@@ -21,6 +21,16 @@ public class CourseTable {
 
     private Long timestamp;
 
+    private Integer classesId;
+
+    public Integer getClassesId() {
+        return classesId;
+    }
+
+    public void setClassesId(Integer classesId) {
+        this.classesId = classesId;
+    }
+
     public Integer getCourseId() {
         return courseId;
     }

@@ -9,6 +9,11 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by yxb on 2018/5/4
@@ -64,5 +69,20 @@ public class Utils {
                 log.error(e.getMessage(), e);
             }
         }
+    }
+
+    public static List<String> getRecentDate(String pattern) {
+        List<String> dateList = new ArrayList<>();
+        for (int i=0;i<7;i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DAY_OF_MONTH, -i);
+            Date date = calendar.getTime();
+
+            String str = new SimpleDateFormat(pattern).format(date);
+            System.out.println(str);
+            dateList.add(str);
+        }
+        return dateList;
     }
 }

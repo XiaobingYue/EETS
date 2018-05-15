@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxb.textBook.dao.TextBookDao">
+    <resultMap id="textBookMap" type="textBook">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="timestamp" property="timestamp"></result>
+        <result column="state" property="state"></result>
+        <result column="count" property="count"></result>
+        <result column="task_id" property="taskId"></result>
+        <result column="publisher" property="publisher"></result>
+    </resultMap>
+
+    <select id="queryTextBookList" resultMap="textBookMap">
+        SELECT * FROM t_text_book WHERE STATE = #{state}
+        <if test="queryText != null">
+            and NAME like concat('%', #{queryText}, '%')
+        </if>
+        ORDER BY TIMESTAMP DESC
+        <if test="start != null">
+            limit #{start} , #{size}
+        </if>
+    </select>
+
+    <select id="queryCount" resultType="int">
+        SELECT count(*) FROM t_text_book WHERE STATE = #{state}
+        <if test="queryText != null">
+            AND NAME LIKE concat('%', #{queryText}, '%')
+        </if>
+    </select>
+
+    <insert id="addTextBook">
+        insert into t_text_book (NAME, PUBLISHER, TIMESTAMP, STATE, COUNT, TASK_ID) values (#{name},#{publisher},#{timestamp},#{state},#{count},#{taskId});
+    </insert>
+
+    <update id="updateTextBook">
+        UPDATE t_text_book SET NAME = #{name},PUBLISHER = #{publisher},TIMESTAMP = #{timestamp},STATE = #{state},COUNT = #{count},TASK_ID = #{taskId} WHERE ID = #{id}
+    </update>
+
+    <update id="deleteById">
+        UPDATE t_text_book SET STATE = #{state} WHERE ID = #{id}
+    </update>
+
+    <select id="queryById" resultMap="textBookMap">
+        SELECT * FROM t_text_book WHERE ID = #{id} AND STATE = #{state}
+    </select>
+</mapper>

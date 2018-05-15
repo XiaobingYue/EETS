@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.yxb.user.Bean.UserBean;
+import com.yxb.user.entity.LoginRecord;
 import org.springframework.stereotype.Repository;
 
 import com.yxb.permission.entity.Permission;
@@ -14,15 +15,15 @@ public interface UserDao {
 
 	User loginUser(UserBean user);
 
-	void registerUser(User user);
+	Integer registerUser(User user);
 
-	List<Permission> getPermissionsByUserId(Integer id);
+	List<Permission> getPermissionsByUserId(Map<String , Object> paramMap);
 
     List<User> queryUserList(Map<String , Object> paramMap);
 
     int deleteUser(UserBean user);
 
-	User findUserByUserAcct(String userAcct);
+	User findUserByUserAcct(User user);
 
     int queryPageSize(Map<String, Object> paramMap);
 
@@ -39,4 +40,16 @@ public interface UserDao {
     void deleteRoleByUserId(UserBean user);
 
     void unAssignByUserId(Integer userId);
+
+    List<User> queryTeacherListByRoleId(Integer roleId);
+
+    void changePassword(UserBean userBean);
+
+    List<LoginRecord> queryRecentLoginRecord(Map<String,Object> paramMap);
+
+    LoginRecord queryLoginRecordByDate(String date);
+
+    void addLoginRecord(LoginRecord record);
+
+    void updateLoginRecord(LoginRecord record);
 }

@@ -1,9 +1,11 @@
 package com.yxb.courseTable.bean;
 
+import com.yxb.courseTable.entity.CourseTable;
+
 /**
  * Created by yxb on 2018/5/6
  */
-public class CourseTableBean {
+public class CourseTableBean extends CourseTable {
 
     private String section;
 
@@ -22,6 +24,16 @@ public class CourseTableBean {
     private String sunday;
 
     private String field;
+
+    private Integer type;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     public String getField() {
         return field;

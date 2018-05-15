@@ -20,6 +20,9 @@
             list-style-type: none;
             cursor: pointer;
         }
+        ::-webkit-scrollbar{
+            display:none;
+        }
     </style>
 </head>
 
@@ -71,7 +74,7 @@
                         <div class="form-group">
                         <label>角色</label>
                         <c:set var="roleId" value="" scope="request"/>
-                        <select class="selectpicker show-tick form-control " id="roleIds" name="roleIds" multiple data-live-search="false">
+                        <select class="selectpicker show-tick form-control " id="roleIds" name="roleIds" multiple data-live-search="true">
                             <c:forEach items="${roleList}" var="role" varStatus="vs">
                                 <option id="${role.roleName}" value="${role.id}"
                                         <c:if test="${role.id==roleId}">selected</c:if> > ${role.roleName}</option>
@@ -80,8 +83,13 @@
                     </div>
                         <div class="form-group">
                             <label>班级</label>
-                            <input type="text" class="form-control" id="classes" name="classes" value="${user.phone}"
-                                   placeholder="请输入所属班级">
+                            <c:set var="classesId" value="${user.classesId}" scope="request"/>
+                            <select class="form-control has-success" id="classesId" name="classesId">
+                                <option value=""></option>
+                                <c:forEach items="${classesList}" var="classes" varStatus="vs">
+                                    <option id="${classes.id}" value="${classes.id}"
+                                        <c:if test="${classes.id==classesId}">selected</c:if>> ${classes.className}</option>
+                                </c:forEach></select>
                         </div>
                         <div class="form-group">
                             <label>手机号</label>
@@ -235,7 +243,6 @@
             });
         } else {
             var selItems = $("#roleIds :selected");
-            console.info(selItems);
             // 提交表单
             var loadingIndex = -1;
             var jsonData =  {
@@ -246,7 +253,7 @@
                 "phone": $("#phone").val(),
                 "sort": $("#sort").val(),
                 "id": ${user.id},
-                "classes":$("#classes").val()
+                "classesId":$("#classesId option:selected").val()
             };
             $.each(selItems, function(i, n){
                 jsonData["roleIds["+i+"]"] = n.value;

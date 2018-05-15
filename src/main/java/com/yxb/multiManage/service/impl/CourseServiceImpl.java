@@ -1,10 +1,10 @@
-package com.yxb.course.service.impl;
+package com.yxb.multiManage.service.impl;
 
 import com.yxb.common.constant.Const;
 import com.yxb.common.entity.Page;
-import com.yxb.course.dao.CourseDao;
-import com.yxb.course.entity.Course;
-import com.yxb.course.service.CourseService;
+import com.yxb.multiManage.dao.CourseDao;
+import com.yxb.multiManage.entity.Course;
+import com.yxb.multiManage.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

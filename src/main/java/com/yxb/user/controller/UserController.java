@@ -2,14 +2,18 @@ package com.yxb.user.controller;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.yxb.multiManage.entity.Classes;
+import com.yxb.multiManage.service.ClassesService;
 import com.yxb.common.constant.Const;
 import com.yxb.common.entity.Page;
 import com.yxb.role.entity.Role;
 import com.yxb.role.service.RoleService;
 import com.yxb.user.Bean.ImportUserBean;
 import com.yxb.user.Bean.UserBean;
+import com.yxb.user.entity.LoginRecord;
 import com.yxb.user.validateGroup.AddGroup;
 import com.yxb.user.validateGroup.LoginGroup;
 import org.apache.commons.lang3.StringUtils;
@@ -41,13 +45,15 @@ public class UserController {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final ClassesService classesService;
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    public UserController(UserService userService, RoleService roleService) {
+    public UserController(UserService userService, RoleService roleService, ClassesService classesService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.classesService = classesService;
     }
 
     @ResponseBody
@@ -61,7 +67,11 @@ public class UserController {
                 result.setSuccess(false);
                 result.setData("账号密码错误！！");
             } else {
+                // 增加登录记录
+                userService.addLoginRecord();
                 List<Permission> root = userService.queryUserPermission(queryUser.getId());
+                List<Permission> myPermission = userService.queryMyPermission(queryUser.getId());
+                session.setAttribute("myPermission",myPermission);
                 session.setAttribute("rootPermission", root);
                 result.setSuccess(true);
                 result.setData(queryUser);
@@ -209,7 +219,11 @@ public class UserController {
     }
 
     @RequestMapping("/toAddUser.do")
-    public String toAddUser() {
+    public String toAddUser(Model model) {
+        List<Role> roleList = roleService.queryAllRole();
+        List<Classes> classesList = classesService.queryAllClasses();
+        model.addAttribute("classesList",classesList);
+        model.addAttribute("roleList",roleList);
         return "manager/user/add";
     }
 
@@ -279,6 +293,8 @@ public class UserController {
         List<Integer> roleIds = userService.queryRoleIdByUserId(id);
         user.setRoleIds(roleIds);
         List<Role> roleList = roleService.queryAllRole();
+        List<Classes> classesList = classesService.queryAllClasses();
+        model.addAttribute("classesList",classesList);
         model.addAttribute("roleList",roleList);
         model.addAttribute("user", user);
         return "manager/user/edit";
@@ -372,5 +388,37 @@ public class UserController {
             result.setData(e.getMessage());
         }
         return result;
+    }
+
+    @ResponseBody
+    @RequestMapping("/changePwd.do")
+    public Object changePwd(String oldPwd, String newPwd, String newPwds, HttpServletRequest request) {
+        AjaxResult result = new AjaxResult();
+        try {
+            if(StringUtils.isNotBlank(oldPwd)
+            && StringUtils.isNotBlank(newPwd)
+            && StringUtils.isNotBlank(newPwds)
+            && newPwd.equals(newPwds)) {
+                UserBean userBean = (UserBean) request.getSession().getAttribute("userInfo");
+                if(userBean.getPassword().equals(MD5Util.digest(oldPwd))) {
+                    userService.changePassword(userBean,newPwd);
+                    result.setSuccess(true);
+                } else {
+                    result.setData("原密码不对");
+                }
+            } else {
+                result.setData("参数错误");
+            }
+        }catch (Exception e) {
+            log.error("修改密码出现异常",e);
+        }
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping("/recentLogin.do")
+    public Object recentLogin() {
+        Map<String,Object> jsonDate = userService.queryRecentLoginRecord();
+        return jsonDate;
     }
 }

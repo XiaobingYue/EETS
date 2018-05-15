@@ -8,7 +8,7 @@
     <c:forEach items="${rootPermission}" var="permission">
         <c:if test="${empty permission.children}">
 			<li class="list-group-item tree-closed" >
-				<a href="${APP_PATH}/${permission.url}"><i class="${permission.icon}"></i> ${permission.name}</a>
+				<a href="${APP_PATH}${permission.url}"><i class="${permission.icon}"></i> ${permission.name}</a>
 			</li>
         </c:if>
         <c:if test="${not empty permission.children}">
@@ -17,7 +17,7 @@
 				<ul style="margin-top:10px;display:none;">
 					<c:forEach items="${permission.children}" var="childPermission">
 						<li style="height:30px;">
-							<a href="${APP_PATH}/${childPermission.url}"><i class="${childPermission.icon}"></i> ${childPermission.name}</a>
+							<a href="${APP_PATH}${childPermission.url}"><i class="${childPermission.icon}"></i> ${childPermission.name}</a>
 						</li>
 					</c:forEach>
 				</ul>

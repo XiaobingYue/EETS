@@ -11,11 +11,11 @@ import java.util.List;
 @Repository
 public interface CourseTableDao {
 
-    List<CourseTable> queryByUserIdAndSection(CourseTable table);
+    List<CourseTable> queryByUserIdOrClassesIdAndSection(CourseTable table);
 
     void updateCourseTable(CourseTable courseTable);
 
-    Integer queryByUserId(Integer id);
+    Integer queryByUserIdOrClassesId(CourseTable courseTable);
 
     void insertCourseTable(CourseTable courseTable);
 }

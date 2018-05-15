@@ -28,6 +28,9 @@
         table tbody td:nth-child(even) {
             color: #C00;
         }
+        ::-webkit-scrollbar{
+            display:none;
+        }
     </style>
 </head>
 <body>
@@ -45,20 +48,20 @@
                     <h3 class="panel-title"><i class="glyphicon glyphicon-th"></i> 数据列表</h3>
                 </div>
                 <div class="panel-body">
-                    <form class="form-inline" course="form" style="float:left;">
+                    <form class="form-inline" role="form" style="float:left;">
                         <div class="form-group has-feedback">
                             <div class="input-group">
                                 <div class="input-group-addon">查询条件</div>
                                 <input id="queryText" class="form-control has-success" type="text"
-                                       placeholder="可按课程名称模糊查询">
+                                       placeholder="可按班级名称模糊查询">
                             </div>
                         </div>
-                        <button type="button" class="btn btn-warning" onclick="queryCourse()"><i
+                        <button type="button" class="btn btn-warning" onclick="queryClasses()"><i
                                 class="glyphicon glyphicon-search"></i> 查询
                         </button>
                     </form>
                     <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"
-                            onclick="deleteCourses()"><i class=" glyphicon glyphicon-remove"></i> 删除
+                            onclick="deleteClassess()"><i class=" glyphicon glyphicon-remove"></i> 删除
                     </button>
                     <button type="button" class="btn btn-primary tooltip-test"
                             style="float:right;" data-toggle="modal" data-target="#myModal"><i
@@ -72,8 +75,7 @@
                             <tr>
                                 <th width="30">#</th>
                                 <th width="30"><input type="checkbox" onclick="allSel(this)"></th>
-                                <th>课程名称</th>
-                                <th>课程编号</th>
+                                <th>班级名称</th>
                                 <th width="100">操作</th>
                             </tr>
                             </thead>
@@ -81,7 +83,7 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <td colspan="5" align="center">
+                                <td colspan="4" align="center">
                                     <ul class="pagination"></ul>
                                 </td>
                             </tr>
@@ -101,19 +103,14 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">新增课程</h4>
+                <h4 class="modal-title" id="myModalLabel">新增班级</h4>
             </div>
             <div class="modal-body">
-                <form id="courseForm" role="form">
+                <form id="ClassesForm" role="form">
                     <div class="form-group">
-                        <label>课程名称</label>
+                        <label>班级名称</label>
                         <input type="text" class="form-control" id="name"
-                               placeholder="请输入课程名称">
-                    </div>
-                    <div class="form-group">
-                        <label>课程编号</label>
-                        <input type="text" class="form-control" id="courseCode"
-                               placeholder="请输入课程编号">
+                               placeholder="请输入班级名称">
                     </div>
                     <button id="saveBtn" type="button" class="btn btn-success"><i
                             class="glyphicon glyphicon-pencil"></i> 添加
@@ -130,19 +127,14 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel1">修改课程</h4>
+                <h4 class="modal-title" id="myModalLabel1">修改班级</h4>
             </div>
             <div class="modal-body">
-                <form id="courseForm1" role="form">
+                <form id="ClassesForm1" role="form">
                     <div class="form-group">
-                        <label>课程名称</label>
+                        <label>班级名称</label>
                         <input type="text" class="form-control" id="name1"
-                               placeholder="请输入课程名称">
-                    </div>
-                    <div class="form-group">
-                        <label>课程编号</label>
-                        <input type="text" class="form-control" id="courseCode1"
-                               placeholder="请输入课程编号">
+                               placeholder="请输入班级名称">
                     </div>
                     <button id="updateBtn" type="button" class="btn btn-success"><i
                             class="glyphicon glyphicon-pencil"></i> 修改
@@ -195,11 +187,10 @@
             return false;
         }
     }
-    var _courseId = "";
-    function setNameAndCode(id,name,code) {
-        _courseId = id;
+    var _classesId = "";
+    function setName(id,name) {
+        _classesId = id;
         $("#name1").val(name);
-        $("#courseCode1").val(code);
     }
 
     function pageQuery(pageNo) {
@@ -216,7 +207,7 @@
         }
 
         $.ajax({
-            url: "${APP_PATH}/courseController/queryCourseList.do",
+            url: "${APP_PATH}/classesController/queryClassesList.do",
             type: "POST",
             data: obj,
             beforeSend: function () {
@@ -227,9 +218,9 @@
                 layer.close(loadingIndex);
                 if (result.success) {
                     var pageObj = result.page;
-                    var courseList = pageObj.data;
+                    var classesList = pageObj.data;
 
-                    if (courseList == null) {
+                    if (classesList == null) {
                         var empty = "";
                         $("tbody").html(empty);
                         $(".pagination").html(empty);
@@ -237,15 +228,14 @@
                     }
 
                     var content = "";
-                    $.each(courseList, function (i, course) {
+                    $.each(classesList, function (i, classes) {
                         content = content + '<tr>';
                         content = content + '  <td>' + (i + 1) + '</td>';
-                        content = content + '  <td><input type="checkbox" value="' + course.id + '"></td>';
-                        content = content + '  <td>' + course.name + '</td>';
-                        content = content + '  <td>' + course.courseCode + '</td>';
+                        content = content + '  <td><input type="checkbox" value="' + classes.id + '"></td>';
+                        content = content + '  <td>' + classes.className + '</td>';
                         content = content + '  <td>';
-                        content = content + '      <button type="button" data-toggle="modal" data-target="#editModal" onclick="setNameAndCode('+course.id+',\''+course.name+'\', \''+course.courseCode+ '\')"  class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        content = content + '	   <button type="button" onclick="deletecourse(' + course.id + ', \'' + course.name + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        content = content + '      <button type="button" data-toggle="modal" data-target="#editModal" onclick="setName('+classes.id+',\''+classes.className+'\')"  class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        content = content + '	   <button type="button" onclick="deleteClasses(' + classes.id + ', \'' + classes.className + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         content = content + '  </td>';
                         content = content + '</tr>';
                     });
@@ -280,7 +270,7 @@
                     $(".pagination").html(pageContent);
 
                 } else {
-                    layer.msg("教学大纲分页查询数据失败", {time: 1000, icon: 5, shift: 6});
+                    layer.msg("班级分页查询数据失败", {time: 1000, icon: 5, shift: 6});
                 }
             }
         });
@@ -288,7 +278,7 @@
 
     var cond = false;
 
-    function queryCourse() {
+    function queryClasses() {
         var queryText = $("#queryText");
         if (queryText.val() == "") {
             layer.msg("查询条件不能为空，请输入", {time: 1000, icon: 5, shift: 6}, function () {
@@ -300,18 +290,18 @@
         pageQuery(1);
     }
 
-    function deletecourse(id, name) {
-        layer.confirm("删除课程: " + name + ", 是否继续？", {icon: 3, title: '提示'}, function (cindex) {
+    function deleteClasses(id, name) {
+        layer.confirm("删除班级: " + name + ", 是否继续？", {icon: 3, title: '提示'}, function (cindex) {
             // 删除数据
             $.ajax({
-                url: "${APP_PATH}/courseController/deleteCourse.do",
+                url: "${APP_PATH}/classesController/deleteClasses.do",
                 type: "POST",
                 data: {
                     id: id
                 },
                 success: function (result) {
                     if (result.success) {
-                        layer.msg("课程信息删除成功", {time: 1000, icon: 6}, function () {
+                        layer.msg("班级信息删除成功", {time: 1000, icon: 6}, function () {
                             pageQuery(1);
                         });
                     } else {
@@ -331,14 +321,14 @@
         // 获取全选框的勾选状态
         var flg = obj.checked;
 
-        var courseBox = $("tbody :checkbox");
+        var ClassesBox = $("tbody :checkbox");
 
-        $.each(courseBox, function (i, n) {
+        $.each(ClassesBox, function (i, n) {
             n.checked = flg;
         });
     }
 
-    function deleteCourses() {
+    function deleteClassess() {
         var checkBox = $("tbody :checked");
         if (checkBox.length == 0) {
             layer.msg("请选择需要删除的角色数据", {time: 1000, icon: 5, shift: 6});
@@ -350,7 +340,7 @@
                     obj["ids[" + i + "]"] = n.value;
                 });
                 $.ajax({
-                    url: "${APP_PATH}/manager/course/deletes.do",
+                    url: "${APP_PATH}/manager/multiManage/deletes.do",
                     type: "POST",
                     data: obj,
                     success: function (result) {
@@ -374,12 +364,11 @@
         var loadingIndex = -1;
         // 提交表单
         $.ajax({
-            url: "${APP_PATH}/courseController/editCourse.do",
+            url: "${APP_PATH}/classesController/editClasses.do",
             type: "POST",
             data: {
-                "name": $("#name1").val(),
-                "courseCode":$("#courseCode1").val(),
-                "id": _courseId
+                "className": $("#name1").val(),
+                "id": _classesId
             },
             beforeSend: function () {
                 loadingIndex = layer.msg('数据修改中', {icon: 16});
@@ -387,11 +376,11 @@
             success: function (result) {
                 layer.close(loadingIndex);
                 if (result.success) {
-                    layer.msg("课程信息修改成功", {time: 1000, icon: 6}, function () {
-                        window.location.href = "${APP_PATH}/courseController/toCourseList.do?pageNo=${param.pageNo}";
+                    layer.msg("班级信息修改成功", {time: 1000, icon: 6}, function () {
+                        window.location.href = "${APP_PATH}/classesController/toClassesList.do?pageNo=${param.pageNo}";
                     });
                 } else {
-                    layer.msg("课程信息修改失败", {time: 1000, icon: 5, shift: 6});
+                    layer.msg("班级信息修改失败", {time: 1000, icon: 5, shift: 6});
                 }
             }
         });
@@ -401,11 +390,10 @@
         var loadingIndex = -1;
         // 提交表单
         $.ajax({
-            url: "${APP_PATH}/courseController/addCourse.do",
+            url: "${APP_PATH}/classesController/addClasses.do",
             type: "POST",
             data: {
-                "name": $("#name").val(),
-                "courseCode":$("#courseCode").val()
+                "className": $("#name").val()
             },
             beforeSend: function () {
                 loadingIndex = layer.msg('数据处理中', {icon: 16});
@@ -413,11 +401,11 @@
             success: function (result) {
                 layer.close(loadingIndex);
                 if (result.success) {
-                    layer.msg("课程信息增加成功", {time: 1000, icon: 6}, function () {
-                        window.location.href = "${APP_PATH}/courseController/toCourseList.do";
+                    layer.msg("班级信息增加成功", {time: 1000, icon: 6}, function () {
+                        window.location.href = "${APP_PATH}/classesController/toClassesList.do";
                     });
                 } else {
-                    layer.msg("课程信息增加失败", {time: 1000, icon: 5, shift: 6});
+                    layer.msg("班级信息增加失败", {time: 1000, icon: 5, shift: 6});
                 }
             }
         });
