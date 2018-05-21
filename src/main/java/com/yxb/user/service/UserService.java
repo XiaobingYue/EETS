@@ -56,7 +56,7 @@ public interface UserService {
      */
     void importUser(MultipartFile file, Set<ImportUserBean> wellList, List<ImportUserBean> exitList, List<ImportUserBean> infoNotExitList, List<ImportUserBean> errorList) throws Exception;
 
-    List<User> queryTeacherListByRoleId();
+    List<User> queryUserListByRoleId(Integer roleId);
 
     List<Permission> queryMyPermission(Integer id);
 

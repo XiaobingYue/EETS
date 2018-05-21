@@ -68,4 +68,9 @@ public class ClassesServiceImpl implements ClassesService {
             classesDao.editClasses(classes);
         }
     }
+
+    @Override
+    public Classes queryById(Integer id) {
+        return classesDao.queryById(id);
+    }
 }

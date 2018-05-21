@@ -1,0 +1,266 @@
+package com.yxb.exam.service.impl;
+
+import com.yxb.common.constant.Const;
+import com.yxb.common.entity.Page;
+import com.yxb.exam.dao.ExamDao;
+import com.yxb.exam.entity.Exam;
+import com.yxb.exam.entity.TestDetail;
+import com.yxb.exam.entity.TestMethod;
+import com.yxb.exam.service.ExamService;
+import com.yxb.multiManage.entity.Classes;
+import com.yxb.multiManage.entity.Course;
+import com.yxb.multiManage.service.ClassesService;
+import com.yxb.multiManage.service.CourseService;
+import com.yxb.trainingPlan.dao.IndexPointDao;
+import com.yxb.trainingPlan.entity.IndexPoint;
+import com.yxb.user.entity.User;
+import com.yxb.user.service.UserService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by yxb on 2018/5/19
+ */
+@Service
+public class ExamServiceImpl implements ExamService {
+
+    @Autowired
+    private ExamDao examDao;
+    @Autowired
+    private CourseService courseService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ClassesService classesService;
+    @Autowired
+    private IndexPointDao indexPointDao;
+
+    @Override
+    public Page<Exam> queryListByPage(Map<String, Object> paramMap, Integer pageNo, Integer pageSize) {
+        List<Exam> examList = examDao.queryAll(paramMap);
+        Page<Exam> page = new Page<>();
+        if (!CollectionUtils.isEmpty(examList)) {
+            for (Exam exam : examList) {
+                Course course = courseService.queryById(exam.getCourseId());
+                exam.setCourseName(course.getName());
+                User developer = userService.queryById(exam.getDeveloperId());
+                exam.setDeveloperName(developer.getName());
+                String[] classesIds = exam.getClassIds().split(",");
+                String classesName = "";
+                for (String classesId : classesIds) {
+                    Classes classes = classesService.queryById(Integer.valueOf(classesId));
+                    classesName = classes.getClassName() + " ";
+                }
+                exam.setClassesName(classesName);
+            }
+            Integer totalSize = examDao.queryCount(paramMap);
+            page.setData(examList);
+            page.setPageNo(pageNo);
+            page.setPageSize(pageSize);
+            page.setTotalNo(totalSize, pageSize);
+            page.setTotalSize(totalSize);
+        }
+        return page;
+    }
+
+    @Override
+    public Exam queryById(Integer examId) {
+        return examDao.queryById(examId);
+    }
+
+    /**
+     * 指定试做人
+     *
+     * @param teacherId 试做人id
+     * @param examId    审批表id
+     * @return String
+     */
+    @Override
+    public String assignTestDoPerson(Integer teacherId, Integer examId) {
+        Exam exam = examDao.queryById(examId);
+        if (exam != null && exam.getState().equals(Const.EXAM_STATE_1)) {
+            exam.setTesterId(teacherId);
+            exam.setState(Const.EXAM_STATE_2);
+            examDao.assignTester(exam);
+            return "";
+        } else {
+            return "不存在该审批表或者该审批表已指定试做人";
+        }
+    }
+
+    @Override
+    public void addExam(Exam exam) {
+        StringBuilder classIds = new StringBuilder();
+        for (Integer classId : exam.getClassIdList()) {
+            classIds.append(classId).append(",");
+        }
+        exam.setClassIds(classIds.substring(0, classIds.length() - 1));
+        exam.setTimestamp(System.currentTimeMillis());
+        exam.setState(Const.EXAM_STATE_1);
+        examDao.addExam(exam);
+
+        List<Integer> indexPointId = exam.getIndexPointId();
+        List<String> testModeList = exam.getTestMode();
+        List<String> scores = exam.getScore();
+        for (Integer id : indexPointId) {
+            if (testModeList.size() >= 4 && scores.size() >= 4) {
+                TestMethod testMethod = new TestMethod();
+                testMethod.setCourseId(exam.getCourseId());
+                testMethod.setIndexPointId(id);
+                String testModes = "";
+                String score = "";
+                for (int i = 0; i < 4; i++) {
+                    if (StringUtils.isBlank(testModeList.get(0))) {
+                        testModes += "空" + ",";
+                    } else {
+                        testModes += testModeList.get(0) + ",";
+                    }
+                    testModeList.remove(0);
+                    if (StringUtils.isBlank(scores.get(0))) {
+                        score += "空" + ",";
+                    } else {
+                        score += scores.get(0) + ",";
+                    }
+                    scores.remove(0);
+                }
+                testMethod.setTestMode(testModes.substring(0, testModes.length() - 1));
+                testMethod.setScores(score.substring(0, score.length() - 1));
+                examDao.addTestMethod(testMethod);
+            }
+        }
+    }
+
+    @Override
+    public void updateExam(Exam exam) {
+        StringBuilder classIds = new StringBuilder();
+        for (Integer classId : exam.getClassIdList()) {
+            classIds.append(classId).append(",");
+        }
+        exam.setClassIds(classIds.substring(0, classIds.length() - 1));
+        exam.setTimestamp(System.currentTimeMillis());
+        exam.setState(Const.EXAM_STATE_1);
+        examDao.updateExam(exam);
+
+        //将原来的考核办法根据课程id删除，重新加入最新的
+        examDao.deleteTestMethodByCourseId(exam.getCourseId());
+        List<Integer> indexPointId = exam.getIndexPointId();
+        List<String> testModeList = exam.getTestMode();
+        List<String> scores = exam.getScore();
+        for (Integer id : indexPointId) {
+            if (testModeList.size() >= 4 && scores.size() >= 4) {
+                TestMethod testMethod = new TestMethod();
+                testMethod.setCourseId(exam.getCourseId());
+                testMethod.setIndexPointId(id);
+                String testModes = "";
+                String score = "";
+                for (int i = 0; i < 4; i++) {
+                    if (StringUtils.isBlank(testModeList.get(0))) {
+                        testModes += "空" + ",";
+                    } else {
+                        testModes += testModeList.get(0) + ",";
+                    }
+                    testModeList.remove(0);
+                    if (StringUtils.isBlank(scores.get(0))) {
+                        score += "空" + ",";
+                    } else {
+                        score += scores.get(0) + ",";
+                    }
+                    scores.remove(0);
+                }
+                testMethod.setTestMode(testModes.substring(0, testModes.length() - 1));
+                testMethod.setScores(score.substring(0, score.length() - 1));
+                examDao.addTestMethod(testMethod);
+            }
+        }
+    }
+
+    @Override
+    public List<TestMethod> queryTestMethodByCourseId(Integer courseId) {
+        List<TestMethod> testMethodList = examDao.queryTestMethodByCourseId(courseId);
+        for (TestMethod testMethod : testMethodList) {
+            IndexPoint indexPoint = indexPointDao.queryById(testMethod.getIndexPointId());
+            testMethod.setIndexPointName(indexPoint.getName());
+            String[] methods = testMethod.getTestMode().split(",");
+            String[] scores = testMethod.getScores().split(",");
+            List<TestDetail> testDetailList = new ArrayList<>();
+            for (int i = 0; i < methods.length; i++) {
+                TestDetail detail = new TestDetail();
+                detail.setMethod(methods[i]);
+                detail.setScore(scores[i]);
+                testDetailList.add(detail);
+            }
+            testMethod.setTestDetail(testDetailList);
+        }
+        return testMethodList;
+    }
+
+    @Override
+    public void updateExamTestDoInfo(Exam exam) {
+        exam.setState(Const.EXAM_STATE_3);
+        exam.setTimestamp(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        exam.setTestDoTime(sdf.format(new Date()));
+        examDao.updateExamTestDoInfo(exam);
+    }
+
+    @Override
+    public void assignApprover(Integer examId, Integer teacherId) {
+        User user = userService.queryById(teacherId);
+        Exam exam = examDao.queryById(examId);
+        exam.setState(Const.EXAM_STATE_4);
+        exam.setTimestamp(System.currentTimeMillis());
+        exam.setApproverId(teacherId);
+        exam.setApproverName(user.getName());
+        examDao.assignApprover(exam);
+    }
+
+    @Override
+    public String approve(String state, Integer examId) {
+        Exam exam = examDao.queryById(examId);
+        if (exam != null && exam.getState().equals(Const.EXAM_STATE_4)) {
+            exam.setTimestamp(System.currentTimeMillis());
+            exam.setState(state);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            exam.setApproveTime(sdf.format(new Date()));
+            examDao.approve(exam);
+            return "";
+        } else {
+            return "审批表不存在或者审批表状态不正确";
+        }
+    }
+
+    /**
+     * 删除命题审批表，同事删除课程考核办法
+     *
+     * @param id 命题审批表id
+     */
+    @Override
+    public void deleteById(Integer id) {
+        Exam exam = examDao.queryById(id);
+        examDao.deleteTestMethodByCourseId(exam.getCourseId());
+        examDao.deleteById(id);
+    }
+
+    @Override
+    public Exam queryByCourseId(Integer courseId) {
+        return examDao.queryByCourseId(courseId);
+    }
+
+    @Override
+    public Integer queryMyTestDoCount(Map<String, Object> paramMap) {
+        return examDao.queryCount(paramMap);
+    }
+
+    @Override
+    public void updateFileName(Exam exam) {
+        examDao.updateFileName(exam);
+    }
+}

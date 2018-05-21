@@ -51,9 +51,30 @@ public class Const {
 
     public static final String TEACH_TASK_DELETED = "0";
 
+    /**
+     * 角色教师id
+     */
     public static final Integer TEACHER_ROLE_ID = 9;
+
+    /**
+     * 角色教学副院长id
+     */
+    public static final Integer VICE_DEAN_OF_TEACHING = 14;
+
+    public static final String EXAM_STATE_1 = "1";
+
+    public static final String EXAM_STATE_2 = "2";
+
+    public static final String EXAM_STATE_3 = "3";
+
+    public static final String EXAM_STATE_4 = "4";
+
+    public static final String EXAM_STATE_5 = "5";
 
 
     public static void main (String[] args) throws ParseException {
+        String test = "1,1,,";
+        String[] arr = test.split(",");
+        System.out.println(arr);
     }
 }

@@ -22,7 +22,8 @@ public class Utils {
 
     private static final Logger log = LoggerFactory.getLogger(Utils.class);
 
-    public static void download(String filename, HttpServletRequest request, HttpServletResponse response,String filePath) {
+
+    public static void download(String filename, HttpServletRequest request, HttpServletResponse response, String filePath) {
         File file;
         OutputStream os = null;
         BufferedInputStream fin = null;
@@ -37,13 +38,11 @@ public class Utils {
             // 设置响应头和下载保存的文件名
             if (file.exists()) {
                 fin = new BufferedInputStream(new FileInputStream(file));
-                if (fin != null) {
-                    // 文件太大时内存不能一次读出,要循环
-                    byte[] b = new byte[2048];// 太大下载慢
-                    int i;
-                    while ((i = fin.read(b)) > 0) {
-                        os.write(b, 0, i);
-                    }
+                // 文件太大时内存不能一次读出,要循环
+                byte[] b = new byte[2048];// 太大下载慢
+                int i;
+                while ((i = fin.read(b)) > 0) {
+                    os.write(b, 0, i);
                 }
                 os.flush();
                 os.close();
@@ -71,16 +70,20 @@ public class Utils {
         }
     }
 
+    /**
+     * 按照特定格式获取获取七天的日期
+     *
+     * @param pattern 日期格式
+     * @return List<String>
+     */
     public static List<String> getRecentDate(String pattern) {
         List<String> dateList = new ArrayList<>();
-        for (int i=0;i<7;i++) {
+        for (int i = 0; i < 7; i++) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
             calendar.add(Calendar.DAY_OF_MONTH, -i);
             Date date = calendar.getTime();
-
             String str = new SimpleDateFormat(pattern).format(date);
-            System.out.println(str);
             dateList.add(str);
         }
         return dateList;

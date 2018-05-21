@@ -34,8 +34,8 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <ol class="breadcrumb">
-                <li><a href="${APP_PATH}/manager/main.htm">首页</a></li>
-                <li><a href="${APP_PATH}/manager/permission/tree.htm">数据列表</a></li>
+                <li><a href="${APP_PATH}/toMain.do">首页</a></li>
+                <li><a href="${APP_PATH}/permissionController/permissionTreeList.do">数据列表</a></li>
                 <li class="active">新增</li>
             </ol>
             <div class="panel panel-default">
@@ -98,7 +98,7 @@
         </div>
     </div>
 </div>
-<script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
+<script src="${APP_PATH}/jquery/jquery-3.1.0.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
 <script src="${APP_PATH}/script/layer/layer.js"></script>
 <script type="text/javascript">

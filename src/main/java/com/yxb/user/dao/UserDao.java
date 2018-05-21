@@ -41,7 +41,7 @@ public interface UserDao {
 
     void unAssignByUserId(Integer userId);
 
-    List<User> queryTeacherListByRoleId(Integer roleId);
+    List<User> queryUserListByRoleId(Integer roleId);
 
     void changePassword(UserBean userBean);
 

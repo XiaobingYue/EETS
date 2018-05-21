@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxb.exam.dao.ExamDao">
+    <resultMap id="examMap" type="exam">
+        <result column="course_id" property="courseId"></result>
+        <result column="institute_id" property="instituteId"></result>
+        <result column="staff_room" property="staffRoom"></result>
+        <result column="developer_id" property="developerId"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="class_ids" property="classIds"></result>
+        <result column="test_type" property="testType"></result>
+        <result column="course_end_time" property="courseEndTime"></result>
+        <result column="proposition_type" property="propositionType"></result>
+        <result column="test_paper_type" property="testPaperType"></result>
+        <result column="if_have_answer" property="ifHaveAnswer"></result>
+        <result column="exam_time" property="examTime"></result>
+        <result column="test_do_need_time" property="testDoNeedTime"></result>
+        <result column="test_do_summary" property="testDoSummary"></result>
+        <result column="tester_id" property="testerId"></result>
+        <result column="tester_name" property="testerName"></result>
+        <result column="test_do_time" property="testDoTime"></result>
+        <result column="approver_id" property="approverId"></result>
+        <result column="approver_name" property="approverName"></result>
+        <result column="approve_time" property="approveTime"></result>
+        <result column="file_name" property="fileName"></result>
+    </resultMap>
+    
+    <resultMap id="testMethodMap" type="testMethod">
+        <result column="course_id" property="courseId"></result>
+        <result column="index_point_id" property="indexPointId"></result>
+        <result column="test_mode" property="testMode"></result>
+    </resultMap>
+    <select id="queryAll" resultMap="examMap">
+        SELECT * FROM t_exam WHERE 1 = 1
+        <if test="queryText != null">
+            AND NAME LIKE concat('%', #{queryText}, '%')
+        </if>
+        <if test="testerId != null">
+            AND TESTER_ID = #{testerId}
+        </if>
+        <if test="approverId != null">
+            AND APPROVER_ID = #{approverId}
+        </if>
+        ORDER BY TIMESTAMP DESC limit #{start} , #{size}
+    </select>
+
+    <select id="queryCount" resultType="int">
+        SELECT count(*) FROM t_exam WHERE 1 = 1
+        <if test="queryText != null">
+            AND NAME LIKE concat('%', #{queryText}, '%')
+        </if>
+        <if test="testerId != null">
+            AND TESTER_ID = #{testerId}
+        </if>
+        <if test="approverId != null">
+            AND APPROVER_ID = #{approverId}
+        </if>
+    </select>
+
+    <select id="queryById" resultMap="examMap">
+        SELECT * FROM t_exam WHERE ID = #{id}
+    </select>
+
+
+    <insert id="addExam">
+        INSERT INTO t_exam (NAME, COURSE_ID, INSTITUTE_ID, STAFF_ROOM, DEVELOPER_ID, CLASS_IDS, TEST_TYPE, COURSE_END_TIME, TIMESTAMP,CREATE_TIME, PROPOSITION_TYPE, STATE) VALUES (#{name},#{courseId},#{instituteId},#{staffRoom},#{developerId},#{classIds},#{testType},#{courseEndTime},#{timestamp},#{createTime},#{propositionType},#{state});
+    </insert>
+
+    <update id="assignTester">
+        UPDATE t_exam SET TESTER_ID = #{testerId} ,STATE = #{state} WHERE ID = #{id}
+    </update>
+
+    <update id="updateExam">
+        UPDATE t_exam SET NAME = #{name},COURSE_ID = #{courseId},INSTITUTE_ID = #{instituteId},STAFF_ROOM = #{staffRoom},DEVELOPER_ID = #{developerId},CLASS_IDS = #{classIds},TEST_TYPE = #{testType},COURSE_END_TIME = #{courseEndTime},TIMESTAMP = #{timestamp},CREATE_TIME = #{createTime},PROPOSITION_TYPE = #{propositionType},STATE=#{state} WHERE ID = #{id}
+    </update>
+    
+    <insert id="addTestMethod">
+        INSERT INTO t_test_method (COURSE_ID, INDEX_POINT_ID, TEST_MODE, SCORES) VALUES (#{courseId},#{indexPointId},#{testMode},#{scores})
+    </insert>
+
+    <select id="queryTestMethodByCourseId" resultMap="testMethodMap">
+        SELECT * FROM t_test_method WHERE COURSE_ID = #{courseId}
+    </select>
+
+    <delete id="deleteTestMethodByCourseId">
+        DELETE FROM t_test_method WHERE COURSE_ID = #{courseId}
+    </delete>
+
+    <update id="updateExamTestDoInfo">
+        update t_exam SET TEST_PAPER_TYPE = #{testPaperType},IF_HAVE_ANSWER = #{ifHaveAnswer},EXAM_TIME = #{examTime},TEST_DO_NEED_TIME = #{testDoNeedTime},TEST_DO_SUMMARY = #{testDoSummary},TESTER_ID = #{testerId},TESTER_NAME = #{testerName},TEST_DO_TIME = #{testDoTime},STATE=#{state} WHERE ID = #{id}
+    </update>
+
+    <update id="assignApprover">
+        UPDATE t_exam SET STATE=#{state},TIMESTAMP=#{timestamp},APPROVER_ID = #{approverId},APPROVER_NAME=#{approverName} WHERE ID = #{id}
+    </update>
+
+    <update id="approve">
+        UPDATE t_exam SET STATE = #{state} , TIMESTAMP = #{timestamp} WHERE ID = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM t_exam WHERE ID = #{id}
+    </delete>
+
+    <select id="queryByCourseId" resultMap="examMap">
+        SELECT * FROM t_exam WHERE COURSE_ID = #{courseId}
+    </select>
+
+    <update id="updateFileName">
+        UPDATE t_exam SET FILE_NAME = #{fileName} WHERE ID = #{id}
+    </update>
+</mapper>

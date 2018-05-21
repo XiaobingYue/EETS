@@ -74,9 +74,6 @@
                             <input type="radio" name="type" id="classes" value="0"> 查询班级课表
                         </div>
                     </form>
-                    <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"
-                            onclick="deleteCourses()"><i class=" glyphicon glyphicon-remove"></i> 删除
-                    </button>
                     <button type="button" data-toggle="modal" data-target="#myModal"
                             class="btn btn-primary tooltip-test"
                             style="float:right;"><i
@@ -131,7 +128,7 @@
             -->
         </div>
     </div>
-    <script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
+    <script src="${APP_PATH}/jquery/jquery-3.1.0.js"></script>
     <script src="${APP_PATH}/bootstrap/js/fileinput.js"></script>
     <script src="${APP_PATH}/bootstrap/js/zh.js"></script>
     <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
@@ -185,7 +182,7 @@
                     checkbox: true
                 }, {
                     field: "section",
-                    title: "课节",
+                    title: "课节"
                 }, {
                     field: "monday",
                     title: "星期一",

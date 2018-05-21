@@ -62,9 +62,6 @@
                                 class="glyphicon glyphicon-search"></i> 查询
                         </button>
                     </form>
-                    <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"
-                            onclick="deleteTextBooks()"><i class=" glyphicon glyphicon-remove"></i> 删除
-                    </button>
                     <button type="button" class="btn btn-primary tooltip-test" data-toggle="tooltip" titleS="新增教学材料"
                             style="float:right;"
                             onclick="window.location.href='${APP_PATH}/textBookController/toAddTextBook.do'"><i
@@ -135,7 +132,7 @@
         </div>
     </div>
 </div>
-<script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
+<script src="${APP_PATH}/jquery/jquery-3.1.0.js"></script>
 <script src="${APP_PATH}/bootstrap/js/fileinput.js"></script>
 <script src="${APP_PATH}/bootstrap/js/zh.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>

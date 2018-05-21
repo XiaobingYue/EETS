@@ -74,14 +74,14 @@
                         <div class="form-group">
                         <label>角色</label>
                         <c:set var="roleId" value="" scope="request"/>
-                        <select class="selectpicker show-tick form-control " id="roleIds" name="roleIds" multiple data-live-search="true">
+                        <select class="selectpicker show-tick form-control" onchange="ifStudent()" id="roleIds" name="roleIds" multiple data-live-search="true">
                             <c:forEach items="${roleList}" var="role" varStatus="vs">
                                 <option id="${role.roleName}" value="${role.id}"
                                         <c:if test="${role.id==roleId}">selected</c:if> > ${role.roleName}</option>
                             </c:forEach>
                         </select>
                     </div>
-                        <div class="form-group">
+                        <div class="form-group" id="classes">
                             <label>班级</label>
                             <c:set var="classesId" value="${user.classesId}" scope="request"/>
                             <select class="form-control has-success" id="classesId" name="classesId">
@@ -140,7 +140,7 @@
         </div>
     </div>
 </div>
-<script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
+<script src="${APP_PATH}/jquery/jquery-3.1.0.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrapValidator.js"></script>
 <script src="${APP_PATH}/script/layer/layer.js"></script>
@@ -159,9 +159,22 @@
             }
         });
     var roleIds = ${user.roleIds};
-    console.info(roleIds);
     $('#roleIds').selectpicker('val', roleIds);
+    if(roleIds.indexOf(5) >= 0) {
+        $("#classes").show();
+    } else {
+        $("#classes").hide();
+    }
     });
+
+    function ifStudent() {
+        var options = $("#roleIds option:selected").val();
+        if(options.indexOf(5) >= 0) {
+            $("#classes").show();
+        } else {
+            $("#classes").hide();
+        }
+    }
 
     var flag = true;
 
@@ -267,6 +280,10 @@
                 },
                 success: function (result) {
                     layer.close(loadingIndex);
+                    if(result == "noPower") {
+                        window.location.href="${APP_PATH}/noPower.jsp";
+                        return;
+                    }
                     if (result.success) {
                         layer.msg("用户信息修改成功", {time: 1000, icon: 6}, function () {
                             window.location.href = "${APP_PATH}/userController/toUserList.do?pageNo=${param.pageNo}";

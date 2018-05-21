@@ -71,15 +71,15 @@
                         </div>
                         <div class="form-group">
                             <label>角色</label>
-                            <select class="selectpicker show-tick form-control " id="roleIds" name="roleIds" multiple data-live-search="true">
+                            <select class="selectpicker show-tick form-control" onchange="ifStudent()" id="roleIds" name="roleIds" multiple data-live-search="true">
                                 <c:forEach items="${roleList}" var="role" varStatus="vs">
                                     <option id="${role.roleName}" value="${role.id}"> ${role.roleName}</option>
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="classes">
                             <label>班级</label>
-                            <select class="form-control has-success" id="classesId" name="classesId">
+                            <select class="form-control selectpicker show-tick" data-live-search="true" id="classesId" name="classesId">
                                 <option value=""></option>
                                 <c:forEach items="${classesList}" var="classes" varStatus="vs">
                                     <option id="${classes.id}" value="${classes.id}"> ${classes.className}</option>
@@ -133,7 +133,7 @@
         </div>
     </div>
 </div>
-<script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
+<script src="${APP_PATH}/jquery/jquery-3.1.0.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
 <script src="${APP_PATH}/script/layer/layer.js"></script>
 <script src="${APP_PATH}/jquery/jquery.form.js"></script>
@@ -151,7 +151,17 @@
                 }
             }
         });
+        $("#classes").hide();
     });
+
+    function ifStudent() {
+        var options = $("#roleIds option:selected").val();
+        if(options.indexOf(5) >= 0) {
+            $("#classes").show();
+        } else {
+            $("#classes").hide();
+        }
+    }
     var flag = true;
 
     function checkUserAcct() {

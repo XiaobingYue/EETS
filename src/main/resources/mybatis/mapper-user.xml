@@ -131,10 +131,9 @@
     </insert>
 
     <delete id="unAssign">
-        delete from t_user_role
-            where
-        <foreach collection="roleIds" item="roleId" separator=",">
-            USER_ID = #{userId} and ROLE_ID = #{roleId}
+        delete from t_user_role where USER_ID = #{userId} and ROLE_ID in
+        <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
+            #{roleId}
         </foreach>
     </delete>
 
@@ -144,7 +143,7 @@
             USER_ID = #{userId}
     </delete>
 
-    <select id="queryTeacherListByRoleId" resultMap="userMap">
+    <select id="queryUserListByRoleId" resultMap="userMap">
         SELECT * FROM t_user WHERE ID IN (SELECT USER_ID FROM t_user_role WHERE ROLE_ID = #{roleId})
     </select>
 

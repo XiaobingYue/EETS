@@ -164,8 +164,8 @@ public class PlanController {
     public Object downloadPdf(Integer id, HttpServletRequest request, HttpServletResponse response) {
         AjaxResult result = new AjaxResult();
         try {
-            Plan syllabus = trainingPlanService.queryById(id);
-            String fileName = syllabus.getFileName();
+            Plan plan = trainingPlanService.queryById(id);
+            String fileName = plan.getFileName();
             String filePath = "I:\\upload\\plan\\" + fileName;
             Utils.download(fileName, request, response, filePath);
         } catch (Exception e) {

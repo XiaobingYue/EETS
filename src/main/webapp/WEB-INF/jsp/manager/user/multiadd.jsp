@@ -46,11 +46,10 @@
             </ol>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    用户数据
-                    <div style="float: right; cursor: pointer;" data-toggle="modal"
-                         data-target="#myModal">
-                        <i class="glyphicon glyphicon-question-sign"></i>
-                    </div>
+                    <button type="button" id="saveBtn"
+                            style="margin-left:10px;margin-bottom:10px;" class="btn btn-danger">
+                        <i class="glyphicon glyphicon-download-alt"></i> 下载模板
+                    </button>
                 </div>
                 <div class="panel-body">
                     <form id="userForm"
@@ -110,7 +109,7 @@
         </div>
     </div>
 </div>
-<script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
+<script src="${APP_PATH}/jquery/jquery-3.1.0.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
 <script src="${APP_PATH}/bootstrap/js/fileinput.js"></script>
 <script src="${APP_PATH}/bootstrap/js/zh.js"></script>
@@ -184,88 +183,8 @@
         console.info(files)
     });
 
-    var userCnt = 0;
-    $("#insertBtn").click(function () {
-        /*// 增加一行
-        var usertable = $("#usertable");
-        var trObj = "";
-        trObj += '<tr>';
-        trObj += '    <td><div class="form-group"><input type="text" class="form-control" id="userAcct" name="users[' + userCnt + '].userAcct"></div></td>';
-        trObj += '    <td><input type="text" class="form-control" name="users[' + userCnt + '].username"></td>';
-        trObj += '    <td><a class="btn btn-danger" onclick="deleteUser(this)"><i class="glyphicon glyphicon-remove"></i></a></td>';
-        trObj += '</tr>';
-        usertable.append(trObj);
-        userCnt++;*/
-        $("#userForm").ajaxSubmit({
-            beforeSubmit: function () {
-                loadingIndex = layer.load(2, {time: 10 * 1000});
-            },
-            success: function (result) {
-                layer.close(loadingIndex);
-                if (result.success) {
-                    layer.msg("用户信息批量保存成功", {time: 1000, icon: 6}, function () {
-                        window.location.href = "${APP_PATH}/userController/toUserList.do";
-                    });
-                } else {
-                    layer.msg("用户信息批量保存失败", {time: 1000, icon: 5, shift: 6});
-                }
-            }
-        });
-    });
-
-    function checkUserAcct() {
-        var userAcct = $("#userAcct");
-        var loadingIndex = -1;
-        $.ajax({
-            url: "${APP_PATH}/userController/validateUserAcct.do",
-            type: "POST",
-            //dataType : "json",
-            data: {"userAcct": userAcct.val()},
-            beforeSend: function () {
-                //loadingIndex = layer.msg('处理中', {icon: 16});
-                loadingIndex = layer.load(2, {time: 10 * 1000});
-            },
-            success: function (result) {
-                layer.close(loadingIndex);
-                if (!result.success) {
-                    layer.msg(result.data, {time: 2000, icon: 5, shift: 6}, function () {
-                        // 设定页面焦点
-                    });
-                    flag = false;
-                    userAcct.focus();
-                }
-            }
-        });
-    }
-
-    function deleteUser(obj) {
-        // obj ==> <a>
-        // 查找tr
-        var trObj = $(obj).parent().parent();
-        // 删除tr
-        trObj.remove();
-    }
-
     $("#saveBtn").click(function () {
-        /* // 提交表单
-        var loadingIndex = -1;
-        $("#userForm").ajaxSubmit({
-            beforeSubmit : function() {
-                loadingIndex = layer.load(2,{time : 10 * 1000});
-            },
-            success : function(result) {
-                layer.close(loadingIndex);
-                if (result.success) {
-                    layer.msg("用户信息批量保存成功",{time : 1000,icon : 6},function() {
-                        window.location.href = "
-        ${APP_PATH}/userController/toUserList.do";
-											});
-						} else {
-							layer.msg("用户信息批量保存失败",{time : 1000,icon : 5,shift : 6});
-						}
-					}
-				}); */
-        window.location.href = "${APP_PATH}/downloadController/download.do?filename=tmp_imp_user.xls";
+        window.location.href = "${APP_PATH}/downloadController/download.do?filename=tmp_imp_user.xlsx";
     });
 </script>
 </body>

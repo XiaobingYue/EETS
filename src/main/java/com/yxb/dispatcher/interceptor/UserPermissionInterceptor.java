@@ -37,8 +37,11 @@ public class UserPermissionInterceptor extends HandlerInterceptorAdapter {
         whiteListSet.add(appPath+"/toLogin.do");
         whiteListSet.add(appPath+"/toMain.do");
         whiteListSet.add(appPath+"/userController/logout.do");
+        whiteListSet.add(appPath+"/userController/recentLogin.do");
+        whiteListSet.add(appPath+"/userController/validateUserAcct.do");
+        whiteListSet.add(appPath+"/userController/changePwd.do");
 
-        if (whiteListSet.contains(uri) || StringUtils.isNotBlank(type)) {
+        if (whiteListSet.contains(uri) || uri.contains("download.do") || uri.contains("Detail") ) {
             log.debug("white List or ajax request...");
             return true;
         } else {
@@ -55,14 +58,23 @@ public class UserPermissionInterceptor extends HandlerInterceptorAdapter {
                         return true;
                     }
                 }
-                log.error("无操作权限");
-                response.sendRedirect(appPath+"/noPower.jsp");
+                if(StringUtils.isNotBlank(type)) {
+                    if (uri.contains("edit") || uri.contains("modify") || uri.contains("delete")) {
+                        log.error("无操作权限");
+                        response.getWriter().write("noPower");
+                    } else {
+                        return true;
+                    }
+                } else {
+                    log.error("无操作权限");
+                    response.sendRedirect(appPath+"/noPower.jsp");
+                }
             } catch (Exception e) {
                 log.error("拦截权限出现异常", e);
                 response.sendRedirect(appPath+"/error.jsp");
             }
+            return false;
         }
-        return true;
     }
 
     @Override

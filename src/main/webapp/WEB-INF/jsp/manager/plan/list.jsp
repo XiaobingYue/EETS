@@ -60,9 +60,6 @@
                                 class="glyphicon glyphicon-search"></i> 查询
                         </button>
                     </form>
-                    <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"
-                            onclick="deletePlans()"><i class=" glyphicon glyphicon-remove"></i> 删除
-                    </button>
                     <button type="button" class="btn btn-primary tooltip-test" data-toggle="tooltip" titleS="新增计划"
                             style="float:right;"
                             onclick="window.location.href='${APP_PATH}/planController/toAdd.do'"><i
@@ -126,7 +123,7 @@
         </div>
     </div>
 </div>
-<script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
+<script src="${APP_PATH}/jquery/jquery-3.1.0.js"></script>
 <script src="${APP_PATH}/bootstrap/js/fileinput.js"></script>
 <script src="${APP_PATH}/bootstrap/js/zh.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
@@ -330,7 +327,7 @@
         layer.confirm("删除培养方案: " + name + ", 是否继续？", {icon: 3, title: '提示'}, function (cindex) {
             // 删除数据
             $.ajax({
-                url: "${APP_PATH}/planController/deletePlan.do",
+                url: "${APP_PATH}/planController/deleteById.do",
                 type: "POST",
                 data: {
                     id: id

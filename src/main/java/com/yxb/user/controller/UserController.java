@@ -212,7 +212,7 @@ public class UserController {
             userService.unAssign(paramMap);
             result.setSuccess(true);
         } catch (Exception e) {
-            log.debug(e.getMessage());
+            log.error("用户取消赋权角色出现异常",e);
             result.setSuccess(false);
         }
         return result;

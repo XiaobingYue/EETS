@@ -13,6 +13,7 @@ import com.yxb.user.entity.User;
 public class Datas {
 	
 	private List<UserBean> users;
+
 	private List<Integer> ids;
 
 	public List<Integer> getIds() {

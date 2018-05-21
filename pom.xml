@@ -168,7 +168,7 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<configuration>
 					<!-- 这里配置端口号和访问路径 -->
-					<port>8082</port>
+					<port>8080</port>
 					<path>/</path>
 				</configuration>
 			</plugin>

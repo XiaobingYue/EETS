@@ -187,8 +187,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> queryTeacherListByRoleId() {
-        return dao.queryTeacherListByRoleId(Const.TEACHER_ROLE_ID);
+    public List<User> queryUserListByRoleId(Integer roleId) {
+        return dao.queryUserListByRoleId(roleId);
     }
 
     @Override

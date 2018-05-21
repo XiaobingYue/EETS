@@ -1,5 +1,6 @@
 package com.yxb.teachTask.controller;
 
+import com.yxb.common.constant.Const;
 import com.yxb.multiManage.entity.Classes;
 import com.yxb.multiManage.entity.Profession;
 import com.yxb.multiManage.service.ClassesService;
@@ -56,7 +57,7 @@ public class TeachTaskController {
 
     @RequestMapping("/toTeachTaskList.do")
     public String toTeachTaskList(Model model) {
-        List<User> teacherList = userService.queryTeacherListByRoleId();
+        List<User> teacherList = userService.queryUserListByRoleId(Const.TEACHER_ROLE_ID);
         model.addAttribute("teacherList" , teacherList);
         return "manager/teachTask/list";
     }

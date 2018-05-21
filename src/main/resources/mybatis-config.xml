@@ -15,5 +15,9 @@
     <typeAlias alias="textBook" type="com.yxb.textBook.entity.TextBook"/>
     <typeAlias alias="loginRecord" type="com.yxb.user.entity.LoginRecord"/>
     <typeAlias type="com.yxb.trainingPlan.entity.Plan" alias="plan"/>
+    <typeAlias alias="indexPoint" type="com.yxb.trainingPlan.entity.IndexPoint"/>
+    <typeAlias alias="graduationReq" type="com.yxb.trainingPlan.entity.GraduationReq"/>
+    <typeAlias alias="exam" type="com.yxb.exam.entity.Exam"/>
+    <typeAlias alias="testMethod" type="com.yxb.exam.entity.TestMethod"/>
 </typeAliases>
 </configuration>

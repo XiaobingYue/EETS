@@ -36,29 +36,7 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top" teachTask="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <div><a class="navbar-brand" style="font-size:32px;" href="#">众筹平台 - 角色维护</a></div>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li style="padding-top:8px;">
-                    <%@include file="/WEB-INF/jsp/common/userinfo.jsp" %>
-                </li>
-                <li style="margin-left:10px;padding-top:8px;">
-                    <button type="button" class="btn btn-default btn-danger">
-                        <span class="glyphicon glyphicon-question-sign"></span> 帮助
-                    </button>
-                </li>
-            </ul>
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search...">
-            </form>
-        </div>
-    </div>
-</nav>
-
+<%@include file="/WEB-INF/jsp/common/userinfo.jsp" %>
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
@@ -84,9 +62,6 @@
                                 class="glyphicon glyphicon-search"></i> 查询
                         </button>
                     </form>
-                    <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"
-                            onclick="deleteteachTasks()"><i class=" glyphicon glyphicon-remove"></i> 删除
-                    </button>
                     <button type="button" class="btn btn-primary tooltip-test" data-toggle="tooltip" titleS="新增教学任务"
                             style="float:right;"
                             onclick="window.location.href='${APP_PATH}/teachTaskController/toAddTeachTask.do'"><i
@@ -157,7 +132,7 @@
         </div>
     </div>
 </div>
-<script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
+<script src="${APP_PATH}/jquery/jquery-3.1.0.js"></script>
 <script src="${APP_PATH}/bootstrap/js/fileinput.js"></script>
 <script src="${APP_PATH}/bootstrap/js/zh.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
@@ -324,7 +299,7 @@
 
     $("#releaseBtn").click(function () {
         var options = $("#teacherIds option:selected");
-        if(options.length == 0) {
+        if (options.length == 0) {
             layer.msg("请选择要发布任务的老师", {time: 1000, icon: 5, shift: 6});
             return;
         }

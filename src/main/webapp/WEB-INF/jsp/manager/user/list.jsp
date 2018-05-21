@@ -59,9 +59,6 @@
                                 class="glyphicon glyphicon-search"></i> 查询
                         </button>
                     </form>
-                    <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"
-                            onclick="deleteUsers()"><i class=" glyphicon glyphicon-remove"></i> 删除
-                    </button>
                     <button type="button" class="btn btn-primary" style="float:right;margin-left:10px;"
                             onclick="window.location.href='${APP_PATH}/userController/toAddUser.do'"><i
                             class="glyphicon glyphicon-plus"></i> 单个添加
@@ -104,7 +101,7 @@
     </div>
 </div>
 
-<script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
+<script src="${APP_PATH}/jquery/jquery-3.1.0.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
 <script src="${APP_PATH}/script/layer/layer.js"></script>
 <script src="${APP_PATH}/jquery/jquery.pagination.js"></script>
@@ -179,6 +176,10 @@
             },
             success: function (result) {
                 layer.close(loadingIndex);
+                /*if(result == "noPower") {
+                    window.location.href="${APP_PATH}/noPower.jsp";
+                    return;
+                }*/
                 if (result.success) {
                     var pageObj = result.page;
                     var userList = pageObj.data;

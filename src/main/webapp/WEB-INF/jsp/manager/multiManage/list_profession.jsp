@@ -59,8 +59,6 @@
                         <button type="button" class="btn btn-warning" onclick="queryProfession()"><i class="glyphicon glyphicon-search"></i> 查询
                         </button>
                     </form>
-                    <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;" onclick="deleteProfessions()"><i class=" glyphicon glyphicon-remove"></i> 删除
-                    </button>
                     <button type="button" class="btn btn-primary tooltip-test"
                             style="float:right;" data-toggle="modal" data-target="#myModal"><i
                             class="glyphicon glyphicon-plus"></i> 新增
@@ -142,7 +140,7 @@
         </div>
     </div>
 </div>
-<script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
+<script src="${APP_PATH}/jquery/jquery-3.1.0.js"></script>
 <script src="${APP_PATH}/bootstrap/js/fileinput.js"></script>
 <script src="${APP_PATH}/bootstrap/js/zh.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>

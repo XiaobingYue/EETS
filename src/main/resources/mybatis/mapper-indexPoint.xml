@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxb.trainingPlan.dao.IndexPointDao">
+    <resultMap id="indexPointMap" type="indexPoint">
+        <result column="course_id" property="courseId"></result>
+        <result column="req_id" property="reqId"></result>
+    </resultMap>
+    <select id="queryByReqId" resultMap="indexPointMap">
+        SELECT * FROM t_index_point WHERE REQ_ID = #{reqId}
+    </select>
+
+    <select id="queryById" resultMap="indexPointMap">
+        SELECT * FROM t_index_point WHERE ID = #{id}
+    </select>
+
+    <select id="queryCodesByReqId" resultType="String">
+        SELECT CODE FROM t_index_point WHERE REQ_ID = #{reqId}
+    </select>
+
+    <update id="updateIndexPoint">
+    </update>
+
+    <insert id="addIndexPoint">
+        INSERT INTO t_index_point (CODE, NAME, REQ_ID, COURSE_ID, SCORE) VALUES (#{code},#{name},#{reqId},#{courseId},#{score})
+    </insert>
+
+    <delete id="deleteByReqId">
+        DELETE FROM t_index_point WHERE REQ_ID = #{reqId}
+    </delete>
+
+    <select id="queryIndexPointByCourseId" resultMap="indexPointMap">
+        SELECT * FROM t_index_point WHERE COURSE_ID = #{courseId}
+    </select>
+</mapper>

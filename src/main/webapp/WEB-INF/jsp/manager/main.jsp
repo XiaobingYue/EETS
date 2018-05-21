@@ -44,29 +44,35 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">主页</h1>
             <div class="row placeholders">
-                <c:if test="${not empty myTaskCount}">
+                <c:if test="${myTaskCount != 0}">
                     <div class="col-xs-6 col-sm-3 placeholder">
                         <img data-src="holder.js/50x50?theme=sky&text=${myTaskCount}" class="img-responsive" style="cursor:pointer;"
                              alt="Generic placeholder thumbnail"
                              onclick="window.location.href='${APP_PATH}/teachTaskController/toMyTask.do'">
-                        <h6>My Task</h6>
+                        <h6>我的教学任务</h6>
                     </div>
                 </c:if>
+                <c:if test="${myTestDoCount != 0}">
                 <div class="col-xs-6 col-sm-3 placeholder">
+                    <img data-src="holder.js/50x50?theme=vine&text=${myTestDoCount}" class="img-responsive" style="cursor:pointer;"
+                         alt="Generic placeholder thumbnail"
+                         onclick="window.location.href='${APP_PATH}/examController/toMyTestDoList.do'">
+                    <h6>我的试做任务</h6>
+                </div>
+                </c:if>
+                <c:if test="${myApproveCount != 0}">
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <img data-src="holder.js/50x50?theme=sky&text=${myApproveCount}" class="img-responsive" style="cursor:pointer;"
+                         alt="Generic placeholder thumbnail"
+                         onclick="window.location.href='${APP_PATH}/examController/toApprove.do'">
+                    <h6>我的审核任务</h6>
+                </div>
+                </c:if>
+               <%-- <div class="col-xs-6 col-sm-3 placeholder">
                     <img data-src="holder.js/50x50?theme=vine" class="img-responsive"
                          alt="Generic placeholder thumbnail">
                     <h6>Label</h6>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <img data-src="holder.js/50x50?theme=sky" class="img-responsive"
-                         alt="Generic placeholder thumbnail">
-                    <h6>Label</h6>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <img data-src="holder.js/50x50?theme=vine" class="img-responsive"
-                         alt="Generic placeholder thumbnail">
-                    <h6>Label</h6>
-                </div>
+                </div>--%>
             </div>
             <hr>
             <div class="col-sm-9 col-md-9 column">
@@ -80,7 +86,7 @@
         </div>
     </div>
 </div>
-<script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
+<script src="${APP_PATH}/jquery/jquery-3.1.0.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
 <script src="${APP_PATH}/script/docs.min.js"></script>
 <script src="${APP_PATH}/js/holder.js"></script>

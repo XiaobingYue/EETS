@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxb.trainingPlan.dao.GraduationReqDao">
+    <resultMap id="reqMap" type="graduationReq">
+        <result column="course_ids" property="courseIds"></result>
+        <result column="profession_id" property="professionId"></result>
+        <result column="file_name" property="fileName"></result>
+    </resultMap>
+    <select id="queryAll" resultMap="reqMap">
+        SELECT * FROM t_graduation_req WHERE STATE = #{state}
+        <if test="queryText != null">
+            AND NAME LIKE concat('%', #{queryText}, '%')
+        </if>
+        ORDER BY TIMESTAMP DESC limit #{start} , #{size}
+    </select>
+
+    <select id="queryCount" resultType="int">
+        SELECT count(*) FROM t_graduation_req WHERE STATE = #{state}
+        <if test="queryText != null">
+            AND NAME LIKE concat('%', #{queryText}, '%')
+        </if>
+    </select>
+
+    <select id="queryById" resultMap="reqMap">
+        SELECT * FROM t_graduation_req WHERE ID = #{id}
+    </select>
+
+    <update id="updateGraduationReq">
+        UPDATE t_graduation_req SET NAME = #{name},DETAIL = #{detail},PROFESSION_ID = #{professionId} , TIMESTAMP = #{timestamp},STATE = #{state}
+         <if test="fileName != null">
+             ,FILE_NAME = #{fileName}
+         </if>
+         WHERE ID = #{id}
+    </update>
+
+    <insert id="addGraduationReq">
+        INSERT INTO t_graduation_req (NAME, COURSE_IDS,PROFESSION_ID, DETAIL, TIMESTAMP, STATE) VALUES (#{name} , #{courseIds} , #{professionId} , #{detail},#{timestamp},#{state})
+    </insert>
+</mapper>

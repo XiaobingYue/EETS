@@ -44,9 +44,9 @@
 		<property name="suffix" value=".jsp" /><!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑 -->
 	</bean>
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
-	<mvc:interceptors>
+	<!--<mvc:interceptors>
             <bean class="com.yxb.dispatcher.interceptor.LoginInterceptor"></bean>
 		 	<bean class="com.yxb.dispatcher.interceptor.UserPermissionInterceptor"></bean>
-    </mvc:interceptors>
+    </mvc:interceptors>-->
 
 </beans>
