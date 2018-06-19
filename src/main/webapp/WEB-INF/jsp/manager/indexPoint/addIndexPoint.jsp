@@ -50,7 +50,7 @@
                         <div class="form-group">
                         <label>指标点编号</label>
                         <input type="text" class="form-control" id="code" name="code"
-                               placeholder="请输入名称">
+                               placeholder="请输入名称" onblur="ifHaveCode(this)">
                 </div>
                         <div class="form-group">
                             <label>指标点名称</label>
@@ -142,6 +142,31 @@
             }
         });
     });
+
+    function ifHaveCode(obj) {
+        var code = $(obj);
+        var loadingIndex = -1;
+        $.ajax({
+            url: "${APP_PATH}/graduationReqController/validateCode.do",
+            type: "POST",
+            //dataType : "json",
+            data: {"code": code.val()},
+            beforeSend: function () {
+                //loadingIndex = layer.msg('处理中', {icon: 16});
+                loadingIndex = layer.load(2, {time: 10 * 1000});
+            },
+            success: function (result) {
+                layer.close(loadingIndex);
+                if (!result.success) {
+                    layer.msg(result.data, {time: 2000, icon: 5, shift: 6}, function () {
+                        // 设定页面焦点
+                    });
+                    code.focus();
+                } else {
+                }
+            }
+        });
+    }
 </script>
 </body>
 </html>

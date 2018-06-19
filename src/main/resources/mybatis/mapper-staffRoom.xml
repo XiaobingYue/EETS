@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxb.multiManage.dao.StaffRoomDao">
+    <resultMap id="staffRoomMap" type="staffRoom">
+        <id column="id" property="id"></id>
+        <result column="profession_ids" property="professionIds"></result>
+        <result column="header_id" property="headerId"></result>
+    </resultMap>
+
+    <select id="queryAll" resultMap="staffRoomMap">
+        SELECT * FROM t_staff_room WHERE STATE = #{state}
+        <if test="queryText != null">
+            and NAME like concat('%', #{queryText}, '%')
+        </if>
+         ORDER BY TIMESTAMP DESC
+        <if test="start != null">
+            limit #{start} , #{size}
+        </if>
+    </select>
+
+    <select id="queryCount" resultType="int">
+        select COUNT(*) FROM t_staff_room WHERE STATE = #{state}
+        <if test="queryText != null">
+            and NAME like concat('%', #{queryText}, '%')
+        </if>
+    </select>
+
+    <update id="editStaffRoom">
+        UPDATE t_staff_room SET NAME = #{name} , HEADER_ID = #{headerId}, PROFESSION_IDS = #{professionIds} , TIMESTAMP = #{timestamp}
+        <if test="state != null">
+            , STATE = #{state}
+        </if>
+         WHERE ID = #{id}
+    </update>
+
+    <insert id="addStaffRoom">
+        INSERT INTO t_staff_room (NAME,HEADER_ID, PROFESSION_IDS, TIMESTAMP, STATE) VALUES (#{name},#{headerId},#{professionIds},#{timestamp},#{state})
+    </insert>
+
+    <select id="queryById" resultMap="staffRoomMap">
+        SELECT * FROM t_staff_room WHERE ID = #{id}
+    </select>
+</mapper>

@@ -5,9 +5,19 @@ package com.yxb.exam.entity;
  */
 public class TestDetail {
 
+    private Integer number;
+
     private String method;
 
     private String score;
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
 
     public String getMethod() {
         return method;

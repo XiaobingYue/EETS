@@ -52,4 +52,6 @@ public interface UserDao {
     void addLoginRecord(LoginRecord record);
 
     void updateLoginRecord(LoginRecord record);
+
+    List<User> queryByClassesId(Integer classesId);
 }

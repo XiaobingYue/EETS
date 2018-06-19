@@ -224,7 +224,7 @@
                     "id":${textBook.id}
                 },
                 beforeSend: function () {
-                    loadingIndex = layer.load(2, {time: 10 * 1000});
+                    loadingIndex = layer.load(2, {time: 1000});
                 },
                 success: function (result) {
                     layer.close(loadingIndex);

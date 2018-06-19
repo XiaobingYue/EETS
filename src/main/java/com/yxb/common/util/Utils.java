@@ -5,15 +5,18 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by yxb on 2018/5/4
@@ -87,5 +90,35 @@ public class Utils {
             dateList.add(str);
         }
         return dateList;
+    }
+
+    public static Float format(Float value) {
+        BigDecimal bd = new BigDecimal(Float.toString(value));
+        return bd.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+    }
+
+    public static Map<String, Object> transBean2Map(Object obj) {
+        if (obj == null) {
+            return null;
+        }
+        Map<String, Object> map = new HashMap<>();
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            for (PropertyDescriptor property : propertyDescriptors) {
+                String key = property.getName();
+                // 过滤class属性
+                if (!key.equals("class")) {
+                    // 得到property对应的getter方法
+                    Method getter = property.getReadMethod();
+                    Object value = getter.invoke(obj);
+                    map.put(key, value);
+                }
+            }
+        } catch (Exception e) {
+            log.error("transBean2Map Error {}" ,e);
+        }
+        return map;
+
     }
 }

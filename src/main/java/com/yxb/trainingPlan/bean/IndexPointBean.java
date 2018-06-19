@@ -8,7 +8,17 @@ import java.util.List;
  */
 public class IndexPointBean {
 
+    private String code;
+
     private String name;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     private List<Object> data = new ArrayList<>();
 

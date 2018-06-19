@@ -262,13 +262,13 @@
                         content = content + '  <td>' + plan.professionName + '</td>';
                         content = content + '  <td>';
                         if (!isEmpty(plan.fileName)) {
-                            content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/planController/downloadPdf.do?id=' + plan.id + '\'"class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-arrow-down"></i></button>';
+                            content = content + '      <button type="button" title="下载附件" onclick="window.location.href=\'${APP_PATH}/planController/downloadPdf.do?id=' + plan.id + '\'"class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-arrow-down"></i></button>';
                         }
-                        content = content + '<button type="button" data-toggle="modal" data-target="#myModal" onclick="setId(' + plan.id + ')" style="margin-left: 5px" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-arrow-up"></i></button>';
+                        content = content + '<button type="button" title="上传附件" data-toggle="modal" data-target="#myModal" onclick="setId(' + plan.id + ')" style="margin-left: 5px" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-arrow-up"></i></button>';
                         content = content + '  </td>';
                         content = content + '  <td>';
-                        content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/planController/toEdit.do?pageNo=' + pageObj.pageNo + '&id=' + plan.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        content = content + '	   <button type="button" onclick="deletePlan(' + plan.id + ', \'' + plan.name + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        content = content + '      <button type="button" title="修改" onclick="window.location.href=\'${APP_PATH}/planController/toEdit.do?pageNo=' + pageObj.pageNo + '&id=' + plan.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        content = content + '	   <button type="button" title="删除" onclick="deletePlan(' + plan.id + ', \'' + plan.name + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         content = content + '  </td>';
                         content = content + '</tr>';
                     });

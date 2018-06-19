@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxb.score.dao.ScoreDao">
+    <resultMap id="scoreMap" type="score">
+        <id column="id" property="id"></id>
+        <result column="stu_code" property="stuCode"></result>
+        <result column="stu_name" property="stuName"></result>
+        <result column="all_score" property="allScore"></result>
+        <result column="exam_id" property="examId"></result>
+        <result column="test_score" property="testScore"></result>
+        <result column="daily_score" property="dailyScore"></result>
+        <result column="exam_score" property="examScore"></result>
+        <result column="index_point_score" property="indexPointScore"></result>
+    </resultMap>
+
+    <resultMap id="subIndexPointMap" type="subIndexPoint">
+        <result column="index_point_id" property="indexPointId"></result>
+        <result column="test_method_id" property="testMethodId"></result>
+    </resultMap>
+
+    <insert id="addScore" parameterType="java.util.List">
+        insert into t_score
+        (STU_CODE,STU_NAME,EXAM_ID,INDEX_POINT_SCORE) values
+        <foreach collection="list"  item="score" separator=",">
+            (#{score.stuCode}, #{score.stuName},#{score.examId},#{score.indexPointScore})
+        </foreach>
+    </insert>
+
+    <select id="queryByExamId" resultMap="scoreMap">
+        SELECT * FROM t_score WHERE EXAM_ID = #{examId}
+    </select>
+
+    <update id="updateScore">
+        UPDATE t_score SET ONE = #{one} , TWO = #{two} , THREE = #{three} , FOUR = #{four} , FIVE = #{five} , SIX = #{six} , SEVEN = #{seven} , EIGHT = #{eight} , NINE = #{nine} , TEN = #{ten},DAILY_SCORE = #{dailyScore},TEST_SCORE = #{testScore},EXAM_SCORE = #{examScore} WHERE ID = #{id}
+    </update>
+
+    <update id="analysisScore">
+        UPDATE t_score set ALL_SCORE = #{allScore},INDEX_POINT_SCORE = #{indexPointScore} WHERE ID = #{id}
+    </update>
+
+    <select id="queryResult" resultType="com.yxb.score.bean.Result">
+        SELECT count(*) AS 'examCount',MAX(ALL_SCORE) as 'maxScore',MIN(ALL_SCORE) as 'minScore' FROM t_score WHERE EXAM_ID = #{examId}
+    </select>
+
+    <select id="queryUnPassCount" resultType="int">
+        SELECT count(*) FROM t_score WHERE EXAM_ID = #{examId} AND ALL_SCORE &lt; 60
+    </select>
+    <select id="queryThanNinetyCount" resultType="int">
+        SELECT count(*) FROM t_score WHERE EXAM_ID = #{examId} AND ALL_SCORE &gt;= 90
+    </select>
+
+    <select id="queryBetween80To89Count" resultType="int">
+        SELECT COUNT(*) FROM t_score WHERE EXAM_ID = #{examId} AND ALL_SCORE &gt;= 80 AND ALL_SCORE &lt; 90
+    </select>
+
+    <select id="queryBetween70To79Count" resultType="int">
+        SELECT count(*) FROM t_score WHERE EXAM_ID = #{examId} AND ALL_SCORE &gt;= 70 AND ALL_SCORE &lt; 80
+    </select>
+
+    <select id="queryBetween60To69Count" resultType="int">
+        SELECT count(*) FROM t_score WHERE EXAM_ID = #{examId} AND ALL_SCORE &gt;= 60 AND ALL_SCORE &lt; 70
+    </select>
+
+    <select id="queryBetween30To59Count" resultType="int">
+        SELECT count(*) FROM t_score WHERE EXAM_ID = #{examId} AND ALL_SCORE &gt;= 30 AND ALL_SCORE &lt; 60
+    </select>
+
+    <select id="queryBetween0To29Count" resultType="int">
+        SELECT count(*) FROM t_score WHERE EXAM_ID = #{examId} AND ALL_SCORE &gt;= 0 AND ALL_SCORE &lt; 30
+    </select>
+
+    <select id="queryByIndexPointAndTestMethod" resultMap="subIndexPointMap">
+        SELECT * FROM t_sub_index_point WHERE INDEX_POINT_ID = #{indexPointId} AND TEST_METHOD_ID = #{testMethodId}
+    </select>
+
+    <delete id="deleteSubIndexPointById">
+        DELETE FROM t_sub_index_point WHERE ID = #{id}
+    </delete>
+
+    <insert id="addSubIndexPoint">
+        INSERT INTO t_sub_index_point (INDEX_POINT_ID, TEST_METHOD_ID) VALUES (#{indexPointId},#{testMethodId})
+    </insert>
+
+    <select id="querySIPByIndexPointId" parameterType="java.util.List" resultMap="subIndexPointMap">
+        SELECT * FROM t_sub_index_point WHERE INDEX_POINT_ID IN
+        <foreach collection="list" index="index" item="indexPointId" open="(" separator="," close=")">
+            #{indexPointId}
+        </foreach>
+    </select>
+
+    <select id="querySIPByTestMethodId" parameterType="java.util.List" resultMap="subIndexPointMap">
+        SELECT * FROM t_sub_index_point WHERE TEST_METHOD_ID IN
+        <foreach collection="list" index="index" item="testMethodId" open="(" separator="," close=")">
+            #{testMethodId}
+        </foreach>
+    </select>
+</mapper>

@@ -85,6 +85,14 @@
                                     <option id="${classes.id}" value="${classes.id}"> ${classes.className}</option>
                                 </c:forEach></select>
                         </div>
+                        <div class="form-group" id="staffRoom">
+                            <label>所属系</label>
+                            <select class="form-control selectpicker show-tick" data-live-search="true" id="staffRoomId" name="staffRoomId">
+                                <option value=""></option>
+                                <c:forEach items="${staffRoomList}" var="staffRoom" varStatus="vs">
+                                    <option id="${staffRoom.id}" value="${staffRoom.id}"> ${staffRoom.name}</option>
+                                </c:forEach></select>
+                        </div>
                         <div class="form-group">
                             <label>手机号</label>
                             <input type="text" class="form-control" id="phone" name="phone"
@@ -152,14 +160,41 @@
             }
         });
         $("#classes").hide();
+        $("#staffRoom").hide();
     });
 
+    function isEmpty(obj) {
+        if (typeof obj == "undefined" || obj == null || obj == "") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function IsInArray(arr,val){
+
+        var testStr=','+arr.join(",")+",";
+
+        return testStr.indexOf(","+val+",")!=-1;
+
+    }
+
     function ifStudent() {
-        var options = $("#roleIds option:selected").val();
-        if(options.indexOf(5) >= 0) {
+        var str= $('#roleIds').selectpicker('val');
+        if(isEmpty(str)) {
+            $("#classes").hide();
+            $("#staffRoom").hide();
+            return;
+        }
+        if(IsInArray(str,'5')) {
             $("#classes").show();
         } else {
             $("#classes").hide();
+        }
+        if(IsInArray(str,'9')) {
+            $("#staffRoom").show();
+        } else {
+            $("#staffRoom").hide();
         }
     }
     var flag = true;

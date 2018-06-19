@@ -6,14 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.yxb.multiManage.entity.Classes;
+import com.yxb.multiManage.entity.StaffRoom;
 import com.yxb.multiManage.service.ClassesService;
 import com.yxb.common.constant.Const;
 import com.yxb.common.entity.Page;
+import com.yxb.multiManage.service.StaffRoomService;
 import com.yxb.role.entity.Role;
 import com.yxb.role.service.RoleService;
 import com.yxb.user.Bean.ImportUserBean;
 import com.yxb.user.Bean.UserBean;
-import com.yxb.user.entity.LoginRecord;
 import com.yxb.user.validateGroup.AddGroup;
 import com.yxb.user.validateGroup.LoginGroup;
 import org.apache.commons.lang3.StringUtils;
@@ -46,14 +47,16 @@ public class UserController {
     private final UserService userService;
     private final RoleService roleService;
     private final ClassesService classesService;
+    private final StaffRoomService staffRoomService;
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    public UserController(UserService userService, RoleService roleService, ClassesService classesService) {
+    public UserController(UserService userService, RoleService roleService, ClassesService classesService, StaffRoomService staffRoomService) {
         this.userService = userService;
         this.roleService = roleService;
         this.classesService = classesService;
+        this.staffRoomService = staffRoomService;
     }
 
     @ResponseBody
@@ -71,7 +74,7 @@ public class UserController {
                 userService.addLoginRecord();
                 List<Permission> root = userService.queryUserPermission(queryUser.getId());
                 List<Permission> myPermission = userService.queryMyPermission(queryUser.getId());
-                session.setAttribute("myPermission",myPermission);
+                session.setAttribute("myPermission", myPermission);
                 session.setAttribute("rootPermission", root);
                 result.setSuccess(true);
                 result.setData(queryUser);
@@ -134,8 +137,8 @@ public class UserController {
             paramMap.put("start", (pageNo - 1) * pageSize);
             paramMap.put("size", pageSize);
             if (StringUtil.isNotEmpty(queryText)) paramMap.put("queryText", queryText);
-            paramMap.put("ifEnable" , Const.ENABLE_1);
-            Page<User> userPage = userService.queryUserList(paramMap,pageNo,pageSize);
+            paramMap.put("ifEnable", Const.ENABLE_1);
+            Page<User> userPage = userService.queryUserList(paramMap, pageNo, pageSize);
             result.setPage(userPage);
             result.setSuccess(true);
         } catch (Exception e) {
@@ -212,7 +215,7 @@ public class UserController {
             userService.unAssign(paramMap);
             result.setSuccess(true);
         } catch (Exception e) {
-            log.error("用户取消赋权角色出现异常",e);
+            log.error("用户取消赋权角色出现异常", e);
             result.setSuccess(false);
         }
         return result;
@@ -222,8 +225,10 @@ public class UserController {
     public String toAddUser(Model model) {
         List<Role> roleList = roleService.queryAllRole();
         List<Classes> classesList = classesService.queryAllClasses();
-        model.addAttribute("classesList",classesList);
-        model.addAttribute("roleList",roleList);
+        List<StaffRoom> staffRoomList = staffRoomService.queryAll();
+        model.addAttribute("classesList", classesList);
+        model.addAttribute("roleList", roleList);
+        model.addAttribute("staffRoomList", staffRoomList);
         return "manager/user/add";
     }
 
@@ -255,7 +260,11 @@ public class UserController {
     }
 
     @RequestMapping("/toMultiAddUser.do")
-    public String toMultiAddUser() {
+    public String toMultiAddUser(Model model) {
+        List<Classes> classesList = classesService.queryAllClasses();
+        List<StaffRoom> staffRoomList = staffRoomService.queryAll();
+        model.addAttribute("classesList",classesList);
+        model.addAttribute("staffRoomList",staffRoomList);
         return "manager/user/multiadd";
     }
 
@@ -273,7 +282,7 @@ public class UserController {
             userService.deleteUser(user);
             result.setSuccess(true);
         } catch (Exception e) {
-            log.error("删除人员出现异常",e);
+            log.error("删除人员出现异常", e);
             result.setData(e.getMessage());
             result.setSuccess(false);
         }
@@ -283,7 +292,7 @@ public class UserController {
     /**
      * 前往修改用户信息页面
      *
-     * @param id 用户id
+     * @param id    用户id
      * @param model Model
      * @return 修改用户信息页面
      */
@@ -294,26 +303,27 @@ public class UserController {
         user.setRoleIds(roleIds);
         List<Role> roleList = roleService.queryAllRole();
         List<Classes> classesList = classesService.queryAllClasses();
-        model.addAttribute("classesList",classesList);
-        model.addAttribute("roleList",roleList);
+        List<StaffRoom> staffRoomList = staffRoomService.queryAll();
+        model.addAttribute("classesList", classesList);
+        model.addAttribute("roleList", roleList);
         model.addAttribute("user", user);
+        model.addAttribute("staffRoomList", staffRoomList);
         return "manager/user/edit";
     }
 
     /**
      * 修改用户信息
+     *
      * @param user 用户信息
      * @return AjaxResult
      */
     @ResponseBody
     @RequestMapping("/modifyUser.do")
-    public Object modifyUser(@Validated(value = {AddGroup.class}) UserBean user,BindingResult bindingResult) {
+    public Object modifyUser(@Validated(value = {AddGroup.class}) UserBean user, BindingResult bindingResult) {
         AjaxResult result = new AjaxResult();
         try {
             if (!bindingResult.hasErrors()) {
-                if (!CollectionUtils.isEmpty(user.getRoleIds())
-                        && user.getRoleIds().contains(5)
-                        && user.getClassesId() == null) {
+                if (!CollectionUtils.isEmpty(user.getRoleIds()) && user.getRoleIds().contains(5) && user.getClassesId() == null) {
                     result.setSuccess(false);
                     result.setData("角色为学生必须选择其班级");
                 } else {
@@ -325,7 +335,7 @@ public class UserController {
                 result.setData(bindingResult.getFieldErrors().get(0).getDefaultMessage());
             }
         } catch (Exception e) {
-            log.error("修改人员信息出现异常",e);
+            log.error("修改人员信息出现异常", e);
             result.setSuccess(false);
             result.setData(e.getMessage());
         }
@@ -360,30 +370,31 @@ public class UserController {
     }
 
     /**
-     *批量导入用户信息
+     * 批量导入用户信息
      *
      * @param file 导入的文件
      * @return AjaxResult
      */
     @RequestMapping("/importUser.do")
     @ResponseBody
-    public Object importUser(@RequestParam MultipartFile file, Model model) {
+    public Object importUser(@RequestParam MultipartFile file, Model model,Integer classesId,Integer staffRoomId) {
         AjaxResult result = new AjaxResult();
         try {
-            if(file != null) {
+            if (file != null) {
                 Set<ImportUserBean> wellList = new HashSet<>();// 正常导入项
                 List<ImportUserBean> exitList = new ArrayList<>();// 所有存在项
                 // Error中保存异常信息
                 List<ImportUserBean> infoNotExitList = new ArrayList<>();// 必填项不存在
                 List<ImportUserBean> errorList = new ArrayList<>();// 导入错误项
-                userService.importUser(file,wellList,exitList,infoNotExitList,errorList);
+                userService.importUser(classesId,staffRoomId,file, wellList, exitList, infoNotExitList, errorList);
                 result.setSuccess(true);
+                result.setData(errorList);
             } else {
                 result.setSuccess(false);
                 result.setData("文件不存在");
             }
         } catch (Exception e) {
-            log.error("批量导入人员信息出现异常",e);
+            log.error("批量导入人员信息出现异常", e);
             result.setSuccess(false);
             result.setData(e.getMessage());
         }
@@ -395,13 +406,10 @@ public class UserController {
     public Object changePwd(String oldPwd, String newPwd, String newPwds, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         try {
-            if(StringUtils.isNotBlank(oldPwd)
-            && StringUtils.isNotBlank(newPwd)
-            && StringUtils.isNotBlank(newPwds)
-            && newPwd.equals(newPwds)) {
+            if (StringUtils.isNotBlank(oldPwd) && StringUtils.isNotBlank(newPwd) && StringUtils.isNotBlank(newPwds) && newPwd.equals(newPwds)) {
                 UserBean userBean = (UserBean) request.getSession().getAttribute("userInfo");
-                if(userBean.getPassword().equals(MD5Util.digest(oldPwd))) {
-                    userService.changePassword(userBean,newPwd);
+                if (userBean.getPassword().equals(MD5Util.digest(oldPwd))) {
+                    userService.changePassword(userBean, newPwd);
                     result.setSuccess(true);
                 } else {
                     result.setData("原密码不对");
@@ -409,8 +417,8 @@ public class UserController {
             } else {
                 result.setData("参数错误");
             }
-        }catch (Exception e) {
-            log.error("修改密码出现异常",e);
+        } catch (Exception e) {
+            log.error("修改密码出现异常", e);
         }
         return result;
     }
@@ -418,7 +426,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/recentLogin.do")
     public Object recentLogin() {
-        Map<String,Object> jsonDate = userService.queryRecentLoginRecord();
+        Map<String, Object> jsonDate = userService.queryRecentLoginRecord();
         return jsonDate;
     }
 }

@@ -1,31 +1,29 @@
 package com.yxb.user.service.impl;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 import com.yxb.common.constant.Const;
 import com.yxb.common.entity.Page;
 import com.yxb.common.util.ExcelUtil;
 import com.yxb.common.util.MD5Util;
 import com.yxb.common.util.Utils;
+import com.yxb.permission.entity.Permission;
 import com.yxb.user.Bean.ImportUserBean;
 import com.yxb.user.Bean.JsonDate;
 import com.yxb.user.Bean.UserBean;
+import com.yxb.user.dao.UserDao;
 import com.yxb.user.entity.LoginRecord;
+import com.yxb.user.entity.User;
+import com.yxb.user.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.yxb.permission.entity.Permission;
-import com.yxb.user.dao.UserDao;
-import com.yxb.user.entity.User;
-import com.yxb.user.service.UserService;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -44,7 +42,7 @@ public class UserServiceImpl implements UserService {
         user.setIfEnable(Const.ENABLE_1);
         dao.registerUser(user);
         User queryUser = dao.findUserByUserAcct(user);
-        if(!CollectionUtils.isEmpty(user.getRoleIds())) {
+        if (!CollectionUtils.isEmpty(user.getRoleIds())) {
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("userId", queryUser.getId());
             paramMap.put("roleIds", user.getRoleIds());
@@ -52,7 +50,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public List<Permission> getPermissionsByUserId(Map<String , Object> paramMap) {
+    public List<Permission> getPermissionsByUserId(Map<String, Object> paramMap) {
         return dao.getPermissionsByUserId(paramMap);
     }
 
@@ -105,7 +103,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyUser(UserBean user) {
         user.setTimestamp(System.currentTimeMillis());
-        if( !CollectionUtils.isEmpty(user.getRoleIds()) ) {
+        if (!CollectionUtils.isEmpty(user.getRoleIds())) {
             dao.unAssignByUserId(user.getId());
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("userId", user.getId());
@@ -148,9 +146,9 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<Permission> queryUserPermission(Integer id) {
-        Map<String,Object> paramMap = new HashMap<>();
-        paramMap.put("id",id);
-        paramMap.put("type","1");
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("id", id);
+        paramMap.put("type", "1");
         List<Permission> list = this.getPermissionsByUserId(paramMap);
         List<Permission> root = new ArrayList<>();
         Map<Integer, Permission> permissionMap = new HashMap<>();
@@ -176,13 +174,63 @@ public class UserServiceImpl implements UserService {
      * @param errorList       错误信息列表
      */
     @Override
-    public void importUser(MultipartFile file, Set<ImportUserBean> wellList, List<ImportUserBean> exitList, List<ImportUserBean> infoNotExitList, List<ImportUserBean> errorList) throws Exception {
+    public void importUser(Integer classesId,Integer staffRoomId,MultipartFile file, Set<ImportUserBean> wellList, List<ImportUserBean> exitList, List<ImportUserBean> infoNotExitList, List<ImportUserBean> errorList) throws Exception {
         List<ImportUserBean> allList = new ArrayList<>();
         this.parseExcel(file, allList);
         for (ImportUserBean userBean : allList) {
             User user = new User();
-            BeanUtils.copyProperties(userBean,user);
+            BeanUtils.copyProperties(userBean, user);
+            if (StringUtils.isBlank(user.getUserAcct())) {
+                userBean.setErrorMsg("账号为空");
+                errorList.add(userBean);
+                continue;
+            } else {
+                User queryUser = dao.findUserByUserAcct(user);
+                if (queryUser != null) {
+                    userBean.setErrorMsg("账号已存在");
+                    errorList.add(userBean);
+                    continue;
+                }
+            }
+            if (StringUtils.isBlank(user.getName())) {
+                userBean.setErrorMsg("姓名为空");
+                errorList.add(userBean);
+                continue;
+            }
+            if (StringUtils.isBlank(user.getEmail())) {
+                userBean.setErrorMsg("邮箱为空");
+                errorList.add(userBean);
+                continue;
+            }
+            if (StringUtils.isBlank(user.getSex())) {
+                userBean.setErrorMsg("性别为空");
+                errorList.add(userBean);
+                continue;
+            }
+            if (StringUtils.isBlank(user.getPhone())) {
+                userBean.setErrorMsg("手机号为空");
+                errorList.add(userBean);
+                continue;
+            }
+            Map<String,Object> paramMap = new HashMap<>();
+            if (staffRoomId != null) {
+                user.setStaffRoomId(staffRoomId);
+                List<Integer> roleIds = new ArrayList<>();
+                roleIds.add(Const.TEACHER_ROLE_ID);
+                paramMap.put("roleIds",roleIds);
+            }
+            if (classesId != null) {
+                user.setClassesId(classesId);
+                List<Integer> roleIds = new ArrayList<>();
+                roleIds.add(Const.STUDENT_ROLE_ID);
+                paramMap.put("roleIds",roleIds);
+            }
             dao.registerUser(user);
+            User queryUser = dao.findUserByUserAcct(user);
+            if(queryUser != null) {
+                paramMap.put("userId",queryUser.getId());
+                dao.assign(paramMap);
+            }
         }
     }
 
@@ -193,8 +241,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Permission> queryMyPermission(Integer id) {
-        Map<String,Object> paramMap = new HashMap<>();
-        paramMap.put("id",id);
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("id", id);
         return dao.getPermissionsByUserId(paramMap);
     }
 
@@ -206,11 +254,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String,Object> queryRecentLoginRecord() {
+    public Map<String, Object> queryRecentLoginRecord() {
         List<String> dateList = Utils.getRecentDate("yyyy-MM-dd");
-        Map<String,Object> paramMap = new HashMap<>();
-        paramMap.put("dateList",dateList);
-        Map<String,Object> jsonDatas = new HashMap<>();
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("dateList", dateList);
+        Map<String, Object> jsonDatas = new HashMap<>();
         List<LoginRecord> loginRecordList = dao.queryRecentLoginRecord(paramMap);
         List<String> xContent = new ArrayList<>();
         List<Long> date = new ArrayList<>();
@@ -220,8 +268,8 @@ public class UserServiceImpl implements UserService {
             date.add(record.getCount());
         }
         jsonDate.setData(date);
-        jsonDatas.put("xContent",xContent);
-        jsonDatas.put("data",jsonDate);
+        jsonDatas.put("xContent", xContent);
+        jsonDatas.put("data", jsonDate);
         return jsonDatas;
     }
 
@@ -232,15 +280,20 @@ public class UserServiceImpl implements UserService {
         Date date = calendar.getTime();
         String str = new SimpleDateFormat("yyyy-MM-dd").format(date);
         LoginRecord record = dao.queryLoginRecordByDate(str);
-        if(record == null) {
+        if (record == null) {
             record = new LoginRecord();
             record.setCount(1L);
             record.setDate(str);
             dao.addLoginRecord(record);
         } else {
-            record.setCount(record.getCount()+1L);
+            record.setCount(record.getCount() + 1L);
             dao.updateLoginRecord(record);
         }
+    }
+
+    @Override
+    public List<User> queryByClassesId(Integer classesId) {
+        return dao.queryByClassesId(classesId);
     }
 
     private void parseExcel(MultipartFile file, List<ImportUserBean> allList) throws Exception {
@@ -258,7 +311,7 @@ public class UserServiceImpl implements UserService {
                     throw new Exception("列名不对");
                 }
             }
-            for(int i=1;i<sheet.getPhysicalNumberOfRows();i++){
+            for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
                 ImportUserBean excel = new ImportUserBean();
                 excel.setPassword(MD5Util.digest("123456"));
                 excel.setSort("999");
@@ -275,7 +328,7 @@ public class UserServiceImpl implements UserService {
                     excel.setEmail(ExcelUtil.lrTrim(row.getCell(2).getStringCellValue()));// email
                 }
                 if (row.getCell(3) != null) {
-                    excel.setSex(ExcelUtil.lrTrim(row.getCell(3).getStringCellValue()).equals("男")?Const.USER_SEX_MAN_1:Const.USER_SEX_WOMAN_0);// 性别
+                    excel.setSex(ExcelUtil.lrTrim(row.getCell(3).getStringCellValue()).equals("男") ? Const.USER_SEX_MAN_1 : Const.USER_SEX_WOMAN_0);// 性别
                 }
                 if (row.getCell(4) != null) {
                     excel.setPhone(ExcelUtil.lrTrim(row.getCell(4).getStringCellValue()));// 手机

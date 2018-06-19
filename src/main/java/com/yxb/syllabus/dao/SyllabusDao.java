@@ -11,9 +11,9 @@ import java.util.Map;
  */
 @Repository
 public interface SyllabusDao {
-    List<Syllabus> queryAll(Map<String, Object> paramMap);int
+    List<Syllabus> queryAll(Map<String, Object> paramMap);
 
-     querySyllabusCount(Map<String, Object> paramMap);
+    int querySyllabusCount(Map<String, Object> paramMap);
 
     Syllabus queryById(Syllabus syllabus);
 

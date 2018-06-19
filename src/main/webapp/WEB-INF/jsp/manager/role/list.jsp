@@ -33,29 +33,7 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <div><a class="navbar-brand" style="font-size:32px;" href="#">众筹平台 - 角色维护</a></div>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li style="padding-top:8px;">
-                    <%@include file="/WEB-INF/jsp/common/userinfo.jsp" %>
-                </li>
-                <li style="margin-left:10px;padding-top:8px;">
-                    <button type="button" class="btn btn-default btn-danger">
-                        <span class="glyphicon glyphicon-question-sign"></span> 帮助
-                    </button>
-                </li>
-            </ul>
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search...">
-            </form>
-        </div>
-    </div>
-</nav>
-
+<%@include file="/WEB-INF/jsp/common/userinfo.jsp" %>
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
@@ -196,9 +174,9 @@
                         content = content + '  <td><input type="checkbox" value="' + role.id + '"></td>';
                         content = content + '  <td>' + role.roleName + '</td>';
                         content = content + '  <td>';
-                        content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/roleController/assign.do?id=' + role.id + '\'"class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
-                        content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/roleController/toModifyRolePage.do?pageNo=' + pageObj.pageNo + '&id=' + role.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        content = content + '	   <button type="button" onclick="deleteRole(' + role.id + ', \'' + role.roleName + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        content = content + '      <button type="button" title="授权许可" onclick="window.location.href=\'${APP_PATH}/roleController/assign.do?id=' + role.id + '\'"class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
+                        content = content + '      <button type="button" title="修改" onclick="window.location.href=\'${APP_PATH}/roleController/toModifyRolePage.do?pageNo=' + pageObj.pageNo + '&id=' + role.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        content = content + '	   <button type="button" title="删除" onclick="deleteRole(' + role.id + ', \'' + role.roleName + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         content = content + '  </td>';
                         content = content + '</tr>';
                     });

@@ -9079,7 +9079,14 @@ jQuery.extend( {
                     //解决ajax拦截问题
                     var result = responses.text;
                     if(result.indexOf("noPower")>=0){
-                        window.location.href="/eets/noPower.jsp";
+                        layer.msg("您没有该权限，请联系管理员", {time: 3000, icon: 5}, function () {
+                        });
+                        return;
+                    }
+                    if(result.indexOf("toLogin")>=0){
+                        /* layer.msg("您没有该权限，请联系管理员", {time: 3000, icon: 5}, function () {
+                         });*/
+                        window.location.href="/eets/index.jsp";
                         return;
                     }
 				}

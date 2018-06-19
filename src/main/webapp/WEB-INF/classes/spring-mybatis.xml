@@ -9,7 +9,7 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 	<!-- 引入属性文件 -->
-	<context:property-placeholder location="classpath:jdbc.properties" />
+	<context:property-placeholder location="classpath:db/jdbc.properties" />
 	<!-- 自动扫描(自动注入) -->
 	<context:component-scan base-package="com.yxb.user.service" />
 	<!-- 配置数据源 -->
@@ -35,7 +35,7 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
-		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
 		<property name="mapperLocations" value="classpath:com/yxb/user/dao/mybatis-*.xml" />
 	</bean>
 

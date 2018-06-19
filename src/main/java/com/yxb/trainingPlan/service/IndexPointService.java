@@ -19,4 +19,10 @@ public interface IndexPointService {
     void deleteByReqId(Integer id);
 
     List<IndexPoint> queryIndexPointByCourseId(Integer id);
+
+    List<IndexPoint> queryByCode(String code);
+
+    String editIndexPoint(IndexPoint indexPoint);
+
+    void deleteByCode(String code);
 }

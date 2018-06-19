@@ -212,9 +212,9 @@
                         userContent = userContent + '  <td>' + (user.phone || "") + '</td>';
                         userContent = userContent + '  <td>' + (user.sort || "") + '</td>';
                         userContent = userContent + '  <td>';
-                        userContent = userContent + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/userController/toAssign.do?id=' + user.id + '\'" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
-                        userContent = userContent + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/userController/toModifyUserPage.do?pageNo=' + pageIndex + '&id=' + user.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        userContent = userContent + '	  <button type="button" onclick="deleteUser(' + user.id + ', \'' + user.name + '\')"  class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        userContent = userContent + '      <button type="button" title="赋权角色" onclick="window.location.href=\'${APP_PATH}/userController/toAssign.do?id=' + user.id + '\'" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
+                        userContent = userContent + '      <button type="button" title="修改" onclick="window.location.href=\'${APP_PATH}/userController/toModifyUserPage.do?pageNo=' + pageIndex + '&id=' + user.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        userContent = userContent + '	  <button type="button" title="删除" onclick="deleteUser(' + user.id + ', \'' + user.name + '\')"  class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         userContent = userContent + '  </td>';
                         userContent = userContent + '</tr>';
                     });

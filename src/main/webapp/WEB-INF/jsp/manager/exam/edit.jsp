@@ -1,5 +1,6 @@
 <%@page pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -85,9 +86,16 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>系（教研室）：<input type="text" id="staffRoom" class="form-control"
-                                                  value="${exam.staffRoom}" name="staffRoom"
-                                                  placeholder="系（教研室）"></td>
+                                <td>
+                                    <c:set var="staffRoomId" value="${exam.staffRoomId}" scope="request"/>
+                                    系（教研室）：<select class="selectpicker show-tick form-control" id="staffRoomId" name="staffRoomId" data-live-search="true">
+                                    <option value=""></option>
+                                    <c:forEach items="${staffRoomList}" var="staffRoom" varStatus="vs">
+                                        <option id="${staffRoom.id}" value="${staffRoom.id}"
+                                                <c:if test="${staffRoom.id==staffRoomId}">selected</c:if>
+                                        >${staffRoom.name}</option>
+                                    </c:forEach>
+                                </select></td>
                                 <td>命题教师：
                                     <c:set var="developerId" value="${exam.developerId}" scope="request"/>
                                     <select class="selectpicker show-tick form-control" id="developerId"
@@ -144,19 +152,23 @@
                         <table class="table" id="indexPointTable">
                             <thread>
                                 <tr>
-                                    <th colspan="8" style="text-align: center">课程考核办法</th>
+                                    <th colspan="3" style="text-align: center">课程考核办法</th>
                                 </tr>
-                                <c:forEach items="${testMethodList}" var="testMethod">
-                                    <input type="hidden" name="indexPointId" value="${testMethod.indexPointId}">
-                                    <tr><td colspan="8">${testMethod.indexPointName}</td></tr>
+                            </thread>
+                            <tbody id="testMethod">
+                                <c:forEach items="${testMethodList}" var="testMethod" varStatus="status">
                                     <tr>
-                                        <c:forEach items="${testMethod.testDetail}" var="testDetail">
-                                            <td>考核方式：<br><input class="form-control" name="testMode" type="text" value="${testDetail.method}"></td>
-                                            <td>分数：<br><input class="form-control" name="score" type="text" value="${testDetail.score}"></td>
-                                        </c:forEach>
+                                        <td>题目${status.count}：<br><input class="form-control" name="testMode" type="text" <c:if test="${status.count <=2}">disabled</c:if> value="${testMethod.testMode}"></td>
+                                        <td>分数：<br><input class="form-control" name="score" type="number"value="${testMethod.scores}"></td>
+                                        <c:if test="${status.count >= 3}">
+                                            <td><br><a class="btn btn-danger" onclick="deleteMethod(this)"><i class="glyphicon glyphicon-remove"></i></a></td>
+                                        </c:if>
                                     </tr>
                                 </c:forEach>
-                            </thread>
+                            </tbody>
+                            <tfoot>
+                            <button type="button" id="insertMethod" style="margin-bottom:10px;" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> 添加题目</button>
+                            </tfoot>
                         </table>
                         <button type="button" id="updateBtn" class="btn btn-success"><i
                                 class="glyphicon glyphicon-pencil"></i> 修改
@@ -231,38 +243,62 @@
         $("#propositionType").selectpicker('val', propositionType);
     });
 
+    var methodCount = ${fn:length(testMethodList)}+1;
+    $("#insertMethod").click(function(){
+
+        // 增加一行
+        var indexPointTable = $("#testMethod");
+        var trObj = "";
+        trObj += '<tr>';
+        trObj += '    <td>题目'+methodCount+'：<br><input type="text" class="form-control" name="testMode" placeholder="请输入题型或知识点"></td>';
+        trObj += '    <td>分数：<br><input type="number" class="form-control" name="score" placeholder="请输入分值" ></td>';
+        trObj += '    <td><br><a class="btn btn-danger" onclick="deleteMethod(this)"><i class="glyphicon glyphicon-remove"></i></a></td>';
+        trObj += '</tr>';
+        indexPointTable.append(trObj);
+        methodCount++;
+    });
+
+    function deleteMethod(obj) {
+        // obj ==> <a>
+        // 查找tr
+        methodCount--;
+        var trObj = $(obj).parent().parent();
+        // 删除tr
+        trObj.remove();
+    }
+
     function getIndexPoint() {
         var courseId = $("#courseId").val();
         $.ajax({
             url: "${APP_PATH}/examController/queryIndexPointByCourseId.do",
             type: "POST",
-            data: {"courseId":courseId},
+            data: {"courseId": courseId},
             beforeSend: function () {
                 loadingIndex = layer.msg('数据查询中', {icon: 16});
                 return true;
             },
-            success:function (result) {
+            success: function (result) {
                 layer.close(loadingIndex);
                 if (result.success) {
-                    var indexPointList = result.data;
+                   /* var indexPointList = result.data;
                     var content = '<thread><tr><th colspan="8" style="text-align: center">课程目标考核办法</th></tr></thread>';
-                    $.each(indexPointList,function (i,indexPoint) {
-                        content = content + '<tr><td colspan="8">'+indexPoint.name+'</td></tr>';
-                        content = content + '<input type="hidden" name="indexPointId" value="'+indexPoint.id+'">';
+                    $.each(indexPointList, function (i, indexPoint) {
+                        content = content + '<tr><td colspan="8">' + indexPoint.name + '</td></tr>';
+                        content = content + '<input type="hidden" name="indexPointId" value="' + indexPoint.id + '">';
                         content = content + '<tr>';
-                        content = content+ '<td>考核方式：<br><input type="text" class="form-control" name="testMode"></td>';
-                        content = content+ '<td>分值：<br><input type="text" class="form-control" name="score"></td>';
-                        content = content+ '<td>考核方式：<br><input type="text" class="form-control" name="testMode"></td>';
-                        content = content+ '<td>分值：<br><input type="text" class="form-control" name="score"></td>';
-                        content = content+ '<td>考核方式：<br><input type="text" class="form-control" name="testMode"></td>';
-                        content = content+ '<td>分值：<br><input type="text" class="form-control" name="score"></td>';
-                        content = content+ '<td>考核方式：<br><input type="text" class="form-control" name="testMode"></td>';
-                        content = content+ '<td>分值：<br><input type="text" class="form-control" name="score"></td>';
+                        content = content + '<td>题目1：<br><input type="text" class="form-control" name="testMode" placeholder="请输入题型或知识点""></td>';
+                        content = content + '<td>分值：<br><input type="text" class="form-control" name="score"></td>';
+                        content = content + '<td>题目3：<br><input type="text" class="form-control" name="testMode" placeholder="请输入题型或知识点"></td>';
+                        content = content + '<td>分值：<br><input type="text" class="form-control" name="score"></td>';
+                        content = content + '<td>题目4：<br><input type="text" class="form-control" name="testMode" placeholder="请输入题型或知识点"></td>';
+                        content = content + '<td>分值：<br><input type="text" class="form-control" name="score"></td>';
+                        content = content + '<td>题目5：<br><input type="text" class="form-control" name="testMode" placeholder="请输入题型或知识点"></td>';
+                        content = content + '<td>分值：<br><input type="text" class="form-control" name="score"></td>';
                         content = content + '</tr>';
 
 
                     });
-                    $("#indexPointTable").html(content);
+                    $("#indexPointTable").html(content);*/
 
                 } else {
                     layer.msg("获取该课程指标点失败", {time: 1000, icon: 5, shift: 6});
@@ -282,7 +318,7 @@
         //获取表单对象
         var courseId = $("#courseId");
         var instituteId = $("#instituteId");
-        var staffRoom = $("#staffRoom");
+        var staffRoom = $("#staffRoomId");
         var developerId = $("#developerId");
         var classIdList = $("#classIdList");
         var options = $("#classIdList option:selected");

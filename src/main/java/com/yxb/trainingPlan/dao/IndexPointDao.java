@@ -22,4 +22,12 @@ public interface IndexPointDao {
     void deleteByReqId(Integer reqId);
 
     List<IndexPoint> queryIndexPointByCourseId(Integer courseId);
+
+    List<IndexPoint> queryByCode(String code);
+
+    int deleteByIds(List<Integer> list);
+
+    void deleteByCode(String code);
+
+    void updateIndexPoint(IndexPoint point);
 }

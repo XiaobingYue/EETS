@@ -85,9 +85,17 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2">系（教研室）：<input type="text" id="staffRoom" class="form-control"
-                                                              value="${exam.staffRoom}" name="staffRoom"
-                                                              placeholder="系（教研室）" disabled="true"></td>
+                                <td colspan="2">
+                                    <input type="hidden" value="${exam.staffRoomId}" name="staffRoomId">
+                                    <c:set var="staffRoomId" value="${exam.staffRoomId}" scope="request"/>
+                                    系（教研室）：<select class="selectpicker show-tick form-control" disabled="true" id="staffRoomId" name="staffRoomId" data-live-search="true">
+                                        <option value="0"></option>
+                                        <c:forEach items="${staffRoomList}" var="staffRoom" varStatus="vs">
+                                            <option id="${staffRoom.id}" value="${staffRoom.id}"
+                                                    <c:if test="${staffRoom.id==staffRoomId}">selected</c:if>
+                                            >${staffRoom.name}</option>
+                                        </c:forEach>
+                                    </select></td>
                                 <td colspan="2">命题教师：
                                     <c:set var="developerId" value="${exam.developerId}" scope="request"/>
                                     <select class="selectpicker show-tick form-control" id="developerId"
@@ -184,32 +192,20 @@
                                 <td colspan="4"><textarea class="form-control" id="testDoSummary"
                                                           name="testDoSummary"></textarea></td>
                             </tr>
-                            <%--<tr>
-                                <td colspan="2">试做人：<br><input class="form-control" type="text"
-                                                               name="testerId"
-                                                               id="testerId"></td>
-                                <td colspan="2">试做时间：<br><input class="form-control" type="text" name="testDoTime" id="testDoTime"></td>
-                            </tr>--%>
                             </tbody>
                         </table>
                         <table class="table">
                             <thread>
                                 <tr>
-                                    <th colspan="8" style="text-align: center">课程考核办法</th>
+                                    <th colspan="3" style="text-align: center">课程考核办法</th>
                                 </tr>
-                                <c:forEach items="${testMethodList}" var="testMethod">
-                                    <tr><td colspan="8">${testMethod.indexPointName}</td></tr>
-                                    <tr>
-                                        <c:forEach items="${testMethod.testDetail}" var="testDetail">
-                                            <td>考核方式：<br><input class="form-control" name="testMode" type="text" disabled value="${testDetail.method}"></td>
-                                            <td>分数：<br><input class="form-control" name="score" type="text" disabled value="${testDetail.score}"></td>
-                                        </c:forEach>
-                                    </tr>
+                                <c:forEach items="${testMethodList}" var="testMethod" varStatus="status">
+                                    <tr><td>题目${status.count}：${testMethod.testMode}</td><td>分数：${testMethod.scores}</td></tr>
                                 </c:forEach>
                             </thread>
                         </table>
                         <button type="button" id="updateBtn" class="btn btn-success"><i
-                                class="glyphicon glyphicon-pencil"></i> 修改
+                                class="glyphicon glyphicon-pencil"></i> 提交
                         </button>
                         <button type="button" id="resetBtn" class="btn btn-danger"><i
                                 class="glyphicon glyphicon-refresh"></i> 重置

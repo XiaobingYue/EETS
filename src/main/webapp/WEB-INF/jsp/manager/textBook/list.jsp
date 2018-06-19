@@ -230,8 +230,8 @@
                         content = content + '  <td>' + textBook.classesName + '</td>';
                         content = content + '  <td>' + textBook.count + '</td>';
                         content = content + '  <td>';
-                        content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/textBookController/toEdit.do?pageNo=' + pageObj.pageNo + '&id=' + textBook.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        content = content + '	   <button type="button" onclick="deleteTextBook(' + textBook.id + ', \'' + textBook.name + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        content = content + '      <button type="button" title="修改" onclick="window.location.href=\'${APP_PATH}/textBookController/toEdit.do?pageNo=' + pageObj.pageNo + '&id=' + textBook.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        content = content + '	   <button type="button" title="删除" onclick="deleteTextBook(' + textBook.id + ', \'' + textBook.name + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         content = content + '  </td>';
                         content = content + '</tr>';
                     });

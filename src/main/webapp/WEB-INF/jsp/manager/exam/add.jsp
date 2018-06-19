@@ -66,7 +66,8 @@
                                     </c:forEach>
                                 </select>
                                 </td>
-                                <td>课程所在学院：<select class="selectpicker show-tick form-control" id="instituteId" name="instituteId" data-live-search="true">
+                                <td>课程所在学院：<select class="selectpicker show-tick form-control" id="instituteId"
+                                                   name="instituteId" data-live-search="true">
                                     <option value="0"></option>
                                     <c:forEach items="${instituteList}" var="institute" varStatus="vs">
                                         <option id="${institute.id}" value="${institute.id}"> ${institute.name}</option>
@@ -75,9 +76,15 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>系（教研室）：<input type="text" id="staffRoom" class="form-control" name="staffRoom"
-                                                  placeholder="系（教研室）"></td>
-                                <td>命题教师：<select class="selectpicker show-tick form-control" id="developerId" name="developerId" data-live-search="true">
+                                <td>系（教研室）：<select class="selectpicker show-tick form-control" id="staffRoomId"
+                                                   name="staffRoomId" data-live-search="true">
+                                    <option value=""></option>
+                                    <c:forEach items="${staffRoomList}" var="staffRoom" varStatus="vs">
+                                        <option id="${staffRoom.id}" value="${staffRoom.id}"> ${staffRoom.name}</option>
+                                    </c:forEach>
+                                </select></td>
+                                <td>命题教师：<select class="selectpicker show-tick form-control" id="developerId"
+                                                 name="developerId" data-live-search="true">
                                     <option value="0"></option>
                                     <c:forEach items="${teacherList}" var="teacher" varStatus="vs">
                                         <option id="${teacher.id}" value="${teacher.id}"> ${teacher.name}</option>
@@ -118,16 +125,33 @@
                             </tr>
                             <tr>
                                 <td>课程结束日期：<br><input type="text" id="courseEndTime" class="form-control form_datetime"
-                                                    name="courseEndTime"
-                                                    placeholder="课程结束日期"></td>
+                                                      name="courseEndTime"
+                                                      placeholder="课程结束日期"></td>
                                 <td>命题日期：<br><input type="text" id="createTime" class="form-control form_datetime"
-                                                      name="createTime"
-                                                      placeholder="命题日期"></td>
+                                                    name="createTime"
+                                                    placeholder="命题日期"></td>
                             </tr>
                             </tbody>
                         </table>
                         <table id="indexPointTable" class="table">
-
+                            <thead>
+                            <tr>
+                                <th colspan="3" style="text-align: center">课程考核办法</th>
+                            </tr>
+                            </thead>
+                            <tbody id="testMethod">
+                            <tr>
+                                <td>实验成绩：<br><input type="text" class="form-control" name="testMode" value="实验成绩" readonly placeholder="请输入题型或知识点"></td>
+                                <td>分数：<br><input type="number" value="100" class="form-control" name="score" placeholder="请输入分值" ></td>
+                            </tr>
+                            <tr>
+                                <td>平时成绩：<br><input type="text" class="form-control" name="testMode" readonly value="平时成绩" placeholder="请输入题型或知识点"></td>
+                                <td>分数：<br><input type="number" value="100" class="form-control" name="score" placeholder="请输入分值" ></td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <button type="button" id="insertMethod" style="margin-bottom:10px;" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> 添加题目</button>
+                            </tfoot>
                         </table>
                         <button type="button" id="insertBtn" class="btn btn-success"><i
                                 class="glyphicon glyphicon-plus"></i> 新增
@@ -162,39 +186,58 @@
             }
         });
     });
+    var methodCount = 1;
+    $("#insertMethod").click(function(){
+
+        // 增加一行
+        var indexPointTable = $("#testMethod");
+        var trObj = "";
+        trObj += '<tr>';
+        trObj += '    <td>题目'+methodCount+'：<br><input type="text" class="form-control" name="testMode" placeholder="请输入题型或知识点"></td>';
+        trObj += '    <td>分数：<br><input type="number" class="form-control" name="score" placeholder="请输入分值" ></td>';
+        trObj += '    <td><br><a class="btn btn-danger" onclick="deleteMethod(this)"><i class="glyphicon glyphicon-remove"></i></a></td>';
+        trObj += '</tr>';
+        indexPointTable.append(trObj);
+        methodCount++;
+    });
+
+    function deleteMethod(obj) {
+        // obj ==> <a>
+        // 查找tr
+        methodCount--;
+        var trObj = $(obj).parent().parent();
+        // 删除tr
+        trObj.remove();
+    }
 
     function getIndexPoint() {
         var courseId = $("#courseId").val();
         $.ajax({
             url: "${APP_PATH}/examController/queryIndexPointByCourseId.do",
             type: "POST",
-            data: {"courseId":courseId},
+            data: {"courseId": courseId},
             beforeSend: function () {
                 loadingIndex = layer.msg('数据查询中', {icon: 16});
                 return true;
             },
-            success:function (result) {
+            success: function (result) {
                 layer.close(loadingIndex);
                 if (result.success) {
-                    var indexPointList = result.data;
-                    var content = '<thread><tr><th colspan="8" style="text-align: center">课程目标考核办法</th></tr></thread>';
-                    $.each(indexPointList,function (i,indexPoint) {
-                        content = content + '<tr><td colspan="8">'+indexPoint.name+'</td></tr>';
-                        content = content + '<input type="hidden" name="indexPointId" value="'+indexPoint.id+'">';
+                  /*  var indexPointList = result.data;
+                    var content = '<thread><tr><th colspan="4" style="text-align: center">课程目标考核办法</th></tr></thread>';
+                    for (j = 1; j < 11; j++) {
                         content = content + '<tr>';
-                        content = content+ '<td>考核方式：<br><input type="text" class="form-control" name="testMode"></td>';
-                        content = content+ '<td>分值：<br><input type="text" class="form-control" name="score"></td>';
-                        content = content+ '<td>考核方式：<br><input type="text" class="form-control" name="testMode"></td>';
-                        content = content+ '<td>分值：<br><input type="text" class="form-control" name="score"></td>';
-                        content = content+ '<td>考核方式：<br><input type="text" class="form-control" name="testMode"></td>';
-                        content = content+ '<td>分值：<br><input type="text" class="form-control" name="score"></td>';
-                        content = content+ '<td>考核方式：<br><input type="text" class="form-control" name="testMode"></td>';
-                        content = content+ '<td>分值：<br><input type="text" class="form-control" name="score"></td>';
+                        content = content + '<td>题目' + j + '：<br><input type="text" class="form-control" name="testMode" placeholder="请输入题型或知识点"></td>';
+                        content = content + '<td>分值：<br><input type="text" class="form-control" name="score"></td>';
+                        content = content + '<td>所属指标点：<select class="form-control" name="indexPointId">' +
+                            '<option value="0"></option>';
+                        $.each(indexPointList, function (i, indexPoint) {
+                            content = content + '<option value="' + indexPoint.id + '">' + indexPoint.name + '</option>';
+                        });
+                        content = content + '</select></td>';
                         content = content + '</tr>';
-
-
-                    });
-                    $("#indexPointTable").html(content);
+                    }
+                    $("#indexPointTable").html(content);*/
 
                 } else {
                     layer.msg(result.data, {time: 1000, icon: 5, shift: 6});
@@ -218,7 +261,7 @@
 
         var courseId = $("#courseId");
         var instituteId = $("#instituteId");
-        var staffRoom = $("#staffRoom");
+        var staffRoom = $("#staffRoomId");
         var developerId = $("#developerId");
         var classIdList = $("#classIdList");
         var options = $("#classIdList option:selected");
@@ -249,8 +292,8 @@
                 developerId.focus();
             });
         } else if (options.length == 0) {
-                layer.msg("请选择适用班级", {time: 1000, icon: 5, shift: 6});
-                classIdList.focus();
+            layer.msg("请选择适用班级", {time: 1000, icon: 5, shift: 6});
+            classIdList.focus();
         } else if (testType.val() == "") {
             layer.msg("请选择正确的考试方式", {time: 2000, icon: 5, shift: 6}, function () {
                 // 设定页面焦点
@@ -285,7 +328,7 @@
                             window.location.href = "${APP_PATH}/examController/toIndex.do";
                         });
                     } else {
-                        layer.msg("操作失败"+result.data, {time: 1000, icon: 5, shift: 6});
+                        layer.msg("操作失败" + result.data, {time: 1000, icon: 5, shift: 6});
                     }
                 }
             });

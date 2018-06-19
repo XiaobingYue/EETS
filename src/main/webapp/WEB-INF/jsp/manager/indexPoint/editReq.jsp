@@ -97,7 +97,7 @@
                                 <c:forEach items="${tableHead}" var="head">
                                     <th>${head}</th>
                                 </c:forEach>
-                                <%--<th width="133">操作</th>--%>
+                                <th width="133">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -106,6 +106,8 @@
                                     <c:forEach items="${indexPointBean.data}" var="indexPoint">
                                         <td>${indexPoint}</td>
                                     </c:forEach>
+                                    <td><button type="button" title="修改" onclick="window.location.href='${APP_PATH}/graduationReqController/toEditIndexPoint.do?code=${indexPointBean.code}'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
+                                    <button type="button" title="删除" onclick="deleteIndexPoint('${indexPointBean.code}','${indexPointBean.name}')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -159,6 +161,33 @@
             }
         });
     });
+
+    function deleteIndexPoint(code,name) {
+        layer.confirm("删除毕业要求: " + name + ", 是否继续？", {icon: 3, title: '提示'}, function (cindex) {
+            // 删除数据
+            $.ajax({
+                url: "${APP_PATH}/graduationReqController/deleteByCode.do",
+                type: "POST",
+                data: {
+                    code: code
+                },
+                success: function (result) {
+                    if (result.success) {
+                        layer.msg("删除成功", {time: 1000, icon: 6}, function () {
+                            window.location.href = "${APP_PATH}/graduationReqController/toEdit.do?id=${graduationReq.id}";
+                        });
+                    } else {
+                        layer.msg(result.data, {time: 1000, icon: 5, shift: 6});
+                    }
+                }
+            });
+
+
+            layer.close(cindex);
+        }, function (cindex) {
+            layer.close(cindex);
+        });
+    }
 
     $("#addIndexPoint").click(function() {
         window.location.href = "${APP_PATH}/graduationReqController/toAddIndexPoint.do?id=${graduationReq.id}";

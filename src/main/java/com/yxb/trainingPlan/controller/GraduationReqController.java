@@ -14,11 +14,13 @@ import com.yxb.trainingPlan.entity.GraduationReq;
 import com.yxb.trainingPlan.entity.IndexPoint;
 import com.yxb.trainingPlan.service.GraduationReqService;
 import com.yxb.trainingPlan.service.IndexPointService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -88,12 +90,14 @@ public class GraduationReqController {
         }
         for (String indexPointId : codeList) {
             IndexPointBean indexPointBean = new IndexPointBean();
+            indexPointBean.setCode(indexPointId);
             List<Object> indexPointList = new ArrayList<>();
             for (String str : courseIds) {
                 Integer courseId = Integer.valueOf(str);
                 for (IndexPoint indexPoint : pointList) {
                     if (Objects.equals(indexPoint.getCourseId(), courseId) && Objects.equals(indexPoint.getCode(), indexPointId)) {
                         if (indexPointList.size() == 0) indexPointList.add(indexPoint.getName());
+                        indexPointBean.setName(indexPoint.getName());
                         indexPointList.add(indexPoint.getScore());
                         break;
                     }
@@ -159,14 +163,13 @@ public class GraduationReqController {
      * 上传毕业要求pdf文件
      *
      * @param file    文件
-     * @param model   Model
      * @param id      毕业要求id
      * @param request HttpServletRequest
      * @return AjaxResult
      */
     @ResponseBody
     @RequestMapping("/uploadPdf.do")
-    public Object uploadPdf(@RequestParam MultipartFile file, Model model, Integer id, HttpServletRequest request) {
+    public Object uploadPdf(@RequestParam MultipartFile file, Integer id, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         try {
             if (file.isEmpty()) {
@@ -263,6 +266,67 @@ public class GraduationReqController {
             result.setSuccess(true);
         } catch (Exception e) {
             log.error("增加指标点出现异常", e);
+        }
+        return result;
+    }
+
+    @RequestMapping("/toEditIndexPoint.do")
+    public String toEditIndexPoint (String code,Model model) {
+        List<IndexPoint> indexPointList = indexPointService.queryByCode(code);
+        model.addAttribute("indexPointList",indexPointList);
+        model.addAttribute("name",indexPointList.get(0).getName());
+        model.addAttribute("code",indexPointList.get(0).getCode());
+        model.addAttribute("reqId",indexPointList.get(0).getReqId());
+        return "manager/indexPoint/editIndexPoint";
+    }
+
+    @RequestMapping("/editIndexPoint.do")
+    @ResponseBody
+    public Object editIndexPoint(IndexPoint indexPoint) {
+        AjaxResult result = new AjaxResult();
+        try {
+            String msg = indexPointService.editIndexPoint(indexPoint);
+            if (StringUtils.isBlank(msg)) {
+                result.setSuccess(true);
+            } else {
+                result.setData(msg);
+            }
+        } catch (Exception e) {
+            log.error("修改指标点出现异常",e);
+            result.setData(e.getMessage());
+        }
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping("/deleteByCode.do")
+    public Object deleteByCode(String code) {
+        AjaxResult result = new AjaxResult();
+        try {
+            indexPointService.deleteByCode(code);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("删除指标点出现异常",e);
+            result.setData(e.getMessage());
+        }
+        return result;
+    }
+
+    @RequestMapping("/validateCode.do")
+    @ResponseBody
+    public Object validateCode (String code) {
+        AjaxResult result = new AjaxResult();
+        try {
+            List<IndexPoint> indexPointList = indexPointService.queryByCode(code);
+            if(CollectionUtils.isEmpty(indexPointList)) {
+                result.setSuccess(true);
+            } else {
+                result.setData(false);
+                result.setData("该编号已存在，请重新输入");
+            }
+        } catch (Exception e) {
+            log.error("校验指标点编号是否存在出现异常",e);
+            result.setData(e.getMessage());
         }
         return result;
     }

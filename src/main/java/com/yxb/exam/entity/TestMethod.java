@@ -23,6 +23,16 @@ public class TestMethod {
 
     private String scores;
 
+    private Float average;
+
+    public Float getAverage() {
+        return average;
+    }
+
+    public void setAverage(Float average) {
+        this.average = average;
+    }
+
     private List<TestDetail> testDetail = new ArrayList<>();
 
     public String getIndexPointName() {

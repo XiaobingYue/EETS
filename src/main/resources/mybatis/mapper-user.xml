@@ -22,6 +22,7 @@
         <result column="sort" property="sort"></result>
         <result column="if_enable" property="ifEnable"></result>
         <result column="classes_id" property="classesId"></result>
+        <result column="staff_room_id" property="staffRoomId"></result>
     </resultMap>
 	<select id="loginUser" resultMap="userMap">
 		select *
@@ -34,9 +35,9 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
 		insert into t_user (
-			USER_ACCT , NAME , EMAIL , PASSWORD , SORT , SEX , TIMESTAMP , IF_ENABLE , PHONE , CLASSES_ID
+			USER_ACCT , NAME , EMAIL , PASSWORD , SORT , SEX , TIMESTAMP , IF_ENABLE , PHONE , CLASSES_ID,STAFF_ROOM_ID
 		) values (
-			#{userAcct} , #{name} , #{email} , #{password} , #{sort} , #{sex} , #{timestamp} , #{ifEnable} , #{phone} , #{classesId})
+			#{userAcct} , #{name} , #{email} , #{password} , #{sort} , #{sex} , #{timestamp} , #{ifEnable} , #{phone} , #{classesId} , #{staffRoomId})
 	</insert>
 	
 	<select id="getPermissionsByUserId" resultMap="userResultMap">
@@ -105,6 +106,9 @@
         <if test="classesId != null">
             ,CLASSES_ID = #{classesId}
         </if>
+        <if test="staffRoomId != null">
+            ,STAFF_ROOM_ID = #{staffRoomId}
+        </if>
         <where>
             id = #{id}
         </where>
@@ -170,4 +174,8 @@
     <update id="updateLoginRecord">
         UPDATE t_login_record SET COUNT = #{count} WHERE ID = #{id}
     </update>
+
+    <select id="queryByClassesId" resultMap="userMap">
+        SELECT * FROM t_user WHERE CLASSES_ID = #{classesId}
+    </select>
 </mapper>

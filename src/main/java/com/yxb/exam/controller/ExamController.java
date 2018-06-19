@@ -11,9 +11,11 @@ import com.yxb.exam.service.ExamService;
 import com.yxb.multiManage.entity.Classes;
 import com.yxb.multiManage.entity.Course;
 import com.yxb.multiManage.entity.Institute;
+import com.yxb.multiManage.entity.StaffRoom;
 import com.yxb.multiManage.service.ClassesService;
 import com.yxb.multiManage.service.CourseService;
 import com.yxb.multiManage.service.InstituteService;
+import com.yxb.multiManage.service.StaffRoomService;
 import com.yxb.trainingPlan.entity.IndexPoint;
 import com.yxb.trainingPlan.service.IndexPointService;
 import com.yxb.user.Bean.UserBean;
@@ -62,6 +64,8 @@ public class ExamController {
     private ClassesService classesService;
     @Autowired
     private IndexPointService indexPointService;
+    @Autowired
+    private StaffRoomService staffRoomService;
 
     @RequestMapping("/toIndex.do")
     public String toIndex(Model model) {
@@ -72,10 +76,12 @@ public class ExamController {
 
     @RequestMapping("/queryExamList.do")
     @ResponseBody
-    public Object queryExamList(String queryText, Integer pageNo, Integer pageSize) {
+    public Object queryExamList(String queryText, Integer pageNo, Integer pageSize,HttpServletRequest request) {
         AjaxResult<Exam> result = new AjaxResult<>();
         try {
+            UserBean userBean = (UserBean) request.getSession().getAttribute("userInfo");
             Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("developerId",userBean.getId());
             paramMap.put("start", (pageNo - 1) * pageSize);
             paramMap.put("size", pageSize);
             if (StringUtil.isNotEmpty(queryText)) paramMap.put("queryText", queryText);
@@ -120,10 +126,12 @@ public class ExamController {
         List<Institute> instituteList = instituteService.queryAllInstitute();
         List<User> teacherList = userService.queryUserListByRoleId(Const.TEACHER_ROLE_ID);
         List<Classes> classesList = classesService.queryAllClasses();
+        List<StaffRoom> staffRoomList = staffRoomService.queryAll();
         model.addAttribute("courseList", courseList);
         model.addAttribute("instituteList", instituteList);
         model.addAttribute("teacherList", teacherList);
         model.addAttribute("classesList", classesList);
+        model.addAttribute("staffRoomList", staffRoomList);
         return "manager/exam/add";
     }
 
@@ -165,12 +173,16 @@ public class ExamController {
             List<User> teacherList = userService.queryUserListByRoleId(Const.TEACHER_ROLE_ID);
             List<Classes> classesList = classesService.queryAllClasses();
             List<TestMethod> testMethodList = examService.queryTestMethodByCourseId(exam.getCourseId());
+            List<IndexPoint> indexPointList = indexPointService.queryIndexPointByCourseId(exam.getCourseId());
+            List<StaffRoom> staffRoomList = staffRoomService.queryAll();
             model.addAttribute("exam", exam);
             model.addAttribute("courseList", courseList);
             model.addAttribute("instituteList", instituteList);
             model.addAttribute("teacherList", teacherList);
             model.addAttribute("classesList", classesList);
             model.addAttribute("testMethodList", testMethodList);
+            model.addAttribute("indexPointList", indexPointList);
+            model.addAttribute("staffRoomList", staffRoomList);
         } catch (Exception e) {
             log.error("跳转到修改页面出现异常", e);
         }
@@ -192,12 +204,14 @@ public class ExamController {
             List<Institute> instituteList = instituteService.queryAllInstitute();
             List<User> teacherList = userService.queryUserListByRoleId(Const.TEACHER_ROLE_ID);
             List<Classes> classesList = classesService.queryAllClasses();
+            List<StaffRoom> staffRoomList = staffRoomService.queryAll();
             model.addAttribute("exam", exam);
             model.addAttribute("courseList", courseList);
             model.addAttribute("instituteList", instituteList);
             model.addAttribute("teacherList", teacherList);
             model.addAttribute("classesList", classesList);
             model.addAttribute("testMethodList", testMethodList);
+            model.addAttribute("staffRoomList", staffRoomList);
         } catch (Exception e) {
             log.error("跳转到详情页面出现异常", e);
         }
@@ -266,12 +280,14 @@ public class ExamController {
             List<User> teacherList = userService.queryUserListByRoleId(Const.TEACHER_ROLE_ID);
             List<Classes> classesList = classesService.queryAllClasses();
             List<TestMethod> testMethodList = examService.queryTestMethodByCourseId(exam.getCourseId());
+            List<StaffRoom> staffRoomList = staffRoomService.queryAll();
             model.addAttribute("exam", exam);
             model.addAttribute("courseList", courseList);
             model.addAttribute("instituteList", instituteList);
             model.addAttribute("teacherList", teacherList);
             model.addAttribute("classesList", classesList);
-            model.addAttribute("testMethodList", testMethodList);
+            model.addAttribute("testMethodList", testMethodList);model.addAttribute("staffRoomList", staffRoomList);
+
         } catch (Exception e) {
             log.error("跳转到修改我的试做页面出现异常", e);
         }
@@ -293,6 +309,10 @@ public class ExamController {
         try {
             if (!bindingResult.hasErrors()) {
                 UserBean userBean = (UserBean) request.getSession().getAttribute("userInfo");
+                StaffRoom staffRoom = staffRoomService.queryById(exam.getStaffRoomId());
+                exam.setApproverId(staffRoom.getHeaderId());
+                User user = userService.queryById(staffRoom.getHeaderId());
+                exam.setApproverName(user.getName());
                 exam.setTesterId(userBean.getId());
                 exam.setTesterName(userBean.getName());
                 examService.updateExamTestDoInfo(exam);

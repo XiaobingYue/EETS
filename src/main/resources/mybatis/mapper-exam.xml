@@ -4,7 +4,7 @@
     <resultMap id="examMap" type="exam">
         <result column="course_id" property="courseId"></result>
         <result column="institute_id" property="instituteId"></result>
-        <result column="staff_room" property="staffRoom"></result>
+        <result column="staff_room_id" property="staffRoomId"></result>
         <result column="developer_id" property="developerId"></result>
         <result column="create_time" property="createTime"></result>
         <result column="class_ids" property="classIds"></result>
@@ -35,6 +35,9 @@
         <if test="queryText != null">
             AND NAME LIKE concat('%', #{queryText}, '%')
         </if>
+        <if test="developerId != null">
+            AND DEVELOPER_ID = #{developerId}
+        </if>
         <if test="testerId != null">
             AND TESTER_ID = #{testerId}
         </if>
@@ -63,7 +66,7 @@
 
 
     <insert id="addExam">
-        INSERT INTO t_exam (NAME, COURSE_ID, INSTITUTE_ID, STAFF_ROOM, DEVELOPER_ID, CLASS_IDS, TEST_TYPE, COURSE_END_TIME, TIMESTAMP,CREATE_TIME, PROPOSITION_TYPE, STATE) VALUES (#{name},#{courseId},#{instituteId},#{staffRoom},#{developerId},#{classIds},#{testType},#{courseEndTime},#{timestamp},#{createTime},#{propositionType},#{state});
+        INSERT INTO t_exam (NAME, COURSE_ID, INSTITUTE_ID, STAFF_ROOM_ID, DEVELOPER_ID, CLASS_IDS, TEST_TYPE, COURSE_END_TIME, TIMESTAMP,CREATE_TIME, PROPOSITION_TYPE, STATE) VALUES (#{name},#{courseId},#{instituteId},#{staffRoomId},#{developerId},#{classIds},#{testType},#{courseEndTime},#{timestamp},#{createTime},#{propositionType},#{state});
     </insert>
 
     <update id="assignTester">
@@ -71,7 +74,7 @@
     </update>
 
     <update id="updateExam">
-        UPDATE t_exam SET NAME = #{name},COURSE_ID = #{courseId},INSTITUTE_ID = #{instituteId},STAFF_ROOM = #{staffRoom},DEVELOPER_ID = #{developerId},CLASS_IDS = #{classIds},TEST_TYPE = #{testType},COURSE_END_TIME = #{courseEndTime},TIMESTAMP = #{timestamp},CREATE_TIME = #{createTime},PROPOSITION_TYPE = #{propositionType},STATE=#{state} WHERE ID = #{id}
+        UPDATE t_exam SET NAME = #{name},COURSE_ID = #{courseId},INSTITUTE_ID = #{instituteId},STAFF_ROOM_ID = #{staffRoomId},DEVELOPER_ID = #{developerId},CLASS_IDS = #{classIds},TEST_TYPE = #{testType},COURSE_END_TIME = #{courseEndTime},TIMESTAMP = #{timestamp},CREATE_TIME = #{createTime},PROPOSITION_TYPE = #{propositionType},STATE=#{state} WHERE ID = #{id}
     </update>
     
     <insert id="addTestMethod">
@@ -87,7 +90,7 @@
     </delete>
 
     <update id="updateExamTestDoInfo">
-        update t_exam SET TEST_PAPER_TYPE = #{testPaperType},IF_HAVE_ANSWER = #{ifHaveAnswer},EXAM_TIME = #{examTime},TEST_DO_NEED_TIME = #{testDoNeedTime},TEST_DO_SUMMARY = #{testDoSummary},TESTER_ID = #{testerId},TESTER_NAME = #{testerName},TEST_DO_TIME = #{testDoTime},STATE=#{state} WHERE ID = #{id}
+        update t_exam SET TEST_PAPER_TYPE = #{testPaperType},IF_HAVE_ANSWER = #{ifHaveAnswer},EXAM_TIME = #{examTime},TEST_DO_NEED_TIME = #{testDoNeedTime},TEST_DO_SUMMARY = #{testDoSummary},TESTER_ID = #{testerId},TESTER_NAME = #{testerName},TEST_DO_TIME = #{testDoTime},APPROVER_ID=#{approverId},APPROVER_NAME=#{approverName},STATE=#{state} WHERE ID = #{id}
     </update>
 
     <update id="assignApprover">
@@ -95,7 +98,7 @@
     </update>
 
     <update id="approve">
-        UPDATE t_exam SET STATE = #{state} , TIMESTAMP = #{timestamp} WHERE ID = #{id}
+        UPDATE t_exam SET STATE = #{state} ,TIMESTAMP = #{timestamp},APPROVE_TIME=#{approveTime} WHERE ID = #{id}
     </update>
 
     <delete id="deleteById">
@@ -109,4 +112,11 @@
     <update id="updateFileName">
         UPDATE t_exam SET FILE_NAME = #{fileName} WHERE ID = #{id}
     </update>
+
+    <delete id="deleteSubIndexPointByTestMethodId">
+        DELETE FROM t_sub_index_point WHERE TEST_METHOD_ID IN
+        (
+        SELECT ID FROM t_test_method WHERE COURSE_ID = #{courseId}
+        )
+    </delete>
 </mapper>

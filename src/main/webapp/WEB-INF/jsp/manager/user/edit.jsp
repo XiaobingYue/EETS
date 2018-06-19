@@ -47,7 +47,8 @@
                             class="glyphicon glyphicon-question-sign"></i></div>
                 </div>
                 <div class="panel-body">
-                    <form id="userForm" role="form">
+                    <form id="userForm" role="form" method="post" action="${APP_PATH}/userController/modifyUser.do">
+                        <input type="hidden" id="id" name="id" value="${user.id}">
                         <div class="form-group">
                             <label>登陆账号</label>
                             <input type="text" class="form-control" id="userAcct" name="userAcct" value="${user.userAcct}"
@@ -55,7 +56,7 @@
                         </div>
                         <div class="form-group">
                             <label>用户名称</label>
-                            <input type="text" class="form-control" id="username" name="username" value="${user.name}"
+                            <input type="text" class="form-control" id="username" name="name" value="${user.name}"
                                    placeholder="请输入用户名称">
                         </div>
                         <div class="form-group">
@@ -66,7 +67,7 @@
                         </div>
                         <div class="form-group">
                             <label>性别</label>
-                            <select class="form-control" id="sex">
+                            <select class="form-control" id="sex"name="sex">
                                 <option value="1"<c:if test="${user.sex == 1}">selected</c:if>>男</option>
                                 <option value="0"<c:if test="${user.sex == 0}">selected</c:if>>女</option>
                             </select>
@@ -89,6 +90,15 @@
                                 <c:forEach items="${classesList}" var="classes" varStatus="vs">
                                     <option id="${classes.id}" value="${classes.id}"
                                         <c:if test="${classes.id==classesId}">selected</c:if>> ${classes.className}</option>
+                                </c:forEach></select>
+                        </div>
+                        <div class="form-group" id="staffRoom">
+                            <label>所属系</label>
+                            <c:set var="staffRoomId" value="${user.staffRoomId}" scope="request"/>
+                            <select class="form-control selectpicker show-tick" data-live-search="true" id="staffRoomId" name="staffRoomId">
+                                <option value=""></option>
+                                <c:forEach items="${staffRoomList}" var="staffRoom" varStatus="vs">
+                                    <option id="${staffRoom.id}" value="${staffRoom.id}" <c:if test="${staffRoom.id==staffRoomId}">selected</c:if>> ${staffRoom.name}</option>
                                 </c:forEach></select>
                         </div>
                         <div class="form-group">
@@ -143,6 +153,7 @@
 <script src="${APP_PATH}/jquery/jquery-3.1.0.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrapValidator.js"></script>
+<script src="${APP_PATH}/jquery/jquery.form.js"></script>
 <script src="${APP_PATH}/script/layer/layer.js"></script>
 <script src="${APP_PATH}/bootstrap/js/bootstrap-select.js"></script>
 <script src="${APP_PATH}/bootstrap/js/defaults-zh_CN.js"></script>
@@ -160,19 +171,56 @@
         });
     var roleIds = ${user.roleIds};
     $('#roleIds').selectpicker('val', roleIds);
-    if(roleIds.indexOf(5) >= 0) {
+    if(IsInArray(roleIds,'5')) {
         $("#classes").show();
     } else {
         $("#classes").hide();
     }
+        if(IsInArray(roleIds,'9')) {
+            $("#staffRoom").show();
+        } else {
+            $("#staffRoom").hide();
+        }
     });
 
+    function isEmpty(obj) {
+        if (typeof obj == "undefined" || obj == null || obj == "") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function IsInArray(arr,val){
+
+        var testStr=','+arr.join(",")+",";
+
+        return testStr.indexOf(","+val+",")!=-1;
+
+    }
+
     function ifStudent() {
-        var options = $("#roleIds option:selected").val();
-        if(options.indexOf(5) >= 0) {
+        var str= $('#roleIds').selectpicker('val');
+        if(isEmpty(str)) {
+            $('#classes').attr("disabled","disabled");
+            $('#staffRoom').attr("disabled","disabled");
+            $("#classes").hide();
+            $("#staffRoom").hide();
+            return;
+        }
+        if(IsInArray(str,'5')) {
             $("#classes").show();
+            $('#classes').removeAttr("disabled");
         } else {
             $("#classes").hide();
+            $('#classes').attr("disabled","disabled");
+        }
+        if(IsInArray(str,'9')) {
+            $("#staffRoom").show();
+            $('#staffRoom').removeAttr("disabled");
+        } else {
+            $("#staffRoom").hide();
+            $('#staffRoom').attr("disabled","disabled");
         }
     }
 
@@ -255,38 +303,17 @@
                 phone.focus();
             });
         } else {
-            var selItems = $("#roleIds :selected");
             // 提交表单
             var loadingIndex = -1;
-            var jsonData =  {
-                "userAcct": userAcct.val(),
-                "name": $("#username").val(),
-                "email": $("#email").val(),
-                "sex": $("#sex").val(),
-                "phone": $("#phone").val(),
-                "sort": $("#sort").val(),
-                "id": ${user.id},
-                "classesId":$("#classesId option:selected").val()
-            };
-            $.each(selItems, function(i, n){
-                jsonData["roleIds["+i+"]"] = n.value;
-            });
-            $.ajax({
-                type: "POST",
-                url: "${APP_PATH}/userController/modifyUser.do",
-                data:jsonData,
-                beforeSend: function () {
+            $("#userForm").ajaxSubmit({
+                beforeSubmit: function () {
                     loadingIndex = layer.load(2, {time: 10 * 1000});
                 },
                 success: function (result) {
                     layer.close(loadingIndex);
-                    if(result == "noPower") {
-                        window.location.href="${APP_PATH}/noPower.jsp";
-                        return;
-                    }
                     if (result.success) {
-                        layer.msg("用户信息修改成功", {time: 1000, icon: 6}, function () {
-                            window.location.href = "${APP_PATH}/userController/toUserList.do?pageNo=${param.pageNo}";
+                        layer.msg("用户信息保存成功", {time: 1000, icon: 6}, function () {
+                            window.location.href = "${APP_PATH}/userController/toUserList.do";
                         });
                     } else {
                         layer.msg(result.data, {time: 1000, icon: 5, shift: 6});

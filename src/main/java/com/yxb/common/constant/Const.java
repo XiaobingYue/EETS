@@ -1,5 +1,6 @@
 package com.yxb.common.constant;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,6 +58,11 @@ public class Const {
     public static final Integer TEACHER_ROLE_ID = 9;
 
     /**
+     * 学生ID
+     */
+    public static final Integer STUDENT_ROLE_ID = 5;
+
+    /**
      * 角色教学副院长id
      */
     public static final Integer VICE_DEAN_OF_TEACHING = 14;
@@ -71,10 +77,15 @@ public class Const {
 
     public static final String EXAM_STATE_5 = "5";
 
+    public static final Integer DEFAULT_STAFF_ROOM_ID = 1;
+
 
     public static void main (String[] args) throws ParseException {
-        String test = "1,1,,";
-        String[] arr = test.split(",");
-        System.out.println(arr);
+       File file = new File("E:\\demo\\11");
+       if(file.exists()) {
+           System.out.println("file exists");
+       } else {
+           file.mkdirs();
+       }
     }
 }

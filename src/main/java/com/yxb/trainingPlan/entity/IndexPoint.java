@@ -23,15 +23,35 @@ public class IndexPoint {
 
     /**
      * 课程id，每个培养计划有多个课程id，
-     * 每个指标点包含多个课程，每个课程有单独的份数要求
+     * 每个指标点包含多个课程，每个课程有单独的分数要求
      */
     private Integer courseId;
+
+    private String courseName;
 
     private float score;
 
     private String scores;
 
     private List<String> scoreList = new ArrayList<>();
+
+    private List<Integer> idList = new ArrayList<>();
+
+    public List<Integer> getIdList() {
+        return idList;
+    }
+
+    public void setIdList(List<Integer> idList) {
+        this.idList = idList;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
 
     public List<String> getScoreList() {
         return scoreList;

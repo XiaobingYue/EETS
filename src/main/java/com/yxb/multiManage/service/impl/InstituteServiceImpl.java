@@ -67,4 +67,9 @@ public class InstituteServiceImpl implements InstituteService {
             instituteDao.editInstitute(institute);
         }
     }
+
+    @Override
+    public Institute queryById(Integer id) {
+        return instituteDao.queryById(id);
+    }
 }

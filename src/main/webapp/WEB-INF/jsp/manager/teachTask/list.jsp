@@ -239,10 +239,10 @@
                         content = content + '  <td>' + _status + '</td>';
                         content = content + '  <td>';
                         if (teachTask.status == 1) {
-                            content = content + '      <button type="button" onclick="setTaskId(' + teachTask.id + ')" class="btn btn-primary btn-xs tooltip-test" data-toggle="modal" data-target="#myModal"><i class=" glyphicon glyphicon-ok"></i></button>';
+                            content = content + '      <button type="button" title="发布任务" onclick="setTaskId(' + teachTask.id + ')" class="btn btn-primary btn-xs tooltip-test" data-toggle="modal" data-target="#myModal"><i class=" glyphicon glyphicon-ok"></i></button>';
                         }
-                        content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/teachTaskController/toEdit.do?pageNo=' + pageObj.pageNo + '&id=' + teachTask.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        content = content + '	   <button type="button" onclick="deleteteachTask(' + teachTask.id + ', \'' + teachTask.name + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        content = content + '      <button type="button" title="修改" onclick="window.location.href=\'${APP_PATH}/teachTaskController/toEdit.do?pageNo=' + pageObj.pageNo + '&id=' + teachTask.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        content = content + '	   <button type="button"  title="删除"onclick="deleteteachTask(' + teachTask.id + ', \'' + teachTask.name + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         content = content + '  </td>';
                         content = content + '</tr>';
                     });

@@ -258,13 +258,13 @@
                         content = content + '  <td>' + graduationReq.professionName + '</td>';
                         content = content + '  <td>';
                         if (!isEmpty(graduationReq.fileName)) {
-                            content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/graduationReqController/downloadPdf.do?id=' + graduationReq.id + '\'"class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-arrow-down"></i></button>';
+                            content = content + '      <button type="button" title="下载附件" onclick="window.location.href=\'${APP_PATH}/graduationReqController/downloadPdf.do?id=' + graduationReq.id + '\'"class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-arrow-down"></i></button>';
                         }
-                        content = content + '<button type="button" data-toggle="modal" data-target="#myModal" onclick="setId(' + graduationReq.id + ')" style="margin-left: 5px" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-arrow-up"></i></button>';
+                        content = content + '<button type="button" title="上传附件" data-toggle="modal" data-target="#myModal" onclick="setId(' + graduationReq.id + ')" style="margin-left: 5px" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-arrow-up"></i></button>';
                         content = content + '  </td>';
                         content = content + '  <td>';
-                        content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/graduationReqController/toEdit.do?pageNo=' + pageObj.pageNo + '&id=' + graduationReq.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-list-alt"></i></button>';
-                        content = content + '	   <button type="button" onclick="deleteGraduationReq(' + graduationReq.id + ', \'' + graduationReq.name + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        content = content + '      <button type="button" title="修改" onclick="window.location.href=\'${APP_PATH}/graduationReqController/toEdit.do?pageNo=' + pageObj.pageNo + '&id=' + graduationReq.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        content = content + '	   <button type="button" title="删除" onclick="deleteGraduationReq(' + graduationReq.id + ', \'' + graduationReq.name + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         content = content + '  </td>';
                         content = content + '</tr>';
                     });

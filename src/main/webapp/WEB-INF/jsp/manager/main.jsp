@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%--<meta name="viewport" content="width=device-width, initial-scale=1.0">--%>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -28,6 +28,42 @@
 
         ::-webkit-scrollbar {
             display: none;
+        }
+
+        .spinner {
+            width: 100px;
+        }
+        .spinner input {
+            text-align: right;
+        }
+        .input-group-btn-vertical {
+            position: relative;
+            white-space: nowrap;
+            width: 1%;
+            vertical-align: middle;
+            display: table-cell;
+        }
+        .input-group-btn-vertical > .btn {
+            display: block;
+            float: none;
+            width: 100%;
+            max-width: 100%;
+            padding: 8px;
+            margin-left: -1px;
+            position: relative;
+            border-radius: 0;
+        }
+        .input-group-btn-vertical > .btn:first-child {
+            border-top-right-radius: 4px;
+        }
+        .input-group-btn-vertical > .btn:last-child {
+            margin-top: -2px;
+            border-bottom-right-radius: 4px;
+        }
+        .input-group-btn-vertical i{
+            position: absolute;
+            top: 0;
+            left: 4px;
         }
     </style>
 </head>
@@ -104,6 +140,21 @@
             }
         });
     });
+
+    (function ($) {
+        $('.spinner .btn:first-of-type').on('click', function() {
+            if(parseInt($('.spinner input').val()) > 90) {
+                return;
+            }
+            $('.spinner input').val( parseInt($('.spinner input').val(), 10) + 10+'%');
+        });
+        $('.spinner .btn:last-of-type').on('click', function() {
+            if(parseInt($('.spinner input').val()) <= 0) {
+                return;
+            }
+            $('.spinner input').val( parseInt($('.spinner input').val(), 10) - 10+'%');
+        });
+    })(jQuery);
     var myChart = echarts.init(document.getElementById('main3'));
     // 指定图表的配置项和数据
     option = {

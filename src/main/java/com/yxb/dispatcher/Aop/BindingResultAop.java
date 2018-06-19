@@ -2,11 +2,13 @@ package com.yxb.dispatcher.Aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.ObjectError;
 
@@ -21,6 +23,8 @@ import java.util.Set;
 /**
  * Created by yxb on 2018/04/24
  */
+@Aspect
+@Component
 public class BindingResultAop {
 
     private ObjectError error;

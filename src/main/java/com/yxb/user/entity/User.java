@@ -57,6 +57,16 @@ public class User {
      */
     private Integer classesId;
 
+    private Integer staffRoomId;
+
+    public Integer getStaffRoomId() {
+        return staffRoomId;
+    }
+
+    public void setStaffRoomId(Integer staffRoomId) {
+        this.staffRoomId = staffRoomId;
+    }
+
     public Integer getClassesId() {
         return classesId;
     }

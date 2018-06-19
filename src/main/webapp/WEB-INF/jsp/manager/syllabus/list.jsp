@@ -190,6 +190,7 @@
             browseClass: "btn btn-primary", //按钮样式
             allowedFileExtensions: ["pdf"], //接收的文件后缀
             maxFileCount: 1,//最大上传文件数限制
+            autoReplace:false,
             previewFileIcon: '<i class="glyphicon glyphicon-file"></i>',
             showPreview: true, //是否显示预览
             previewFileIconSettings: {
@@ -211,7 +212,7 @@
     $("#file").on("fileuploaded", function (event, data, previewId, index) {
         console.log(data);
         if (data.response.success == true) {
-            layer.msg(data.files[index].name + "上传成功!", {time: 2000, icon: 6, shift: 6}, function () {
+            layer.msg(data.files[index].name + "上传成功!", {time: 2000, icon: 6, shift: 5}, function () {
             });
             window.location.href = "${APP_PATH}/syllabusController/toSyllabus.do"
             //$(".close").click();
@@ -294,13 +295,13 @@
                         content = content + '  <td>' + syllabus.applicableProfessional + '</td>';
                         content = content + '  <td>';
                         if (!isEmpty(syllabus.fileAddress)) {
-                            content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/syllabusController/downloadPdf.do?id=' + syllabus.id + '\'"class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-arrow-down"></i></button>';
+                            content = content + '      <button type="button" title="下载附件" onclick="window.location.href=\'${APP_PATH}/syllabusController/downloadPdf.do?id=' + syllabus.id + '\'"class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-arrow-down"></i></button>';
                         }
-                        content = content + '<button type="button" data-toggle="modal" data-target="#myModal" onclick="setId(' + syllabus.id + ')" style="margin-left: 5px" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-arrow-up"></i></button>';
+                        content = content + '<button type="button" title="上传附件" data-toggle="modal" data-target="#myModal" onclick="setId(' + syllabus.id + ')" style="margin-left: 5px" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-arrow-up"></i></button>';
                         content = content + '  </td>';
                         content = content + '  <td>';
-                        content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/syllabusController/toEdit.do?pageNo=' + pageObj.pageNo + '&id=' + syllabus.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        content = content + '	   <button type="button" onclick="deleteSyllabus(' + syllabus.id + ', \'' + syllabus.name + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        content = content + '      <button type="button" title="修改" onclick="window.location.href=\'${APP_PATH}/syllabusController/toEdit.do?pageNo=' + pageObj.pageNo + '&id=' + syllabus.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        content = content + '	   <button type="button" title="删除" onclick="deleteSyllabus(' + syllabus.id + ', \'' + syllabus.name + '\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         content = content + '  </td>';
                         content = content + '</tr>';
                     });

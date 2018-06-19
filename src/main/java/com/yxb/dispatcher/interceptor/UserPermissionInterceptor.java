@@ -27,10 +27,11 @@ public class UserPermissionInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String uri = request.getRequestURI();
-        // 白名单
+        // 是否为异步请求
         String type = request.getHeader("X-Requested-With");
         ServletContext application = request.getSession().getServletContext();
         String appPath = (String) application.getAttribute("APP_PATH");
+        // 白名单
         Set<String> whiteListSet = new HashSet<>();
         whiteListSet.add(appPath+"/index.jsp");
         whiteListSet.add(appPath+"/userController/login.do");
@@ -41,7 +42,7 @@ public class UserPermissionInterceptor extends HandlerInterceptorAdapter {
         whiteListSet.add(appPath+"/userController/validateUserAcct.do");
         whiteListSet.add(appPath+"/userController/changePwd.do");
 
-        if (whiteListSet.contains(uri) || uri.contains("download.do") || uri.contains("Detail") ) {
+        if (whiteListSet.contains(uri) || uri.contains("download") || uri.contains("Detail") ) {
             log.debug("white List or ajax request...");
             return true;
         } else {
@@ -58,6 +59,7 @@ public class UserPermissionInterceptor extends HandlerInterceptorAdapter {
                         return true;
                     }
                 }
+                // 异步请求，返回noPower给前台
                 if(StringUtils.isNotBlank(type)) {
                     if (uri.contains("edit") || uri.contains("modify") || uri.contains("delete")) {
                         log.error("无操作权限");

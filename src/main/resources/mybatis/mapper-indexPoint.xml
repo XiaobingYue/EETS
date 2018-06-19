@@ -17,9 +17,6 @@
         SELECT CODE FROM t_index_point WHERE REQ_ID = #{reqId}
     </select>
 
-    <update id="updateIndexPoint">
-    </update>
-
     <insert id="addIndexPoint">
         INSERT INTO t_index_point (CODE, NAME, REQ_ID, COURSE_ID, SCORE) VALUES (#{code},#{name},#{reqId},#{courseId},#{score})
     </insert>
@@ -29,6 +26,25 @@
     </delete>
 
     <select id="queryIndexPointByCourseId" resultMap="indexPointMap">
-        SELECT * FROM t_index_point WHERE COURSE_ID = #{courseId}
+        SELECT * FROM t_index_point WHERE COURSE_ID = #{courseId} AND SCORE &gt; 0;
     </select>
+
+    <select id="queryByCode" resultMap="indexPointMap">
+        SELECT * FROM t_index_point WHERE CODE = #{code}
+    </select>
+
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM t_index_point WHERE ID IN
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByCode">
+        DELETE FROM t_index_point WHERE CODE = #{code}
+    </delete>
+
+    <update id="updateIndexPoint">
+       UPDATE t_index_point SET CODE = #{code} , NAME = #{name} , SCORE = #{score} WHERE ID = #{id}
+    </update>
 </mapper>

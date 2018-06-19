@@ -1,6 +1,7 @@
 package com.yxb.dispatcher.interceptor;
 
 import com.yxb.user.entity.User;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,6 +25,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.debug("preHandler >>>");
         String uri = request.getRequestURI();
+        String type = request.getHeader("X-Requested-With");
         log.debug(uri);
         // 判断是否需要过滤
         //System.out.println( "uri = " + uri );
@@ -48,10 +50,16 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             User loginUser = (User) session.getAttribute("userInfo");
 
             if (loginUser == null) {
-                //如果没有登陆，那么需要跳转回到登陆页面
-                log.debug("not login redirect to login page...");
-                response.sendRedirect(appPath+"/index.jsp");
-                return false;
+                if(StringUtils.isNotBlank(type)) {
+                    //ajax请求需要在页面重定向
+                    response.getWriter().write("toLogin");
+                    return false;
+                } else {
+                    //如果没有登陆，那么需要跳转回到登陆页面
+                    log.debug("not login redirect to login page...");
+                    response.sendRedirect(appPath+"/index.jsp");
+                    return false;
+                }
             }
             log.debug("access preHandler <<<");
             return true;

@@ -42,5 +42,7 @@ public interface ExamDao {
     Exam queryByCourseId(Integer courseId);
 
     void updateFileName(Exam exam);
+
+    void deleteSubIndexPointByTestMethodId(Integer courseId);
 }
 

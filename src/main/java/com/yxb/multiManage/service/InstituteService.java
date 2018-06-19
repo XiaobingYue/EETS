@@ -20,4 +20,6 @@ public interface InstituteService {
     void addInstitute(Institute institute);
 
     void deleteInstitute(Integer id);
+
+    Institute queryById(Integer id);
 }

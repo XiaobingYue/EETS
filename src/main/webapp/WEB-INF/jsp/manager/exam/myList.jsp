@@ -309,7 +309,7 @@
                         content = content + '  <td>' + _state + '</td>';
                         content = content + '  <td>';
                         if (!isEmpty(exam.fileName)) {
-                            content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/examController/downloadPdf.do?id=' + exam.id + '\'"class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-arrow-down"></i></button>';
+                            content = content + '      <button type="button" title="下载附件" onclick="window.location.href=\'${APP_PATH}/examController/downloadPdf.do?id=' + exam.id + '\'"class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-arrow-down"></i></button>';
                         } else {
                             content = content + '无附件';
                         }
@@ -317,13 +317,13 @@
                         content = content + '  <td>';
 
                         if(exam.state == 3) {
-                            content = content + '      <button type="button" onclick="setId(' + exam.id +')" class="btn btn-success btn-xs tooltip-test" data-toggle="modal" data-target="#myModal1"><i class=" glyphicon glyphicon-ok"></i></button>';
+                            content = content + '      <button type="button" title="指定审核人" onclick="setId(' + exam.id +')" class="btn btn-success btn-xs tooltip-test" data-toggle="modal" data-target="#myModal1"><i class=" glyphicon glyphicon-ok"></i></button>';
                         }
 
                         if (exam.state == 2) {
-                            content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/examController/toEditMyList.do?pageNo=' + pageObj.pageNo + '&id=' + exam.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-edit"></i></button>';
+                            content = content + '      <button type="button" title="上报试做信息" onclick="window.location.href=\'${APP_PATH}/examController/toEditMyList.do?pageNo=' + pageObj.pageNo + '&id=' + exam.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-edit"></i></button>';
                         }
-                        content = content + '      <button type="button" onclick="window.location.href=\'${APP_PATH}/examController/toDetail.do?pageNo=' + pageObj.pageNo + '&id=' + exam.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-list-alt"></i></button>';
+                        content = content + '      <button type="button" title="详情" onclick="window.location.href=\'${APP_PATH}/examController/toDetail.do?pageNo=' + pageObj.pageNo + '&id=' + exam.id + '\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-list-alt"></i></button>';
                         content = content + '  </td>';
                         content = content + '</tr>';
                     });

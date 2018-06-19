@@ -25,7 +25,7 @@ public class Exam {
 
     private String instituteName;
 
-    private String staffRoom;
+    private Integer staffRoomId;
 
     private Integer developerId;
 
@@ -202,12 +202,12 @@ public class Exam {
         this.instituteId = instituteId;
     }
 
-    public String getStaffRoom() {
-        return staffRoom;
+    public Integer getStaffRoomId() {
+        return staffRoomId;
     }
 
-    public void setStaffRoom(String staffRoom) {
-        this.staffRoom = staffRoom;
+    public void setStaffRoomId(Integer staffRoomId) {
+        this.staffRoomId = staffRoomId;
     }
 
     public Integer getDeveloperId() {

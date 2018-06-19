@@ -67,12 +67,12 @@
                         <button type="button" class="btn btn-warning" onclick="queryCourseTable()"><i
                                 class="glyphicon glyphicon-search"></i> 查询
                         </button>
-                        <div class="radio">
-                            <input type="radio" , name="type" id="personal" checked value="1"> 查询个人课表
-                        </div>
-                        <div class="radio">
+                        <label class="radio-inline">
+                            <input type="radio" name="type" id="personal" checked value="1"> 查询个人课表
+                        </label>
+                        <label class="radio-inline">
                             <input type="radio" name="type" id="classes" value="0"> 查询班级课表
-                        </div>
+                        </label>
                     </form>
                     <button type="button" data-toggle="modal" data-target="#myModal"
                             class="btn btn-primary tooltip-test"
@@ -81,10 +81,8 @@
                     </button>
                     <br>
                     <hr>
-                    <div class="table-responsive">
                         <table id="courseTable" class="table table-bordered table-hover" style="margin-top:1px;">
                         </table>
-                    </div>
                 </div>
             </div>
         </div>
@@ -197,7 +195,6 @@
                             return result;
                         },
                         title: '请选择课程',
-                        mode: "inline",
                         validate: function (v) {
                             if (!v) return '不能为空';
 
@@ -217,7 +214,6 @@
                             return result;
                         },
                         title: '请选择课程',
-                        mode: "inline",
                         validate: function (v) {
                             if (!v) return '不能为空';
 
@@ -237,7 +233,6 @@
                             return result;
                         },
                         title: '请选择课程',
-                        mode: "inline",
                         validate: function (v) {
                             if (!v) return '不能为空';
 
@@ -257,7 +252,6 @@
                             return result;
                         },
                         title: '请选择课程',
-                        mode: "inline",
                         validate: function (v) {
                             if (!v) return '不能为空';
 
@@ -277,7 +271,6 @@
                             return result;
                         },
                         title: '请选择课程',
-                        mode: "inline",
                         validate: function (v) {
                             if (!v) return '不能为空';
 
@@ -297,7 +290,6 @@
                             return result;
                         },
                         title: '请选择课程',
-                        mode: "inline",
                         validate: function (v) {
                             if (!v) return '不能为空';
 
@@ -317,7 +309,6 @@
                             return result;
                         },
                         title: '请选择课程',
-                        mode: "inline",
                         validate: function (v) {
                             if (!v) return '不能为空';
 

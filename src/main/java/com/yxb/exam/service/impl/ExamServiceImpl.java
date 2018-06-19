@@ -11,6 +11,7 @@ import com.yxb.multiManage.entity.Classes;
 import com.yxb.multiManage.entity.Course;
 import com.yxb.multiManage.service.ClassesService;
 import com.yxb.multiManage.service.CourseService;
+import com.yxb.multiManage.service.InstituteService;
 import com.yxb.trainingPlan.dao.IndexPointDao;
 import com.yxb.trainingPlan.entity.IndexPoint;
 import com.yxb.user.entity.User;
@@ -42,6 +43,8 @@ public class ExamServiceImpl implements ExamService {
     private ClassesService classesService;
     @Autowired
     private IndexPointDao indexPointDao;
+    @Autowired
+    private InstituteService instituteService;
 
     @Override
     public Page<Exam> queryListByPage(Map<String, Object> paramMap, Integer pageNo, Integer pageSize) {
@@ -73,7 +76,20 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public Exam queryById(Integer examId) {
-        return examDao.queryById(examId);
+        Exam exam = examDao.queryById(examId);
+        Course course = courseService.queryById(exam.getCourseId());
+        exam.setCourseName(course.getName());
+        User developer = userService.queryById(exam.getDeveloperId());
+        exam.setDeveloperName(developer.getName());
+        String[] classesIds = exam.getClassIds().split(",");
+        StringBuilder classesName = new StringBuilder();
+        exam.setInstituteName(instituteService.queryById(exam.getInstituteId()).getName());
+        for (String classesId : classesIds) {
+            Classes classes = classesService.queryById(Integer.valueOf(classesId));
+            classesName.append(classes.getClassName()).append(" ");
+        }
+        exam.setClassesName(classesName.toString());
+        return exam;
     }
 
     /**
@@ -102,39 +118,21 @@ public class ExamServiceImpl implements ExamService {
         for (Integer classId : exam.getClassIdList()) {
             classIds.append(classId).append(",");
         }
+        Course course = courseService.queryById(exam.getCourseId());
+        exam.setName(course.getName()+"命题审批表");
         exam.setClassIds(classIds.substring(0, classIds.length() - 1));
         exam.setTimestamp(System.currentTimeMillis());
         exam.setState(Const.EXAM_STATE_1);
         examDao.addExam(exam);
 
-        List<Integer> indexPointId = exam.getIndexPointId();
         List<String> testModeList = exam.getTestMode();
         List<String> scores = exam.getScore();
-        for (Integer id : indexPointId) {
-            if (testModeList.size() >= 4 && scores.size() >= 4) {
-                TestMethod testMethod = new TestMethod();
-                testMethod.setCourseId(exam.getCourseId());
-                testMethod.setIndexPointId(id);
-                String testModes = "";
-                String score = "";
-                for (int i = 0; i < 4; i++) {
-                    if (StringUtils.isBlank(testModeList.get(0))) {
-                        testModes += "空" + ",";
-                    } else {
-                        testModes += testModeList.get(0) + ",";
-                    }
-                    testModeList.remove(0);
-                    if (StringUtils.isBlank(scores.get(0))) {
-                        score += "空" + ",";
-                    } else {
-                        score += scores.get(0) + ",";
-                    }
-                    scores.remove(0);
-                }
-                testMethod.setTestMode(testModes.substring(0, testModes.length() - 1));
-                testMethod.setScores(score.substring(0, score.length() - 1));
-                examDao.addTestMethod(testMethod);
-            }
+        for (int i=0;i<testModeList.size();i++) {
+            TestMethod testMethod = new TestMethod();
+            testMethod.setCourseId(exam.getCourseId());
+            testMethod.setTestMode(testModeList.get(i));
+            testMethod.setScores(scores.get(i));
+            examDao.addTestMethod(testMethod);
         }
     }
 
@@ -144,6 +142,8 @@ public class ExamServiceImpl implements ExamService {
         for (Integer classId : exam.getClassIdList()) {
             classIds.append(classId).append(",");
         }
+        Course course = courseService.queryById(exam.getCourseId());
+        exam.setName(course.getName()+"命题审批表");
         exam.setClassIds(classIds.substring(0, classIds.length() - 1));
         exam.setTimestamp(System.currentTimeMillis());
         exam.setState(Const.EXAM_STATE_1);
@@ -151,60 +151,25 @@ public class ExamServiceImpl implements ExamService {
 
         //将原来的考核办法根据课程id删除，重新加入最新的
         examDao.deleteTestMethodByCourseId(exam.getCourseId());
-        List<Integer> indexPointId = exam.getIndexPointId();
         List<String> testModeList = exam.getTestMode();
         List<String> scores = exam.getScore();
-        for (Integer id : indexPointId) {
-            if (testModeList.size() >= 4 && scores.size() >= 4) {
-                TestMethod testMethod = new TestMethod();
-                testMethod.setCourseId(exam.getCourseId());
-                testMethod.setIndexPointId(id);
-                String testModes = "";
-                String score = "";
-                for (int i = 0; i < 4; i++) {
-                    if (StringUtils.isBlank(testModeList.get(0))) {
-                        testModes += "空" + ",";
-                    } else {
-                        testModes += testModeList.get(0) + ",";
-                    }
-                    testModeList.remove(0);
-                    if (StringUtils.isBlank(scores.get(0))) {
-                        score += "空" + ",";
-                    } else {
-                        score += scores.get(0) + ",";
-                    }
-                    scores.remove(0);
-                }
-                testMethod.setTestMode(testModes.substring(0, testModes.length() - 1));
-                testMethod.setScores(score.substring(0, score.length() - 1));
-                examDao.addTestMethod(testMethod);
-            }
+        for (int i=0;i<testModeList.size();i++) {
+            TestMethod testMethod = new TestMethod();
+            testMethod.setCourseId(exam.getCourseId());
+            testMethod.setTestMode(testModeList.get(i));
+            testMethod.setScores(scores.get(i));
+            examDao.addTestMethod(testMethod);
         }
     }
 
     @Override
     public List<TestMethod> queryTestMethodByCourseId(Integer courseId) {
-        List<TestMethod> testMethodList = examDao.queryTestMethodByCourseId(courseId);
-        for (TestMethod testMethod : testMethodList) {
-            IndexPoint indexPoint = indexPointDao.queryById(testMethod.getIndexPointId());
-            testMethod.setIndexPointName(indexPoint.getName());
-            String[] methods = testMethod.getTestMode().split(",");
-            String[] scores = testMethod.getScores().split(",");
-            List<TestDetail> testDetailList = new ArrayList<>();
-            for (int i = 0; i < methods.length; i++) {
-                TestDetail detail = new TestDetail();
-                detail.setMethod(methods[i]);
-                detail.setScore(scores[i]);
-                testDetailList.add(detail);
-            }
-            testMethod.setTestDetail(testDetailList);
-        }
-        return testMethodList;
+        return examDao.queryTestMethodByCourseId(courseId);
     }
 
     @Override
     public void updateExamTestDoInfo(Exam exam) {
-        exam.setState(Const.EXAM_STATE_3);
+        exam.setState(Const.EXAM_STATE_4);
         exam.setTimestamp(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         exam.setTestDoTime(sdf.format(new Date()));
@@ -238,13 +203,14 @@ public class ExamServiceImpl implements ExamService {
     }
 
     /**
-     * 删除命题审批表，同事删除课程考核办法
+     * 删除命题审批表，同时删除课程考核办法及考核办法与指标点关系
      *
      * @param id 命题审批表id
      */
     @Override
     public void deleteById(Integer id) {
         Exam exam = examDao.queryById(id);
+        examDao.deleteSubIndexPointByTestMethodId(exam.getCourseId());
         examDao.deleteTestMethodByCourseId(exam.getCourseId());
         examDao.deleteById(id);
     }

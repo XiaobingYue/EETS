@@ -1,6 +1,7 @@
 package com.yxb.user.service;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -54,7 +55,7 @@ public interface UserService {
      * @param infoNotExitList 必填项为空列表
      * @param errorList       错误信息列表
      */
-    void importUser(MultipartFile file, Set<ImportUserBean> wellList, List<ImportUserBean> exitList, List<ImportUserBean> infoNotExitList, List<ImportUserBean> errorList) throws Exception;
+    void importUser(Integer classesId,Integer staffRoomId,MultipartFile file, Set<ImportUserBean> wellList, List<ImportUserBean> exitList, List<ImportUserBean> infoNotExitList, List<ImportUserBean> errorList) throws Exception;
 
     List<User> queryUserListByRoleId(Integer roleId);
 
@@ -65,4 +66,6 @@ public interface UserService {
     Map<String,Object> queryRecentLoginRecord();
 
     void addLoginRecord();
+
+    List<User> queryByClassesId(Integer classesId);
 }
