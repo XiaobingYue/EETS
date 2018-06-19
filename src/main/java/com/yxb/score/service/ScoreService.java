@@ -25,4 +25,6 @@ public interface ScoreService {
     void changeState(SubIndexPoint subIndexPoint);
 
     List<SubIndexPoint> querySubIndexPointByIndexPointId(List<IndexPoint> indexPointList);
+
+    void deleteByExamId(Integer id);
 }

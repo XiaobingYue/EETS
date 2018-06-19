@@ -2,7 +2,8 @@
 SQLyog Ultimate v10.00 Beta1
 MySQL - 5.5.27 : Database - ssm
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -308,7 +309,7 @@ CREATE TABLE `t_staff_room` (
 
 /*Data for the table `t_staff_room` */
 
-insert  into `t_staff_room`(`ID`,`NAME`,`HEADER_ID`,`PROFESSION_IDS`,`TIMESTAMP`,`STATE`) values (5,'计算机科学系',1,NULL,1528279781482,'1');
+/*insert  into `t_staff_room`(`ID`,`NAME`,`HEADER_ID`,`PROFESSION_IDS`,`TIMESTAMP`,`STATE`) values (5,'计算机科学系',1,NULL,1528279781482,'1');*/
 
 /*Table structure for table `t_sub_index_point` */
 

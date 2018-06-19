@@ -12,6 +12,7 @@ import com.yxb.multiManage.entity.Course;
 import com.yxb.multiManage.service.ClassesService;
 import com.yxb.multiManage.service.CourseService;
 import com.yxb.multiManage.service.InstituteService;
+import com.yxb.score.service.ScoreService;
 import com.yxb.trainingPlan.dao.IndexPointDao;
 import com.yxb.trainingPlan.entity.IndexPoint;
 import com.yxb.user.entity.User;
@@ -45,6 +46,8 @@ public class ExamServiceImpl implements ExamService {
     private IndexPointDao indexPointDao;
     @Autowired
     private InstituteService instituteService;
+    @Autowired
+    private ScoreService scoreService;
 
     @Override
     public Page<Exam> queryListByPage(Map<String, Object> paramMap, Integer pageNo, Integer pageSize) {
@@ -204,6 +207,8 @@ public class ExamServiceImpl implements ExamService {
 
     /**
      * 删除命题审批表，同时删除课程考核办法及考核办法与指标点关系
+     * modify by yxb on 2018/06/19
+     * 同时删除分数信息
      *
      * @param id 命题审批表id
      */
@@ -212,6 +217,7 @@ public class ExamServiceImpl implements ExamService {
         Exam exam = examDao.queryById(id);
         examDao.deleteSubIndexPointByTestMethodId(exam.getCourseId());
         examDao.deleteTestMethodByCourseId(exam.getCourseId());
+        scoreService.deleteByExamId(exam.getId());
         examDao.deleteById(id);
     }
 

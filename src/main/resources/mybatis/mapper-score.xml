@@ -94,4 +94,8 @@
             #{testMethodId}
         </foreach>
     </select>
+
+    <delete id="deleteByExamId">
+        DELETE FROM t_score WHERE EXAM_ID = #{examId}
+    </delete>
 </mapper>

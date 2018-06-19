@@ -46,4 +46,6 @@ public interface ScoreDao {
     List<SubIndexPoint> querySIPByIndexPointId(List<Integer> list);
 
     List<SubIndexPoint> querySIPByTestMethodId(List<Integer> list);
+
+    void deleteByExamId(Integer examId);
 }

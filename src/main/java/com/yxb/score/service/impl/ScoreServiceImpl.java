@@ -388,4 +388,9 @@ public class ScoreServiceImpl implements ScoreService {
             return new ArrayList<>();
         }
     }
+
+    @Override
+    public void deleteByExamId(Integer id) {
+        scoreDao.deleteByExamId(id);
+    }
 }
