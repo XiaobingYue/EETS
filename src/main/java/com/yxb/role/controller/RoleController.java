@@ -10,6 +10,7 @@ import com.yxb.common.util.StringUtil;
 import com.yxb.role.Bean.RoleBean;
 import com.yxb.user.entity.User;
 import com.yxb.user.validateGroup.AddGroup;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,10 +150,10 @@ public class RoleController {
     public Object deleteRole(RoleBean roleBean) {
         AjaxResult<RoleBean> result = new AjaxResult<>();
         try {
-            List<String> userNames = roleService.deleteRole(roleBean);
-            if(!CollectionUtils.isEmpty(userNames)) {
+            String userNames = roleService.deleteRole(roleBean);
+            if(StringUtils.isNotBlank(userNames)) {
                 result.setSuccess(false);
-                result.setData("该角色已经赋予以下用户："+userNames.toString());
+                result.setData(userNames.toString());
             } else {
                 result.setSuccess(true);
             }

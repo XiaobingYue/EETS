@@ -50,7 +50,7 @@ public interface RoleService {
      *
      * @param roleBean 角色信息
      */
-    List<String> deleteRole(RoleBean roleBean);
+    String deleteRole(RoleBean roleBean);
 
     void assignPermission(Map<String, Object> paramMap);
 }
