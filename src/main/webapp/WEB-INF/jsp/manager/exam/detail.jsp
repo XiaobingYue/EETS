@@ -231,7 +231,17 @@
                                     <th colspan="2" style="text-align: center">课程考核办法</th>
                                 </tr>
                                 <c:forEach items="${testMethodList}" var="testMethod" varStatus="status">
-                                    <tr><td>题目${status.count}：${testMethod.testMode}</td><td>分数：${testMethod.scores}</td></tr>
+                                    <tr>
+                                        <td>
+                                        <c:if test="${status.count ==1}">实验成绩</c:if>
+                                        <c:if test="${status.count == 2}">平时成绩</c:if>
+                                        <c:if test="${status.count >2}">题目${status.count-2}</c:if>
+                                        ：${testMethod.testMode}
+                                        </td>
+                                        <td>
+                                            分数：${testMethod.scores}
+                                        </td>
+                                    </tr>
                                 </c:forEach>
                             </thread>
                         </table>
