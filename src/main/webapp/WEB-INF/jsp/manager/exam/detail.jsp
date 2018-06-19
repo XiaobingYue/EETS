@@ -82,7 +82,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2">系（教研室）：<c:set var="staffRoomId" value="${exam.staffRoomId}" scope="request"/>
+                                <td colspan="2"><c:set var="staffRoomId" value="${exam.staffRoomId}" scope="request"/>
                                     系（教研室）：<select class="selectpicker show-tick form-control" disabled="true" id="staffRoomId" name="staffRoomId" data-live-search="true">
                                         <option value="0"></option>
                                         <c:forEach items="${staffRoomList}" var="staffRoom" varStatus="vs">
