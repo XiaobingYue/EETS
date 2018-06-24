@@ -134,7 +134,7 @@
                 layer.close(loadingIndex);
                 if (result.success) {
                     layer.msg("保存成功", {time: 1000, icon: 6}, function () {
-                        window.location.href = "${APP_PATH}/graduationReqController/toIndex.do";
+                        window.location.href = "${APP_PATH}/graduationReqController/toEdit.do?id=${reqId}";
                     });
                 } else {
                     layer.msg("保存失败", {time: 1000, icon: 5, shift: 6});
