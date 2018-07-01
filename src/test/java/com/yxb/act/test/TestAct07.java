@@ -1,20 +1,20 @@
 package com.yxb.act.test;
 
-import java.util.List;
-
 import com.yxb.common.util.ActUtil;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
+
+import java.util.List;
 
 
 public class TestAct07 {
 
 	public static void main(String[] args) {
 		
-		ActUtil.deploy("myProcess02.bpmn");
+		//ActUtil.deploy("myProcess.bpmn");
 
-		ActUtil.start("myProcess01");
+		ActUtil.start("myProcess");
 		
 		// 查询张三的任务
 		TaskService taskService = ActUtil.getTaskService();

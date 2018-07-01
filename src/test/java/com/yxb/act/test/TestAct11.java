@@ -16,12 +16,12 @@ import org.activiti.engine.task.TaskQuery;
 public class TestAct11 {
 
 	public static void main(String[] args) {
-		ActUtil.deploy("MyProcess06.bpmn");
+		//ActUtil.deploy("myPro.bpmn");
 		
-		Map<String, Object> varMap = new HashMap<String, Object>();
+		Map<String, Object> varMap = new HashMap<>();
 		varMap.put("days", 5);
 		
-		ProcessInstance pi = ActUtil.start("myProcess", varMap);
+		//ProcessInstance pi = ActUtil.start("myPro", varMap);
 		
 		// 所谓的网关其实就是流程中逻辑分支判断
 		// 排他网关，多条逻辑分支，同时只能执行一条，如果一旦执行完成后，那么网关结束
@@ -39,6 +39,10 @@ public class TestAct11 {
 			System.out.println( "zhangsan完成任务 = " + task.getName() );
 			taskService.complete(task.getId());
 		}
+		for ( Task task : tasks1 ) {
+			System.out.println( "lisi完成任务 = " + task.getName() );
+			taskService.complete(task.getId());
+		}
 		
 		tasks = query.taskAssignee("zhangsan").list();
 		tasks1 = query.taskAssignee("lisi").list();
@@ -48,14 +52,14 @@ public class TestAct11 {
 		
 		// 判断流程是否结束
 		HistoryService historyService = ActUtil.getHistoryService();
-		HistoricProcessInstance hpi =
+		/*HistoricProcessInstance hpi =
 			historyService
 			    .createHistoricProcessInstanceQuery()
 			    .processInstanceId(pi.getId())
 			    .finished()
 			    .singleResult();
 		
-		System.out.println( "流程是否结束 ：" + (hpi != null) );
+		System.out.println( "流程是否结束 ：" + (hpi != null) );*/
 	}
 
 }
